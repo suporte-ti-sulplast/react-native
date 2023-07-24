@@ -5,7 +5,8 @@ import { AuthContext } from '../../contexts/auth';
 function BarraSuperior() {
 
     const { logout } = useContext(AuthContext);
-
+    const { department, access_level, user } = useContext(AuthContext);
+  
     const handleSubmit = () => {
         logout();
     }
@@ -19,13 +20,13 @@ function BarraSuperior() {
 
         <div className='infoSair'>
             <div className='setor'>
-                <h1>INFORMÁTICA</h1>
+                <h1>{department}</h1>
             </div>
             <div className='user'>
                 <p>
                     Bem-vindo, <br />
-                    Suporte TI! <br />
-                    ADM-TI
+                    {user}! <br />
+                    {access_level}
                 </p>
             </div>
             <div className='sair'>

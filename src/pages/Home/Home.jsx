@@ -1,4 +1,5 @@
 import "./index.scss";
+
 import MenuLateral from '../../components/menuLateral/MenuLateral';
 import BarraSuperior from '../../components/barraSuperior/BarraSuperior';
 import LinksUteis from '../../components/linksUteis/LinksUteis';

@@ -20,11 +20,23 @@
         display: flex;
         gap: 0.5rem;
         justify-content: space-around;
+        text-transform: uppercase;
+        
+    }
+
+    .link a{
+        color: $dark-text-color !important;
+        font-size: 500 !important;
+    }
+
+    .link a:hover{
+        font-weight: 700;
     }
 
     .link a img{
         width: 50px;
         height: 50px;
+        margin: 0 2.2rem;
     }
 
     .teste{

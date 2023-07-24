@@ -7,7 +7,7 @@ const Login = () => {
 
     const { authenticated, login } = useContext(AuthContext);
     const [userLogin, setUserLogin] = useState("");
-    const [userPassword, setUserPassword] = useState("");
+    const [userPassword, setUserPassword] = useState("secret");
     const [errorLogin, setErrorLogin] = useState("error-message-hidden");
     const [errorPassword, setErrorPassword] = useState("error-message-hidden");
     const [textErroLogin, setTextErroLogin] = useState("texto")

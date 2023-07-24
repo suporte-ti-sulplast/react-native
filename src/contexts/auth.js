@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { api, createSession } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -11,7 +12,9 @@ export const AuthProvider = ({ children }) => {
     //Se user != null, authenticated == true
     
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(""); 
+    const [department, setDepartment] = useState(""); 
+    const [access_level, setAccessLevel] = useState(""); 
 
     useEffect(() => {
         const recoveredUser = localStorage.getItem('user')
@@ -21,30 +24,37 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     },[]);
 
-    const login = (login, password) => {
+    const login = async (login, password) => {
 
-        const loggedUser = {
-            id: "123",
-            password,
-        }; 
+        const response = await createSession(login, password );
+        const loggedUser = response.data.name;
+        const loggedToken = response.data.token;
+
+        setDepartment(response.data.department);
+        setAccessLevel(response.data.access_level);
 
         if(password === "secret"){
             localStorage.setItem('user', JSON.stringify(loggedUser))
+            localStorage.setItem('department', JSON.stringify(department))
+            localStorage.setItem('access_level', JSON.stringify(access_level))
+            localStorage.setItem('token', JSON.stringify(loggedToken))
             setUser(loggedUser);
             navigate("/home");
         };
     };
 
     const logout = () => {
-        console.log("logout");
         setUser(null);
         localStorage.removeItem("user");
+        localStorage.removeItem("department");
+        localStorage.removeItem("access_level");
+        localStorage.removeItem("token");
         navigate("/");
     };
 
     return (
         <AuthContext.Provider
-            value={{authenticated: !!user, user, loading, login, logout}}>
+            value={{authenticated: !!user, user, loading, login, logout, department, access_level}}>
             { children }
         </AuthContext.Provider>
     )
