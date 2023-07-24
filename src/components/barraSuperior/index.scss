@@ -1,0 +1,77 @@
+@import '../../../variables';
+
+
+.barraSuperior{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    gap: 1rem;
+    align-items: center;
+    
+    h1{
+        color:  $white-color;
+        font-size: 2.5rem;
+    }
+    p{
+        color:  $white-color
+    }
+
+    .logoTitulo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        img{
+            margin-right: 1rem;
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    .infoSair{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        align-items: center;
+
+        img{
+            width: 40px;
+            height: 40px;
+        }
+
+        .sair{
+            display: flex;
+            flex-direction: column;
+
+            
+            button{
+                display: flex;
+                flex-direction: column;
+                background-color: transparent;
+                align-items: center;
+                color: $white-color;
+            }
+
+            img{
+                width: 100%;
+                margin: auto;
+            }
+
+            p{
+                margin: 0;
+            }
+        }
+
+
+        .user{
+            border-left: 3px solid $white-color;
+            border-right: 3px solid $white-color;
+            padding: 0 1rem;
+        }
+    }
+    
+        
+    
+}

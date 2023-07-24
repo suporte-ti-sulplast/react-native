@@ -1,0 +1,78 @@
+@import "../variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: $font-sans-serif;
+  vertical-align: baseline;
+  overflow: hidden;
+}
+
+
+#root{
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../public/images/fundo.jpg);
+    background-repeat: repeat;
+    background-size: cover;
+    text-align: center;
+    margin: auto;
+}
+
+body{
+    width: 100%;
+}
+
+h1{
+    font-size: 2.5rem;
+}
+
+h3{
+    font-size: 1.325rem;
+}
+
+p{
+    margin: 0 !important;
+}
+
+.corpo{
+    height: auto;
+    display: grid;
+    grid-template-columns: 10% auto;
+    margin: 0 0.8rem;
+    border-radius: 10px;
+    background-color: $background ;
+
+    .lateralEsquerda, .lateralDireita{
+        margin: 0.5rem;
+        background-color: $white-color;
+        border: 1px solid $border-color;
+        box-shadow: 2px 2px 2px $shadow-color;
+        border-radius: 8px;
+    }
+}
+
+.defaultBtn{
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: #eee;
+    background-color: #49a1b8;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: 0.2s ease;
+}
+
+.defaultBtn:hover{
+    cursor: pointer;
+    background-color: #61dbfb;
+}
+
+.defaultBtn:active{
+    transform: translate(3px, -3px);
+}

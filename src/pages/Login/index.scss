@@ -1,0 +1,92 @@
+@import '../../../variables';
+
+.group{
+  width: 50%;
+  display: flex;
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  color: $white-color;
+
+  .leftSide{
+      width: 100%;
+      margin-right: 3rem;
+
+      img{
+          width: 15rem;
+          margin: 1rem;
+      }
+  }
+
+  .rigthSide{
+    width: 100%;  
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0;
+      width: auto;
+    }
+              
+    .form-group label {
+      font-size: 1.2rem;
+      color: $white-color;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+      
+    .form-group input {
+      padding: 12px;
+      border: 2px groove $dark-text-color;
+      border-radius: 5px;
+      outline: none;
+      background-color: transparent !important;
+      color: $white-color;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+      outline: 1px solid 444;
+    }
+      
+    .form-group input::placeholder {
+      color: $placeholder;
+    }
+
+    .form-group input:-webkit-autofill,
+    .form-group input:-webkit-autofill:hover, 
+    .form-group input:-webkit-autofill:focus {
+      -webkit-text-fill-color:white !important;
+      -webkit-box-shadow: 0 0 0px 1000px outset;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .form-group .input-error {
+      outline: 1px solid $erro;
+    }
+      
+    .form-group .error-message {
+      position: relative;
+      color: $erro;
+      font-size: 0.9rem;
+      transition: all 0.1s ease-in-out;
+    }
+
+    .error-message-hidden{
+      opacity: 0;
+    }
+
+    .error-message-show{
+      opacity: 1;
+    }
+  }
+
+    
+    
+
+
+}
