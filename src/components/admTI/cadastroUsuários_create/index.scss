@@ -1,0 +1,93 @@
+@import '../../../../variables';
+
+.cadastrarUsuarios{
+
+
+
+    h2{
+        font-size: 1.5rem;
+        margin: 1rem;
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2rem;
+
+        form-group{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input, label, select{
+            width: 20rem;
+        }
+
+        input, select{
+            padding: 0.3rem 1rem;
+            border: 1px solid $shadow-color;
+            background-color: $dark-text-color;
+            color: aliceblue;
+            border-radius: 8px;
+            margin: 0.1rem;
+        }
+
+        label{
+            padding: 0.3rem 1rem;
+            font-weight: 700;
+            text-align: right;
+            border-radius: 8px;
+            box-shadow: 2px 2px 2px  $shadow-color;
+        }
+
+        .error-message-login,
+        .error-message-name,
+        .error-message-email,
+        .error-message-senha,
+        .error-message-redigite-senha
+        {
+            color: red;
+            transition: all 0.2s;
+        }
+
+        .desabilitado{
+            color: $placeholder;
+        }
+
+        
+    }
+
+    .msg{
+        width: 40rem;
+        margin-top: 2rem; 
+        padding:  0.5rem 1rem;
+        color: $dark-text-color;
+        font-weight: 700;
+        border-radius: 9px;
+    }
+
+    .hidden{
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .success{
+        opacity: 1;
+        background-color: aquamarine;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .error{
+        opacity: 1;
+        background-color: rgb(255, 127, 127);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .esc, .confirm{
+        margin-top: 2rem;
+        padding:  0.5rem;
+    }
+}

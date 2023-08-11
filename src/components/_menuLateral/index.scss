@@ -1,18 +1,32 @@
 @import '../../../variables';
 
 .menuLateral{
-
+    width: auto;
     .arrow{
         text-align: right;
     }
     .arrow-left{
         width: 20px;
         margin: 0.5rem;
-        text-align: right;
+    }
+
+    .left{
+        transform: rotate(180deg);
+        transition: all 0.2s;
+    } ;
+
+    .rigth{
+
+        transition: all 0.2s;
     }
 
     .hidden{
-        color: transparent;
+        opacity: 0; /* Tornar o texto invisível */
+        transition: opacity 0.3s ease-in-out; /* Adicionar uma transição de 0.3 segundos com suavização (ease) */
+    }
+
+    .nav-link{
+        display: flex;
     }
 
     ul li{

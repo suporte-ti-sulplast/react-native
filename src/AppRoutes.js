@@ -11,7 +11,12 @@ import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 
 import { AuthProvider, AuthContext } from "./contexts/auth";
+
 import NotFound from "./pages/NotFound/NotFound";
+import AdmTI from "./pages/AdmTI/ADM-TI";
+import UserList from "./pages/AdmTI/user-list"
+import UserEdit from "./pages/AdmTI/user-edit"
+import UserCreate from "./pages/AdmTI/user-create"
 
 const AppRoutes = () => {
 
@@ -31,14 +36,35 @@ const AppRoutes = () => {
             <AuthProvider>
                 <Routes>
                     <Route exact path="/" element={<Login />} />
-                    <Route exact path="/home" element=
+
+                    <Route exact path="/HOME" element=
                         {<Private>
                             <Home />
                         </Private>} />
+                        
+                    <Route exact path="/ADM-TI" element=
+                        {<Private>
+                            <AdmTI />
+                        </Private>} />     
+
+                    <Route exact path="/ADM-TI/cadastro-usuarios" element=
+                        {<Private>
+                            <UserList/>
+                        </Private>} />    
+
+                    <Route exact path="/ADM-TI/cadastro-usuarios/edit" element=
+                        {<Private>
+                            <UserEdit/>
+                        </Private>} />        
+
+                    <Route exact path="/ADM-TI/cadastro-usuarios/create" element=
+                        {<Private>
+                            <UserCreate/>
+                        </Private>} />                 
+
                     <Route exact path="*" element={<NotFound />} />
                 </Routes>
             </AuthProvider>
-            
         </Router>
     );
 };

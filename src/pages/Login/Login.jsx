@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import "./index.scss";
-
 import { AuthContext } from "../../contexts/auth";
 
 const Login = () => {
@@ -25,7 +24,7 @@ const Login = () => {
                 setErrorPassword("error-message-show");
                 setTextErroPassword("Senha requerida.");
             }
-        } else if(!authenticated){
+        } else if(!authenticated ){
             setErrorPassword("error-message-show")
             setErrorLogin("error-message-show")
             setTextErroLogin("Usuário ou senha inválidos.");
@@ -78,7 +77,7 @@ const Login = () => {
                             <div className={'error-message ' + errorPassword}>{textErroPassword}</div>
                         </div>
                         <div className="form-group">
-                            <button type="submit" className="defaultBtn">Entrar</button>
+                            <button type="submit" className="defaultBtn entrarBtn">Entrar</button>
                         </div>
                     </form>
                 </div>

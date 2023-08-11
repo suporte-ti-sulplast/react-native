@@ -1,60 +1,77 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, createSession } from "../services/api";
+import { createSession} from "../services/api";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
-    const navigate = useNavigate();
-
-    //Se user == null, authenticated == false
-    //Se user != null, authenticated == true
     
+    //VARIAVEIS E CONSTATNTES
+    var setUserOk;
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(""); 
-    const [department, setDepartment] = useState(""); 
-    const [access_level, setAccessLevel] = useState(""); 
+    const [loading, setLoading] = useState(); 
 
+
+    //RECUPERA DO LOCALSTORAGE O USER SALVO
     useEffect(() => {
         const recoveredUser = localStorage.getItem('user')
         if(recoveredUser) {
         setUser(JSON.parse(recoveredUser))
         }
         setLoading(false);
-    },[]);
+    },[]); 
 
     const login = async (login, password) => {
 
         const response = await createSession(login, password );
-        const loggedUser = response.data.name;
-        const loggedToken = response.data.token;
 
-        setDepartment(response.data.department);
-        setAccessLevel(response.data.access_level);
+        setUserOk =  response.data.userOK;
 
-        if(password === "secret"){
-            localStorage.setItem('user', JSON.stringify(loggedUser))
-            localStorage.setItem('department', JSON.stringify(department))
-            localStorage.setItem('access_level', JSON.stringify(access_level))
-            localStorage.setItem('token', JSON.stringify(loggedToken))
-            setUser(loggedUser);
-            navigate("/home");
-        };
+        if(!setUserOk){
+            navigate("/"); 
+        } 
+
+        if(setUserOk){
+
+            setUser({
+                userLogin: response.data.userLogin,
+                nameComplete: response.data.nameComplete,
+                department: response.data.department,
+                accessLevel: response.data.accessLevel,
+                applications: response.data.applications,
+                token: response.data.token
+            });
+
+            localStorage.setItem('user', JSON.stringify(response.data.userLogin));
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+
+            navigate("/home"); 
+        } 
     };
 
     const logout = () => {
+        setUserOk = false ;
         setUser(null);
         localStorage.removeItem("user");
-        localStorage.removeItem("department");
-        localStorage.removeItem("access_level");
         localStorage.removeItem("token");
+        localStorage.removeItem("retract");
         navigate("/");
     };
 
     return (
         <AuthContext.Provider
-            value={{authenticated: !!user, user, loading, login, logout, department, access_level}}>
+            value={
+                    {
+                        authenticated: !!user,
+                        user,
+                        loading,
+
+                        /*FUNÇÕES */
+                        login,
+                        logout
+                    }    
+            }>
             { children }
         </AuthContext.Provider>
     )

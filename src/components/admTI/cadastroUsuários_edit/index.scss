@@ -1,0 +1,53 @@
+@import '../../../../variables';
+
+.editarUsuarios{
+
+    h2{
+        font-size: 1.5rem;
+        margin: 1rem;
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2rem;
+
+        form-group{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input, label, select{
+            width: 20rem;
+        }
+
+        input, select{
+            padding: 0.3rem 1rem;
+            border: 1px solid $shadow-color;
+            background-color: $dark-text-color;
+            color: aliceblue;
+            border-radius: 8px;
+            margin: 0.1rem;
+        }
+
+        label{
+            padding: 0.3rem 1rem;
+            font-weight: 700;
+            text-align: right;
+            border-radius: 8px;
+            box-shadow: 2px 2px 2px  $shadow-color;
+        }
+
+        .desabilitado{
+            color: $placeholder;
+        }
+    }
+
+    .esc, .confirm{
+        margin-top: 2rem;
+        padding:  0.5rem;
+    }
+}

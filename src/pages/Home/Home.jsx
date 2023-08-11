@@ -1,9 +1,7 @@
-import "./index.scss";
-
-import MenuLateral from '../../components/menuLateral/MenuLateral';
-import BarraSuperior from '../../components/barraSuperior/BarraSuperior';
-import LinksUteis from '../../components/linksUteis/LinksUteis';
-import Noticias from "../../components/noticias/Noticias";
+import MenuLateral from '../../components/_menuLateral/MenuLateral';
+import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
+import LinksUteis from '../../components/home_linksUteis/LinksUteis';
+import Noticias from '../../components/home_noticias/Noticias';
 
 function Home() {
 
@@ -16,7 +14,7 @@ function Home() {
         </div>
         <div className="lateralDireita">
           <LinksUteis />
-          <Noticias />
+{          <Noticias />}
         </div>
       </div>
     </section>
