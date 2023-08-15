@@ -59,3 +59,15 @@ export const createUser = async (login, name, email, setorId, statusId, compart,
   }
 };
 
+export const updateUser = async ( userId, name, email, setorId, statusId, shared) => {
+  try {
+    const response = await api.post("/user-updatebd", { userId, name, email, setorId, statusId, shared });
+    return response.data; // Retornar os dados da resposta da API
+  } catch (error) {
+    console.error("Ocorreu um erro ao fazer a requisição:", error);
+    throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
+  }
+
+  return ("ok")
+};
+

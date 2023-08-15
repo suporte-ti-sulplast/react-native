@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+import { useRetract } from '../../contexts/retract';
+import React, { useState } from "react";
+import useRetractEffect from '../../../src/hooks/useRetract';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -6,10 +8,16 @@ import MenuCadastroTI from '../../components/admTI/_menuCadastroTI/menuCadastroT
 
 function AdmTI() {
 
+  const [body, setBody] = useState();
+
+  const { retract } = useRetract();
+  
+  useRetractEffect(retract, setBody);
+
   return (
     <section>
        <BarraSuperior />
-      <div className='corpo'>
+      <div className={'corpo ' + body}>
         <div className="lateralEsquerda">
           <MenuLateral />
         </div>

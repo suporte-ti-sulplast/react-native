@@ -113,7 +113,7 @@ const CadastroUsuariosCreate = ( props ) => {
                 //CONVERTE SETOR E STATUS NOVAMENTE EM IDs
                 const statusId = stattus.find(item => item.status === status)?.idStatus;
                 const setorId = deptto.find(item => item.department === depto)?.idDept;
-                
+
                 const response = await createUser(login, name, email, setorId, statusId, compart, senha);
                 setMsg(response.msg)
                 if(response.msg_type === "success") {
@@ -122,9 +122,7 @@ const CadastroUsuariosCreate = ( props ) => {
                   setMsgType("error")
                 }
 
-                // Define um atraso de 5 segundos (5000 milissegundos) para reverter para "hidden"
-
-
+                //LIMPA O FORMULÁRIO
                 setMsg(response.msg)
                 setLogin("");
                 setEmail("");
@@ -135,6 +133,7 @@ const CadastroUsuariosCreate = ( props ) => {
                 setSenha("");
                 setRedigiteSenha("");
 
+                // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
                 setTimeout(() => {
                   setMsgType("hidden");
                 }, 3000);

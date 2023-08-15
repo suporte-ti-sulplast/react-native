@@ -15,7 +15,6 @@ a{
 }
 
 
-
 #root{
     width: 100vw;
     height: 100vh;
@@ -44,11 +43,9 @@ p{
 
 .corpo{
     height: auto;
-    display: grid;
-    grid-template-columns: 10% auto;
     margin: 0 0.8rem;
     border-radius: 10px;
-    background-color: $background ;
+    background-color: $background;
 
     .lateralEsquerda, .lateralDireita{
         margin: 0.5rem;
@@ -57,6 +54,18 @@ p{
         box-shadow: 2px 2px 2px $shadow-color;
         border-radius: 8px;
     }
+}
+
+.expanded{
+    display: grid;
+    grid-template-columns: 190px auto;
+    transition: all 0.2s ease-in-out;
+}
+
+.retract{
+    display: grid;
+    grid-template-columns: 90px auto;
+    transition: all 0.2s ease-in-out;
 }
 
 .defaultBtn{

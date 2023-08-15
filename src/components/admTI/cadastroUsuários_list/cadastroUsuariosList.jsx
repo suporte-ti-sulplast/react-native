@@ -3,10 +3,10 @@ import { findUsers, editUser, depptoStatus } from "../../../services/api";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-const CadastroUsuarios = () => {
+const CadastroUsuarios =  () => {
 
   const navigate = useNavigate();
-
+  
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +36,12 @@ const CadastroUsuarios = () => {
    const getUserData = async () => {
     try {
       const userData = await editUser(userId);
-      navigate("/ADM-TI/cadastro-usuarios/edit", {state: userData  }); 
+      const depptoStattus = await depptoStatus();
+      const combinedState = {
+        userData: userData,
+        depptoStatus: depptoStattus
+    };
+      navigate("/ADM-TI/cadastro-usuarios/edit", {state: combinedState  }); 
       
       } catch (error) {
         console.error("Ocorreu um erro ao obter os dados do usuário:", error);
@@ -79,7 +84,6 @@ const CadastroUsuarios = () => {
             <th className="short">Status</th>
             <th className="short">Compartilhado</th>
             <th className="short">Editar</th>
-            <th className="short">Ativar/Inativar</th>
             <th className="short">Alterar Senha</th>
             <th className="short">Excluir</th>
           </tr>
@@ -93,7 +97,7 @@ const CadastroUsuarios = () => {
                 <td>{user.login}</td>
                 <td>{user.email}</td> 
                 <td>{user.Department.department}</td>
-                <td className="short">{user.idStatus === 1 ? "Ativo" : "Inativo"}</td>
+                <td className="short">{user.Status.status}</td>
                 <td className="short">
                   {user.sharedUser === 0 ? 
                     <img className="icon" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
@@ -102,11 +106,6 @@ const CadastroUsuarios = () => {
                 <td className="short">
                   <img className="icon" src="../images/editar2.png" alt="editar2" 
                   onClick={() => handleEdit(user.idUser)} />
-                </td>
-                <td className="short">
-                  {user.idStatus === 1 ?
-                    <img className="icon" src="../images/checked2.png" alt="checked2" /> :
-                    <img className="icon" src="../images/unchecked.png" alt="unchecked" />}
                 </td>
                 <td className="short">
                   <img className="icon" src="../images/senha2.png" alt="senha2" />

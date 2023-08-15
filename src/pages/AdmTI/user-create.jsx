@@ -1,3 +1,7 @@
+import { useRetract } from '../../contexts/retract';
+import { useState } from 'react';
+import useRetractEffect from '../../../src/hooks/useRetract';
+
 import { useLocation } from "react-router-dom";
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -9,10 +13,16 @@ function UserCreate() {
   const location = useLocation();
   const depptoStattus = location.state;
 
+  const [body, setBody] = useState();
+
+  const { retract } = useRetract();
+  
+  useRetractEffect(retract, setBody);
+
   return (
     <section>
        <BarraSuperior />
-      <div className='corpo'>
+      <div className={'corpo ' + body}>
         <div className="lateralEsquerda">
           <MenuLateral />
         </div>

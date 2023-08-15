@@ -41,9 +41,45 @@
             box-shadow: 2px 2px 2px  $shadow-color;
         }
 
+        .error-message-login,
+        .error-message-name,
+        .error-message-email,
+        .error-message-senha,
+        .error-message-redigite-senha
+        {
+            color: red;
+            transition: all 0.2s;
+        }
+
         .desabilitado{
             color: $placeholder;
         }
+    }
+
+    .msg{
+        width: 40rem;
+        margin-top: 2rem; 
+        padding:  0.5rem 1rem;
+        color: $dark-text-color;
+        font-weight: 700;
+        border-radius: 9px;
+    }
+
+    .hidden{
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .success{
+        opacity: 1;
+        background-color: aquamarine;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .error{
+        opacity: 1;
+        background-color: rgb(255, 127, 127);
+        transition: all 0.2s ease-in-out;
     }
 
     .esc, .confirm{

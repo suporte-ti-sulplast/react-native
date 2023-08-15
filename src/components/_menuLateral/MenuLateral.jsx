@@ -2,17 +2,22 @@ import "./index.scss";
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
-
-
+import { useRetract } from '../../contexts/retract';
 
 function MenuLateral() {
 
 const { user } = useContext(AuthContext);
-const [retract, setRetract] = useState(() => {
-  // Recupera o valor do estado "retract" do localStorage ou retorna 'show' caso não exista
-  return localStorage.getItem('retract') || 'show';
-});
+const { retract, setRetract } = useRetract();
+
 const [arrow, setArrow] = useState('')
+useEffect(() => {
+  if(retract === 'show'){
+    setArrow('rigth')
+  } else {
+    setArrow('left')
+  }
+}, []); // useEffect será executado sempre que o estado (state) for alterado
+
 
   const handleRetract = () => {
 
