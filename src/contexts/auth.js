@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { createSession} from "../services/api";
+import { createSession, findLogged } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -10,66 +10,157 @@ export const AuthProvider = ({ children }) => {
     var setUserOk;
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(); 
-
+    const [loading, setLoading] = useState(true); 
+    const [userLogged, setUserLogged] = useState(null);
+    const [userRecovered, setUserRecovered] = useState(null);
+    const [authenticated, setAuthenticated] = useState(false);
+    const [dataAge, setDataAge] = useState('');
+    const [userStatus, setUserStatus] = useState(0);
+    const [logged, setLogged] = useState(false);
 
     //RECUPERA DO LOCALSTORAGE O USER SALVO
     useEffect(() => {
-        const recoveredUser = localStorage.getItem('user')
-        if(recoveredUser) {
-        setUser(JSON.parse(recoveredUser))
-        }
-        setLoading(false);
+        verifyLogded();
     },[]); 
 
+    const verifyLogded = async () => {
+        const recoveredUser = localStorage.getItem('user')
+        setAuthenticated(false)
+        if(recoveredUser) {
+        setUserRecovered(JSON.parse(recoveredUser));
+        setAuthenticated(false)
+        }
+        setLoading(false);
+        setAuthenticated(false);
+    };
+
+    useEffect(() => {
+    }, [userRecovered]);
+    
+    // Atualização assíncrona para a variável logged
+    useEffect(() => {
+    }, [userLogged]);
+
+    // Atualização assíncrona para a variável dataAge
+    useEffect(() => {
+    }, [dataAge]);
+
+    
+    useEffect(() => {
+        // Define a lógica para atualizar a variável 'logged' com base em 'userStatus'
+        switch (userStatus) {
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+            setLogged(false);
+            break;
+          
+          case 5:
+            setLogged(true);
+            break;
+    
+          default:
+            setLogged(false);
+            break;
+        }
+      }, [userStatus]);
+
+
+
+    //função para login
     const login = async (login, password) => {
 
+        //chama a api que verifica se existe o usuário e senha
         const response = await createSession(login, password );
+        setUserOk =  response.data.userOK; 
 
-        setUserOk =  response.data.userOK;
+        switch(setUserOk) {
+            case 1:
+                setUserStatus(1);
+                navigate("/");         
+            break;
 
-        if(!setUserOk){
-            navigate("/"); 
-        } 
+            case 2:
+                setUserStatus(2);
+                navigate("/");   
+            break;
 
-        if(setUserOk){
+            case 3:
+                setUserStatus(3);
+                navigate("/");  
+            break;
+
+            case 4:
+                setUserStatus(4);
+                navigate("/");  
+            break;
+
+            case 5:
+                setUserStatus(5);
+                navigate("/");  
+            break;
+        }
+
+        //se existe o usuário
+        if(setUserOk === 5){
+            const token = response.data.token;
+
+            //chama a api que pega os dados do usuário e repassa para o context para ser usado no cabeçalho de todas as páginas
+            try {
+                const resp = await findLogged(response.data.userLogin);
+                setUserLogged(resp);
+                setDataAge(resp.dataAge);
+                setLoading(false);
+                setAuthenticated(true);
+            } catch (err) {
+                console.error('Ocorreu um erro durante a consulta:', err);
+                setLoading(false);
+            }
 
             setUser({
                 userLogin: response.data.userLogin,
-                nameComplete: response.data.nameComplete,
-                department: response.data.department,
-                accessLevel: response.data.accessLevel,
-                applications: response.data.applications,
-                token: response.data.token
+                token: token
             });
 
             localStorage.setItem('user', JSON.stringify(response.data.userLogin));
-            localStorage.setItem('token', JSON.stringify(response.data.token));
+            localStorage.setItem('token', JSON.stringify(token));
 
             navigate("/home"); 
         } 
     };
 
+    //função para logout
     const logout = () => {
-        setUserOk = false ;
+        setUserOk = 0 ;
         setUser(null);
+        setAuthenticated(false);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         localStorage.removeItem("retract");
         navigate("/");
     };
 
+    //função para receber de volta a data da senha atualizada
+    const updateDataAge = (newDataAge) => {
+        setDataAge(newDataAge);
+      };
+
     return (
         <AuthContext.Provider
             value={
                     {
-                        authenticated: !!user,
+                        authenticated,
+                        userRecovered,
                         user,
                         loading,
-
+                        userLogged,
+                        dataAge,
+                        userStatus,
                         /*FUNÇÕES */
                         login,
-                        logout
+                        logout,
+                        updateDataAge //função para receber de volta a data da senha atualizada
                     }    
             }>
             { children }

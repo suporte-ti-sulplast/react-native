@@ -76,6 +76,26 @@
       transition: all 0.1s ease-in-out;
     }
 
+    .pswd{
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 !important;
+
+      input{
+        width: 100%;
+      }
+    }
+
+    .eye{
+      position: absolute;
+      right: 10px;
+      width: 27px;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+
     .error-message-hidden{
       opacity: 0;
     }
@@ -87,11 +107,8 @@
     .entrarBtn{
       width: 100% !important;
       margin-top: 2rem;
+      padding: 0.6rem !important;
     }
   }
-
-    
-    
-
 
 }

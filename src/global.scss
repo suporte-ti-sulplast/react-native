@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
+  font-size: 99.5%;
   font-family: $font-sans-serif;
   vertical-align: baseline;
   overflow: hidden;
@@ -13,7 +13,6 @@
 a{
     text-decoration: none !important;
 }
-
 
 #root{
     width: 100vw;
@@ -30,11 +29,11 @@ body{
 }
 
 h1{
-    font-size: 2.5rem;
+    font-size: 2.2rem;
 }
 
 h3{
-    font-size: 1.325rem;
+    font-size: 1.3rem;
 }
 
 p{
@@ -68,26 +67,86 @@ p{
     transition: all 0.2s ease-in-out;
 }
 
-.defaultBtn{
-    width: 12rem;
-    height: 2.5rem;
-    padding: 0 0.5rem;
+.Btn{
+    width: 11rem;
+    height: auto;
+    padding: 0.27rem !important;
     border: none;
     border-radius: 5px;
-    color: #eee;
-    background-color: #49a1b8;
     font-weight: 500;
-    font-size: 1rem;    
+    font-size: 0.95rem;    
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.Btn:active{
+    transform: translate(3px, -3px);
+}
+
+.defaultBtn{
+    color: #eee;
+    background-color: $defaultBtn;
 }
 
 .defaultBtn:hover{
-    cursor: pointer;
-    background-color: #61dbfb;
-
+    background-color: $defaultBtn-hover
 }
 
-.defaultBtn:active{
-    transform: translate(3px, -3px);
+.okBtn{ 
+    margin-top: 1.5rem;
+    color: #eee;
+    background-color: $okBtn;
 }
+
+.okBtn:hover{
+    background-color: $okBtn-hover
+}
+
+.escBtn{
+    margin-top: 1.5rem;
+    color: #eee;
+    background-color: $escBtn;
+}
+
+.escBtn:hover{
+    background-color: $escBtn-hover
+}
+
+//mensagens rodapé da página
+.msg{
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    padding: 10px;
+    text-align: center;
+    transform: translateX(-50%);
+    width: 50%;
+    margin: 2rem auto;
+    padding:  0.5rem 1rem;
+    color: $dark-text-color;
+    font-weight: 700;
+    border-radius: 9px;
+    bottom: -100px; /* Começa escondida abaixo da tela */
+    transition: bottom 0.3s ease; /* Adiciona uma transição suave */
+    }
+
+    .hidden{
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .success{
+        opacity: 1;
+        background-color: aquamarine;
+        transition: all 0.2s ease-in-out;
+        bottom: 0; /* Mostra a div no rodapé */
+    }
+
+    .error{
+        opacity: 1;
+        background-color: rgb(255, 127, 127);
+        transition: all 0.2s ease-in-out;
+        bottom: 0; /* Mostra a div no rodapé */
+    }   
+

@@ -12,8 +12,8 @@ function AdmTI() {
 
   const { retract } = useRetract();
   
-  useRetractEffect(retract, setBody);
-
+  useRetractEffect(retract, setBody); 
+ 
   return (
     <section>
        <BarraSuperior />

@@ -2,9 +2,11 @@
 
 .menuLateral{
     width: auto;
-    .arrow{
+
+    .arrow {
         text-align: right;
     }
+    
     .arrow-left{
         width: 20px;
         margin: 0.5rem;
@@ -13,7 +15,7 @@
     .left{
         transform: rotate(180deg);
         transition: all 0.2s;
-    } ;
+    }
 
     .rigth{
 

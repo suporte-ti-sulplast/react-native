@@ -22,13 +22,15 @@ import UserCreate from "./pages/AdmTI/user-create";
 const AppRoutes = () => {
 
     const Private = ({ children }) => {
-        const { authenticated, loading } = useContext(AuthContext);
+        
+        const { authenticated, loading, setUserOk } = useContext(AuthContext);
         if(loading){
             return <div className="loading">Carregando ...</div>
         };
         if(!authenticated){
             return <Navigate to="/" />
         };
+
         return children;
     };
 

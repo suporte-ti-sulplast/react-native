@@ -6,7 +6,7 @@ import { useRetract } from '../../contexts/retract';
 
 function MenuLateral() {
 
-const { user } = useContext(AuthContext);
+const { userLogged } = useContext(AuthContext);
 const { retract, setRetract } = useRetract();
 
 const [arrow, setArrow] = useState('')
@@ -16,7 +16,7 @@ useEffect(() => {
   } else {
     setArrow('left')
   }
-}, []); // useEffect será executado sempre que o estado (state) for alterado
+}, [retract]); // useEffect será executado sempre que o estado (state) for alterado
 
 
   const handleRetract = () => {
@@ -45,7 +45,8 @@ useEffect(() => {
       </div>
         
         <ul className="nav flex-column text-start">
-            {user.applications.map(application => (
+
+            {userLogged.applicationsList.map(application => (
             <li className="nav-item" key={application}>
                 <Link className="nav-link" aria-current="page" to={`/${application}`}><img src={`../../images/${application}.png`} alt={application} />
                   <div className={'text ' + retract} >

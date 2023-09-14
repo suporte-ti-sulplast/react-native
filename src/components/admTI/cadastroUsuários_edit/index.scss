@@ -4,23 +4,28 @@
 
     h2{
         font-size: 1.5rem;
-        margin: 1rem;
+        margin: 0.8rem;
     }
 
+    .tips{
+        font-size: 0.9rem;
+        color: $dark-text-color;
+    }
+    
     form{
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding: 2rem;
 
-        form-group{
+        .form-group{
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
         }
 
-        input, label, select{
+        input, label, select, .erros{
             width: 20rem;
         }
 
@@ -33,7 +38,7 @@
             margin: 0.1rem;
         }
 
-        label{
+        label, .erros{
             padding: 0.3rem 1rem;
             font-weight: 700;
             text-align: right;
@@ -41,14 +46,14 @@
             box-shadow: 2px 2px 2px  $shadow-color;
         }
 
-        .error-message-login,
-        .error-message-name,
-        .error-message-email,
-        .error-message-senha,
-        .error-message-redigite-senha
-        {
+        .erros{
+            box-shadow: -2px 2px 2px  $shadow-color;
+            text-align: left;
             color: red;
-            transition: all 0.2s;
+        }
+
+        .none{
+            opacity: 0;
         }
 
         .desabilitado{

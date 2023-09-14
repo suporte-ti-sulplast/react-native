@@ -1,0 +1,148 @@
+/* ModalStyles.css */
+
+@import '../../../../variables';
+
+.custom-modal {
+  position: fixed;
+  top: 50%;
+  right: 50%; /* Inicia no centro da tela */
+  transform: translate(50%, -50%); /* Move o modal para o centro vertical */
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  background-color: $dark-text-color;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  animation: slide-in 0.3s ease;
+  color: $defaultBtn;
+
+  h2{
+    font-size: 1.8rem;
+  }
+
+  span{
+    color: $white-color;
+  }
+
+  .tips{
+    text-align: center;
+    font-size: 0.9rem;
+    color: $defaultBtn;
+  }
+
+  .form-group{
+    position: relative;
+    width: 20rem !important;
+    height: 65px;
+  }
+
+  .eye{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    top: 10px;
+    width: 24px;
+    cursor: pointer;
+    z-index: 99;
+  }
+
+  .copy{
+    position: absolute;
+    transform: translateY(5px);
+    width: 15px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 99;
+    left: 73%;
+  }
+
+  .inp{
+    position: absolute;
+    width: 20rem !important;
+    height: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15rem;
+    background-color: transparent;
+    border: 1px solid $white-color;
+    border-radius: 8px;
+    padding: 0.2rem 0.5rem;
+    color: $white-color;
+  }
+
+  .btn{
+    width: 15rem;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0 0 0;
+    padding: 0;
+
+    button{
+      width: 7rem;
+      border-radius: 8px;
+      padding: 0.2rem 0.5rem;
+      color: $white-color;
+    }
+  }
+
+  .error-message{
+    position: absolute;
+    bottom: 0;
+      color: $erro;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+  }
+
+  .hidden{
+    opacity: 0;
+  }
+
+  .password{
+    width: 9rem !important;
+    height: 2rem;
+  }
+
+
+  .gerador-senha{
+    display: flex;
+    gap: 1rem;    
+  }
+
+  .textPassword{
+    width: 10rem !important;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid $white-color;
+    border-radius: 8px;
+    padding: 0.2rem 0.5rem;
+    color: $white-color;
+  }
+  .radio-block{
+      width: 10rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap:0.2rem;
+      color: $dark-text-color;
+      border-radius: 6px;
+      background-color: transparent;
+      border: 1px solid $dark-text-color
+  }
+
+  .radio{
+      width: 1rem;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    right: -100%; /* Inicia fora da tela na direita */
+  }
+  to {
+    right: 50%; /* Move para o centro da tela */
+  }
+}

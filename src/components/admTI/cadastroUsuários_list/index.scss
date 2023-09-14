@@ -4,7 +4,7 @@
 
     h2{
         font-size: 1.5rem;
-        margin: 1rem;
+        margin: 0.8rem;
     }
 
     .titulo{
@@ -20,6 +20,7 @@
 
     td{
         padding: 0.1rem 0.5rem !important;
+        font-size: 0.9rem !important;
     }
 
    .icon{
@@ -27,9 +28,44 @@
         cursor: pointer;
    }
 
+   .disable{
+    cursor: default;
+   }
+
+   .shared{
+       cursor: default !important;
+       
+   }
+
    .short{
     width: 8rem;
     padding: 0 0.1rem;
     text-align: center;
    }
+
+   .msg{
+    width: 40rem;
+    margin: 2rem auto;
+    padding:  0.5rem 1rem;
+    color: $dark-text-color;
+    font-weight: 700;
+    border-radius: 9px;
+    }
+
+    .hidden{
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .success{
+        opacity: 1;
+        background-color: aquamarine;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .error{
+        opacity: 1;
+        background-color: rgb(255, 127, 127);
+        transition: all 0.2s ease-in-out;
+    }
 }

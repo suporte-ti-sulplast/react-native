@@ -2,28 +2,60 @@
 
 .cadastrarUsuarios{
 
+    .content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
+    .tips{
+        font-size: 0.9rem;
+        color: $dark-text-color;
+    }
 
     h2{
         font-size: 1.5rem;
-        margin: 1rem;
+        margin: 0.8rem;
     }
 
+    .eye{
+        position: absolute;
+        top: 50%;
+        right: 21rem;
+        top: 10px;
+        width: 23px;
+        cursor: pointer;
+        z-index: 99;
+      }
+
+      .copy{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 21rem;
+        width: 18px;
+        cursor: pointer;
+        z-index: 99;
+      }
+
     form{
+        width: 60rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        padding: 2rem;
 
-        form-group{
+
+        .form-group{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
         }
 
-        input, label, select{
+        input, label, select, .erros{
             width: 20rem;
+            position: relative;
         }
 
         input, select{
@@ -32,10 +64,9 @@
             background-color: $dark-text-color;
             color: aliceblue;
             border-radius: 8px;
-            margin: 0.1rem;
         }
 
-        label{
+        label, .erros{
             padding: 0.3rem 1rem;
             font-weight: 700;
             text-align: right;
@@ -43,51 +74,60 @@
             box-shadow: 2px 2px 2px  $shadow-color;
         }
 
-        .error-message-login,
-        .error-message-name,
-        .error-message-email,
-        .error-message-senha,
-        .error-message-redigite-senha
-        {
+        .erros{
+            box-shadow: -2px 2px 2px  $shadow-color;
+            text-align: left;
             color: red;
-            transition: all 0.2s;
+        }
+
+        .none{
+            opacity: 0;
         }
 
         .desabilitado{
             color: $placeholder;
         }
-
-        
     }
 
-    .msg{
-        width: 40rem;
-        margin-top: 2rem; 
-        padding:  0.5rem 1rem;
+    .okBtn, .escBtn{
+        margin-top: 1.5rem;
+    }
+
+    .password{
+        width: 10rem;
+        height: 2rem;
+        color: white;
+        border-radius: 6px;
+        background-color:green;
+        border: none;
+    }
+
+    .password:hover{
+        background-color: rgb(32, 175, 32);
+    }
+
+    .textPassword{
+        height: 2rem;
+        width: 10rem;
         color: $dark-text-color;
-        font-weight: 700;
-        border-radius: 9px;
+        border-radius: 6px;
+        background-color: transparent;
+        border: 1px solid $dark-text-color
+    }
+    .radio-block{
+        width: 10rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap:0.2rem;
+        color: $dark-text-color;
+        border-radius: 6px;
+        background-color: transparent;
+        border: 1px solid $dark-text-color
     }
 
-    .hidden{
-        opacity: 0;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .success{
-        opacity: 1;
-        background-color: aquamarine;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .error{
-        opacity: 1;
-        background-color: rgb(255, 127, 127);
-        transition: all 0.2s ease-in-out;
-    }
-
-    .esc, .confirm{
-        margin-top: 2rem;
-        padding:  0.5rem;
+    .radio{
+        width: 1rem;
     }
 }
