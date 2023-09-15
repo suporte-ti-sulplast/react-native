@@ -33,6 +33,7 @@ const CadastroUsuarios =  () => {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [selectedLogin, setSelectedLogin] = useState('');
   const [selectedId, setSelectedId] = useState('');
+  const [forceChange, setForceChange] = useState(false);
   //  MODAL PARA DELETAR USUÁRIO
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUserToDelete, setSelectedUserToDelete] = useState(null);
@@ -104,7 +105,6 @@ const CadastroUsuarios =  () => {
   };
   const handleDeleteUserConfirmed = async (user) => {
     if (user) {
-      // Lógica para deletar o usuário aqui
       const response = await deleteUser(selectediDToDelete);
       setIsDeleteModalOpen(false);
       setSelectedUserToDelete(null);
@@ -183,13 +183,14 @@ const CadastroUsuarios =  () => {
       } 
       else 
       {
-        const response = await alterPassword(selectedId, newPassword);
+        const response = await alterPassword(selectedId, newPassword, forceChange );
         setMsg(response.msg);
         
         if(response.msg_type === "success")
         {
           setMsgType("success");
           //LIMPA O FORMULÁRIO
+          setForceChange(false);
           setNewPassword("");
           setNewPasswordConfirm("");
           // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
@@ -365,6 +366,16 @@ const CadastroUsuarios =  () => {
           </div>
         </div>
 
+        <div className="forced">
+          <p>Exigir troca de senha no próximo login</p>
+          <input
+            type="checkbox"
+            checked={forceChange}
+            onClick={() => setForceChange(!forceChange)} // Inverte o valor de forceChange
+          />
+        </div>
+
+        {/* GERADOR DE SENHA */}
         <div className="gerador-senha">
         <button className="password Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
 
@@ -380,11 +391,13 @@ const CadastroUsuarios =  () => {
           />
         </div>
         
+        {/* BOTOÕES */}
         <div className="btn">
           <button className="Btn escBtn" onClick={closeModal}>Cancelar</button>
           <button className="Btn okBtn" onClick={handleSubmit}>Confirmar</button>
         </div>
 
+        {/* INFO DA SENHA */}
         <div className="tips">A senha precisa ter <strong>8 caracteres</strong>  e conter ao menos: <br />
             1 letra <strong>minúscula</strong> , 1 letra <strong>maiúscula</strong>, 1 <strong>número</strong> e 1 <strong>caracter especial</strong>.
         </div>
@@ -406,7 +419,7 @@ const CadastroUsuarios =  () => {
         <p>Tem certeza que deseja excluir o usuário <span>{selectedUserToDelete}</span> ?</p>
 
         <div className="btn">
-        <button className="Btn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
+          <button className="Btn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
           <button className="Btn okBtn" onClick={() => handleDeleteUserConfirmed(selectediDToDelete)}>Confirmar</button>
         </div>
 

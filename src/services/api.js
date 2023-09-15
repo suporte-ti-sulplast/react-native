@@ -4,6 +4,8 @@ export const api = axios.create({
     baseURL: "http://192.168.0.236:3000",
 });
 
+
+//VALIDAÇÃO DE LOGIN E CRIAÇÃO DE SESSÃO
 export const createSession = async (login, password) => {
   try{ 
     const response = await api.post("/auth", {login, password})
@@ -14,6 +16,8 @@ export const createSession = async (login, password) => {
   }
 };
 
+
+//BUSCA INFORMAÇÕES DO USUÁRIO LOGADO
 export const findLogged = async (user) =>
 {
   try
@@ -28,6 +32,8 @@ export const findLogged = async (user) =>
   }
 };
 
+
+//LISTA TODOS OS USUÁRIOS
 export const findUsers = async () =>
 {
   try
@@ -42,6 +48,8 @@ export const findUsers = async () =>
   }
 };
 
+
+//ABRE O FORM DE EDIÇÃO DO USUÁRIO
 export const editUser = async (userId) =>
 {
   try
@@ -56,6 +64,7 @@ export const editUser = async (userId) =>
   }
 };
 
+//BUSCA A LISTA DE DEPARTAMENTO E STATUS
 export const depptoStatus = async () =>
 {
   try
@@ -70,6 +79,7 @@ export const depptoStatus = async () =>
   }
 };
 
+//VALIDA SE EXISTE O LOGIN E A SENHA
 export const checkLoginEmail = async (login, email) =>
 {
   try
@@ -84,6 +94,8 @@ export const checkLoginEmail = async (login, email) =>
   }
 };
 
+
+//ADICIONA O USUÁRIO NO BANO DE DADOS
 export const createUser = async (login, name, email, setorId, statusId, compart, recebeEmail, senha) =>
 {
   try
@@ -98,6 +110,8 @@ export const createUser = async (login, name, email, setorId, statusId, compart,
   }
 };
 
+
+//ATUALIZA O USUÁRIO NO BANCO DE DADOS
 export const updateUser = async ( userId, textEmail, textName, setorId, statusId, shared, recebeEmail) =>
 {
   try
@@ -112,11 +126,13 @@ export const updateUser = async ( userId, textEmail, textName, setorId, statusId
   }
 };
 
-export const alterPassword = async ( id, newPasword) =>
+
+//ALTERA A SENHA NO BANCO DE DADOS
+export const alterPassword = async ( id, newPasword, forceChange) =>
 {
   try
   {
-    const response = await api.post("/user-newpassword",{id, newPasword});
+    const response = await api.post("/user-newpassword",{id, newPasword, forceChange});
     return response.data; // Retornar os dados da resposta da API
   } 
   catch (error) 
@@ -126,6 +142,8 @@ export const alterPassword = async ( id, newPasword) =>
   }
 };
 
+
+//VERIFICA NO BANCO DE DADOS SE A SENHA JÁ FOI USADA
 export const validPassword = async (id, newPasword ) =>
 {
   try
@@ -140,6 +158,8 @@ export const validPassword = async (id, newPasword ) =>
   }
 };
 
+
+//DELETA USUÁRIO DO BANCO DE DADOS
 export const deleteUser = async ( id) =>
 {
   try

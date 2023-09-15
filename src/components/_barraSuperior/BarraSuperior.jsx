@@ -1,6 +1,7 @@
 import "./index.scss";
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
+import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
 import validadorSenha from '../../functions/validadorSenha';
 import generatePassword from '../../functions/geradorSenha';
@@ -10,6 +11,7 @@ import './modalStyles.scss'; // Importo estilos dos modais
 function BarraSuperior() {
 
   const { logout, userLogged, dataAge, updateDataAge } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   //  MENSAGENS DE ERRO
   const [errorSenha, setErrorSenha] = useState("mensagem inicial");
@@ -25,17 +27,18 @@ function BarraSuperior() {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [selectedLogin, setSelectedLogin] = useState('');
   const [selectedId, setSelectedId] = useState('');
+  const [forceChange] = useState(0);
   //CONTROLE DE VISIBILIDADE DA SENHA
   const [eyeSenha, setEyeSenha] = useState("aberto") //variavel para abrir ou fechar o olho
   const [typeofPassword, setTypeofPassword] = useState("password") //variavel para mudar o tipo de senha
   const [eyeReSenha, setEyeReSenha] = useState("aberto") //variavel para abrir ou fechar o olho
   const [typeofRePassword, setTypeofRePassword] = useState("password") //variavel para mudar o tipo de senha
   // VARIAVEIS AUXILIARES
-  const [password, setPassword] = useState("");
-  const [passwordLength] = useState(8);
-  const [modalClosed, setModalClosed] = useState(true);
-  const [isCancelButtonVisible, setIsCancelButtonVisible] = useState(true);
-  const [newDataAge, setNewDataAge] = useState(dataAge);
+  const [password, setPassword] = useState(""); //salva a senha criada no gerador de senhas
+  const [passwordLength] = useState(8); //define o tamanho da senha
+  const [modalClosed, setModalClosed] = useState(true); //altera o estado do botão fechar do MODAL
+  const [newDataAge, setNewDataAge] = useState(dataAge); //reseta a idade da senha
+  const [redirect, setRedirect] = useState(false); //controla o estado do botão cancela do modal => false só cancela, true redireciona
 
   var name = userLogged.logged.nameComplete.split(' '); 
 
@@ -64,8 +67,10 @@ function BarraSuperior() {
     setTypeofRePassword("password")
     setErrorSenhaExpirada("");
     setModalClosed(true);
-    setIsCancelButtonVisible(true);
     setNewDataAge('90');
+  };
+  const redirectToLogin = () => {
+    navigate("/");
   };
 
   // DEVOLVE PARA O CONTEXT A VARIVAL AGE DA SENHA ATUALIZADA
@@ -75,6 +80,7 @@ function BarraSuperior() {
 
   
   const handlePasswordSubmit = async () => {
+    setRedirect(false); // define que o botão cancela só cancela o modal
     // Lógica para alterar a senha
     //VERIFICA REGRAS DAS SENHAS
     //VERIFICA SE ESTÁ PREENCHIDA AS VARIÁVEIS SENHA E CONFIRMÇÃO DE SENHA
@@ -111,7 +117,7 @@ function BarraSuperior() {
       }
       else
       {
-        const response = await alterPassword(selectedId, newPassword);
+        const response = await alterPassword(selectedId, newPassword, forceChange);
         setMsg(response.msg);
         if(response.msg_type === "success") {
           setMsgType("success");
@@ -127,7 +133,6 @@ function BarraSuperior() {
         }, 3000);
          closeModal();
       }
-      
     }
   };
 
@@ -142,15 +147,20 @@ function BarraSuperior() {
     setNewPasswordConfirm(password);
   }; //FIM DA ALTERAÇÃO DE SENHA
 
-  //VERIFICA SE A SENHA ESTÁ EXPIRADA E ABRE O MODAL DE TROCA DE SENHA
+  //VERIFICA SE A SENHA ESTÁ EXPIRADA OU O USUÁRIO TEM QUER TROCAR A SENHA - ABRE O MODAL DE TROCA DE SENHA
   useEffect(() => {
     if (dataAge <= 0) {
       handleChangePassword(userLogged.logged.idUser, userLogged.logged.login);
       setErrorSenhaExpirada(" - Senha Expirada");
       setModalClosed(false);
-      setIsCancelButtonVisible(false);
+      setRedirect(true); // define que o botão cancela vai redirecionar para o "/"
     }
-  }, []); // O array vazio significa que este efeito será executado apenas uma vez após a montagem inicial
+    if (userLogged.logged.forcedChangePassword === 1) {
+      handleChangePassword(userLogged.logged.idUser, userLogged.logged.login);
+      setModalClosed(false);
+      setRedirect(true); // define que o botão cancela vai redirecionar para o "/"
+    }
+  }, []);
 
   return (
     <section className='barraSuperior'>
@@ -200,6 +210,7 @@ function BarraSuperior() {
       >
 
         <h2>Alteração de senha {errorSenhaExpirada}</h2>
+
         <p>Digitar uma nova senha para <span>{selectedLogin}</span> </p>
 
         <div className="form-group">
@@ -231,7 +242,7 @@ function BarraSuperior() {
             id="userconfirmpass"
             className="inp "
             type={typeofRePassword}
-            placeholder="Confirmação Senha"
+            placeholder="Confirmação Nova Senha"
             value={newPasswordConfirm}
             onClick={(e) => setErrorConfimSenhaClass("hidden")}
             onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
@@ -263,7 +274,10 @@ function BarraSuperior() {
         </div>
         
         <div className="btn">
-          <button className="Btn escBtn" style={{ display: isCancelButtonVisible ? 'block' : 'none' }} onClick={closeModal}>Cancelar</button>
+          <button className="Btn escBtn" 
+          onClick={
+            redirect ? redirectToLogin : closeModal
+          }>Cancelar</button>
           <button className="Btn okBtn" onClick={handlePasswordSubmit}>Confirmar</button>
         </div>
 
