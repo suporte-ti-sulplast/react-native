@@ -71,7 +71,6 @@ const Login = () => {
                 setErrorPassword("error-message-show");
                 setTextErroPassword("Senha requerida.");
             }
-
         } 
         else 
         {

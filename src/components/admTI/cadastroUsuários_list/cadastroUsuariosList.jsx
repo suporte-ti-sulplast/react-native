@@ -1,5 +1,8 @@
 import "./index.scss";
-import { findUsers, editUser, depptoStatus, alterPassword, validPassword, deleteUser } from "../../../services/api";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Pagination from "react-bootstrap/Pagination";
+import { findUsers, editUser, depptoStatus, alterPassword, validPassword, deleteUser, numberUsers, searchUsers} from "../../../services/api";
+import { consulta } from "../../../services/apiDELSOFT";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
@@ -7,15 +10,51 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../contexts/auth';
 import validadorSenha from '../../../functions/validadorSenha';
 import geradorSenha from '../../../functions/geradorSenha';
+import converteData from '../../../functions/converteData';
 import calcularDiferencaEmDias from '../../../functions/calculaIdadeSenha';
 import './modalStyles.scss'; // Importo estilos dos modais
 Modal.setAppElement('#root'); 
 
 const CadastroUsuarios =  () => {
 
-  const { user, dataAge, updateDataAge } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { user, dataAge, updateDataAge, userLogged, deptto, stattus, levvel } = useContext(AuthContext);
   const loogedUserLevel = user.accessLevel;
+  const limitArowsPage = userLogged.settings[2].valueSet; //recupera do userLogged limite de linhas por página
+  const depptto = deptto;
+  const sttattus = stattus;
+  const level = levvel;
+
+  //CONTROLES DA PAGINAÇÃO
+  const [state, setState] = useState({
+    users: 0,
+    limit: limitArowsPage,
+    pages: [],
+    activePage: 1,
+    maxRegisters: 100
+  });
+
+  const handlePageChange = (pageNumber) => {
+    setState((prev) => ({ ...prev, activePage: pageNumber }));
+  }
+
+  // Função para lidar com a mudança na seleção do LIMITE por linha
+  const handleSelectChangeLimit = (event) => {
+    // Atualize o estado com o novo valor selecionado
+    const newValue = parseInt(event.target.value);
+    setState((prev) => ({ ...prev, limit: newValue }));
+    setState((prev) => ({ ...prev, activePage: 1 }));
+  };
+
+  // Função para lidar com a mudança na seleção do MAXIMO por busca
+  const handleSelectChangeMaxRegisters = (event) => {
+    // Atualize o estado com o novo valor selecionado
+    const newValue = parseInt(event.target.value);
+    setState((prev) => ({ ...prev, maxRegisters: newValue }));
+  };
+
+  useEffect(() => {
+  }, [state.limit, state.maxRegisters, state.activePage]);
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,17 +82,53 @@ const CadastroUsuarios =  () => {
   const [password, setPassword] = useState("");
   const [passwordLength, setPasswordLength] = useState(8);
   const [newDataAge, setNewDataAge] = useState(dataAge);
+  const [filterHidden, setFilterHidden] = useState(true);
+  const [haveSearch, setHaveSearch] = useState("0"); //variavel para verifica se tem alguma pesquisa ou não
+
   //CONTROLE DE VISIBILIDADE DA SENHA
   const [eyeSenha, setEyeSenha] = useState("aberto") //variavel para abrir ou fechar o olho
   const [typeofPassword, setTypeofPassword] = useState("password") //variavel para mudar o tipo de senha
   const [eyeReSenha, setEyeReSenha] = useState("aberto") //variavel para abrir ou fechar o olho
   const [typeofRePassword, setTypeofRePassword] = useState("password") //variavel para mudar o tipo de senha
 
+  //CONSTANTE PARA OS FILTROS
+  const [filter, setFilter] = useState({
+    login: "",
+    name: "",
+    email: "",
+    depto: "Todos",
+    level: "Todos",
+    stts: "Todos",
+    sendEmail: "Todos",
+    shared: "Todos",
+    dtInicio: "",
+    dtFim: ""
+  });
+
+  useEffect(() => {
+    //desailitar o botão pesquisar //
+
+  console.log(filter)
+  },[filter])
+
   //BUSCA NO SERVIDOR A LISTA DE USUÁRIOS
   useEffect(() => {
     const fetchData = async () => {
+      //BUSCA NO SERVIDOR A QUANTIDADE DE REGISTROS DE USUÁRIOS
       try {
-        const response = await findUsers();
+        const response = await numberUsers();
+        setState(prevState => ({
+          ...prevState, // Certifique-se de espalhar o estado anterior para não perder os outros valores
+          users: response.data.countRegisters // Defina o novo valor de `users`
+        }));
+        setLoading(false);
+      } catch (err) {
+        console.error('Ocorreu um erro durante a consulta:', err);
+        setLoading(false);
+      }
+      //BUSCA NO SERVIDOR A LISTA DE USUÁRIOS
+      try {
+        const response = await findUsers(state.limit, state.activePage, state.maxRegisters);
         const usersData = response.data.users;
         setUsers(usersData);  
         setLoading(false);
@@ -64,7 +139,18 @@ const CadastroUsuarios =  () => {
       }
     };
     fetchData();
-  }, [control]);
+  }, [control, state.activePage, state.limit, state.maxRegisters]);
+
+  useEffect(() => {
+    var lastPage = Math.ceil(state.users /state.limit) //CALCULA O NUMERO DE PAGINAS DIVINDO O REGISTRO PELO LIMITE
+    // Cria um array com números de 1 até lastPage
+    const pagesArray = Array.from({ length: lastPage }, (_, index) => index + 1);
+    // Atualiza o estado com o novo array de páginas
+    setState(prevState => ({
+      ...prevState,
+      pages: pagesArray
+    }));
+  }, [state.users, state.limit]);
 
   // DEVOLVE PARA O CONTEXT A VARIVAL AGE DA SENHA ATUALIZADA
   useEffect(() => {
@@ -73,6 +159,12 @@ const CadastroUsuarios =  () => {
 
   useEffect(() => {
   }, [users]);
+
+  useEffect(() => {
+    console.log(haveSearch)
+  }, [haveSearch]);
+
+  
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -230,84 +322,387 @@ const CadastroUsuarios =  () => {
       getDepptoStattus();
   }
 
+  const handleFilterShow = () => {
+    setFilterHidden(!filterHidden);
+  };
+
+  const handleClear = () => {
+    setHaveSearch("0")
+    setFilter
+    (prevState =>
+      ({
+        ...prevState,
+        login: "",
+        name: "",
+        email: "",
+        depto: "Todos",
+        level: "Todos",
+        stts: "Todos",
+        sendEmail: "Todos",
+        shared: "Todos",
+        dtInicio: "",
+        dtFim: ""
+      })
+    )
+  };
+
+  const handleSearch = async () => {
+    setHaveSearch("1")
+    try {
+      const res = await searchUsers(filter);
+      console.log(res)
+    } catch (error) {
+      
+    }
+  };
+
+
+  /* FUNÇÃO TESTE PARA CONSULTA DO FINANCEIRO
+  const handleConsulta = async (e) => {
+
+      console.log("chegou aqui")
+      try {
+        const Consulta = await consulta();
+    
+        } catch (error) {
+          console.error("Ocorreu um erro ao obter os dados do usuário:", error);
+        }
+  } */
+
     return (
     <section className="cadastroUsuarios">
       <div className="titulo">
-        <div></div>
+
         <h2>Usuários</h2>
+
+        <div className="paginação">
+
+          <div className="input-group mb-3">
+            <label className="input-group-text" htmlFor="inputGroupSelect01">Por página</label>
+            <select className="form-select"
+              id="inputGroupSelect01"
+              value={state.limit}
+              onChange={handleSelectChangeLimit}
+              >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+
+{/*           <div>&emsp;</div>
+          <div className="input-group mb-3">
+            <label className="input-group-text" htmlFor="inputGroupSelect02">Por busca</label>
+            <select className="form-select"
+              id="inputGroupSelect02"
+              value={state.maxRegisters}
+              onChange={handleSelectChangeMaxRegisters}
+            >
+              <option value="100">100</option>
+              <option value="250">250</option>
+              <option value="500">500</option>
+            </select>
+          </div> */}
+
+          <Pagination className="px-4">
+            {state.pages.map((_, index) => {
+              return (
+                <Pagination.Item
+                  onClick={() => handlePageChange(index + 1)}
+                  key={index + 1}
+                  active={index + 1 === state.activePage}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              );
+            })}
+          </Pagination>
+
+        </div>
+          
         <button className="Btn defaultBtn" type="button" onClick ={handleNew}>Novo Usuário</button>
       </div>
+
+      <form action="" className="filtro">
+
+          <div className="btn-filtros" onClick={() => handleFilterShow()}> 
+            <p><strong>FILTROS  </strong></p>
+          </div> 
+
+          <hr style={{marginBottom: "1rem"}} className={"linha" + (filterHidden ? "filterHidden" : "")}/>
+
+          <div className={"linha" + (filterHidden ? "filterHidden" : "")}>
+            
+              <div className="input-filtro">
+                <label htmlFor="login">Login</label>
+                <input
+                  type="text"
+                  name="login"
+                  id="login"
+                  value={filter.login}
+                  onChange={(e) => {
+                    setFilter((prevState) => ({
+                      ...prevState,
+                      login: e.target.value
+                    }));
+                    setHaveSearch("1");
+                  }} 
+                />
+              </div>
+
+              <div className="input-filtro">
+                <label htmlFor="nome">Nome</label>
+                <input
+                  type="text"
+                  name="nome"
+                  value={filter.name}
+                  id="nome"
+                  onChange={(e) => {
+                    setFilter((prevState) => ({
+                      ...prevState,
+                      name: e.target.value
+                    }));
+                    setHaveSearch("1");
+                  }} 
+                />
+              </div>
+
+              <div className="input-filtro">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={filter.email}
+                  id="email" 
+                  onChange={(e) => {
+                    setFilter((prevState) => ({
+                      ...prevState,
+                      email: e.target.value
+                    }));
+                    setHaveSearch("1");
+                  }} 
+                />
+              </div>
+
+              <div className="input-filtro">
+                <label htmlFor="department">Departameto</label>
+                 <select name="department" id="department" value={filter.depto}
+                  onChange={(e) => {
+                    setFilter((prevState) => ({
+                      ...prevState,
+                      depto: e.target.value
+                    }));
+                    setHaveSearch("1");
+                  }}
+                 >
+                 <option value="todos">Todos</option>
+                    {depptto.map((dept) => (
+                      <option key={dept.department} value={dept.department}>
+                       {dept.department}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="input-filtro">
+                <label htmlFor="nivel">Nível de Acesso</label>
+                <select name="level" id="level" value={filter.level}
+                 onChange={(e) => {
+                  setFilter((prevState) => ({
+                    ...prevState,
+                    level: e.target.value
+                  }));
+                  setHaveSearch("1");
+                }}
+              >
+                <option value="todos">Todos</option>
+                    {level.map((lvl) => (
+                      <option key={lvl.accessLevel} value={lvl.accessLevel}>
+                       {lvl.accessLevel}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div className="input-filtro input-filtro-menor">
+                  <label htmlFor="status">Status</label>
+                  <select name="status" id="status" value={filter.stts}
+                    onChange={(e) => {
+                      setFilter((prevState) => ({
+                        ...prevState,
+                        stts: e.target.value
+                      }));
+                      setHaveSearch("1");
+                    }}
+                  >
+                  <option value="todos">Todos</option>
+                      {sttattus.map((stt) => (
+                        <option key={stt.stattus} value={stt.status}>
+                        {stt.status}
+                        </option>
+                      ))}
+                  </select>
+              </div>
+
+              <div className="input-filtro input-filtro-data">
+                  <label htmlFor="data">Data Criação</label>
+                  <div className="data">
+                    <input className="dtInicio" type="date" name="dataInicial" id="data" value={filter.dtInicio}
+                      onChange={(e) => {
+                        setFilter((prevState) => ({
+                          ...prevState,
+                          dtInicio: e.target.value
+                        }));
+                        setHaveSearch("1");
+                      }} 
+                    />
+                    <input className="dtFim" type="date" name="dataFinal" id="data" value={filter.dtFim} min={filter.dtInicio}
+                    onChange={(e) => {
+                      setFilter((prevState) => ({
+                        ...prevState,
+                        dtFim: e.target.value
+                      }));
+                      setHaveSearch("1");
+                    }} 
+                    />
+                  </div>
+                  
+              </div>
+
+              <div className="input-filtro input-filtro-menor">
+                  <label htmlFor="sendEmail">Recebe E-mail</label>
+                  <select name="sendEmail" id="sendEmail" value={filter.sendEmail}
+                    onChange={(e) => {
+                      setFilter((prevState) => ({
+                        ...prevState,
+                        sendEmail: e.target.value
+                      }));
+                      setHaveSearch("1");
+                    }}
+                  >
+                    <option value="todos">Todos</option>
+                    <option value="sim">Sim</option>
+                    <option value="não">Não</option>
+                  </select>
+              </div>
+
+              <div className="input-filtro input-filtro-menor">
+                  <label htmlFor="shared">Compartilhado</label>
+                  <select name="shared" id="shared" value={filter.shared}
+                    onChange={(e) => {
+                      setFilter((prevState) => ({
+                        ...prevState,
+                        shared: e.target.value
+                      }));
+                      setHaveSearch("1");
+                    }}
+                  >
+                    <option value="todos">Todos</option>
+                    <option value="sim">Sim</option>
+                    <option value="não">Não</option>
+                  </select>
+              </div>
+
+              <div className="search">
+                <div data-bs-toggle="tooltip" data-bs-placement="top" title="Pesquisar">
+                  <button
+                    type="button"
+                    onClick ={handleSearch}
+                    disabled={haveSearch === "0"}
+                    style={{
+                      color: haveSearch === "1" ? 'black' : 'gray',
+                      cursor: haveSearch === "1" ? 'pointer' : 'default'
+                    }}>
+                    <img alt="lupa-pesquisar" src={`../../images/lupa${haveSearch === "1" ? 'Verde' : 'Cinza'}.png`}/>
+                  </button>
+                </div>
+                <div data-bs-toggle="tooltip" data-bs-placement="top" title="Limpar">
+                  <button
+                    type="button"
+                    onClick ={handleClear}>
+                      <img src="../../images/borracha.png" alt="borracha-limpar" />
+                  </button>
+                </div>
+              </div>
+          </div>
+
+      </form>
+      
+{/*       <button className="Btn defaultBtn" type="button" onClick ={handleConsulta}>Consulta</button> */}
       
       <hr />
-
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th className="short">#</th>
-            <th>Nome</th>
-            <th>Login</th>
-            <th>Email</th>   
-            <th>Departamento</th>
-            <th>Nível de Acesso</th>
-            <th className="short">Status</th>
-            <th className="short">Idade Senha</th>
-            <th className="short">Recebe Email</th>
-            <th className="short">Compartilhado</th>
-            <th className="short">Editar</th>
-            <th className="short">Alterar Senha</th>
-            <th className="short">Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
-            {/* Renderize os usuários no componente */}
-            {users.map((user) => (
-              <tr key={user.idUser}>
-                <td className="short">{user.idUser}</td>
-                <td>{user.nameComplete}</td>
-                <td>{user.login}</td>
-                <td>{user.email}</td> 
-                <td>{user.Department.department}</td>
-                <td>{user.Department.AccessLevel.accessLevel}</td>
-                <td className="short">{user.Status.status}</td>
-                <td className="short">
-                  {calcularDiferencaEmDias(user.agePassword) >= 90 ? (
-                    <span style={{ color: 'red', fontWeight: 'bold'}}> {calcularDiferencaEmDias(user.agePassword)} dias</span>
-                  ) 
-                    : 
-                  (
-                    <span style={{ color: 'green'}}> {calcularDiferencaEmDias(user.agePassword)} dias</span>
-                  )}
-                </td>
-                <td className="short">
-                  {user.sendEmail === 0 ? 
-                    <img className="icon shared" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
-                    <img className="icon shared" src="../images/box-checked.png" alt="box-checked" />} 
-                </td>
-                <td className="short">
-                  {user.sharedUser === 0 ? 
-                    <img className="icon shared" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
-                    <img className="icon shared" src="../images/box-checked.png" alt="box-checked" />} 
-                </td>
-                <td className="short">
-                  <img className="icon" src="../images/editar2.png" alt="editar2" 
-                  onClick={() => handleEdit(user.idUser)} />
-                </td>
-                <td className="short">
-                  <img className="icon" src="../images/senha2.png" alt="senha2"
-                    onClick={() => handleChangePassword(user.idUser, user.login)} />
-                </td>
-                <td className="short">
-                    {loogedUserLevel === "SuperUser" ? 
-                    <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
-                    onClick={() => handleDelete(user.idUser, user.login)} /> :
-                    <img className="icon disable" src="../images/lixeira-com-tampa-cinza.png" alt="lixeira-com-tampa"/>
-                    }
-                </td>
-              </tr>
-            ))}
-        </tbody>
-
-      </table>
+      
+      <div className="tabela"> 
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th className="short" hidden>#</th>
+              <th style={{width: "12%"}}>Login</th>
+              <th style={{width: "11%"}}>Nome</th>
+              <th style={{width: "20%"}}>Email</th>   
+              <th style={{width: "8%"}}>Departamento</th>
+              <th style={{width: "9%"}}>Nível de Acesso</th>
+              <th style={{width: "3%"}}>Status</th>
+              <th style={{width: "7%"}}>Idade Senha</th>
+              <th style={{width: "7%"}}>Criado em</th>
+              <th style={{width: "7%", textAlign: "center"}}>Recebe Email</th>
+              <th style={{width: "7%", textAlign: "center"}}>Compartilhado</th>
+              <th style={{width: "4%", textAlign: "center"}}>Editar</th>
+              <th style={{width: "8%", textAlign: "center"}}>Alterar Senha</th>
+              <th style={{width: "4%", textAlign: "center"}}>Excluir</th>
+            </tr>
+          </thead>
+          <tbody className="">
+              {users.map((user) => (
+                <tr key={user.idUser}>
+                  <td hidden>{user.idUser}</td>
+                  <td>{user.login}</td>
+                  <td>{user.nameComplete}</td>
+                  <td>{user.email}</td> 
+                  <td>{user.Department.department}</td>
+                  <td>{user.Department.AccessLevel.accessLevel}</td>
+                  <td>{user.Status.status}</td>
+                  <td>
+                    {calcularDiferencaEmDias(user.agePassword) >= 90 ? (
+                      <span style={{ color: 'red', fontWeight: 'bold'}}> {calcularDiferencaEmDias(user.agePassword)} dias</span>
+                    ) 
+                      : 
+                    (
+                      <span style={{ color: 'green'}}> {calcularDiferencaEmDias(user.agePassword)} dias</span>
+                    )}
+                  </td>
+                  <td>{converteData(user.createdAt)}</td>
+                  <td style={{textAlign: "center"}}>
+                    {user.sendEmail === 0 ? 
+                      <img className="icon shared" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
+                      <img className="icon shared" src="../images/box-checked.png" alt="box-checked" />} 
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                    {user.sharedUser === 0 ? 
+                      <img className="icon shared" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
+                      <img className="icon shared" src="../images/box-checked.png" alt="box-checked" />} 
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../images/editar2.png" alt="editar2" 
+                    onClick={() => handleEdit(user.idUser)} />
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../images/senha2.png" alt="senha2"
+                      onClick={() => handleChangePassword(user.idUser, user.login)} />
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                      {loogedUserLevel === "SuperUser" ? 
+                      <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
+                      onClick={() => handleDelete(user.idUser, user.login)} /> :
+                      <img className="icon disable" src="../images/lixeira-com-tampa-cinza.png" alt="lixeira-com-tampa"/>
+                      }
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>      
+      
 
       {/* //MODAL PARA ALTERAR A SENHA DO USUÁRIO */}
       <Modal
@@ -333,7 +728,7 @@ const CadastroUsuarios =  () => {
             onChange={(e) => setNewPassword(e.target.value)}
             form=""
           />
-          <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="" 
+          <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="ver-senha" 
             onClick={(e) => {
               eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
               typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { createSession, findLogged } from "../services/api";
+import { createSession, findLogged, depptoStatus } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -17,6 +17,9 @@ export const AuthProvider = ({ children }) => {
     const [dataAge, setDataAge] = useState('');
     const [userStatus, setUserStatus] = useState(0);
     const [logged, setLogged] = useState(false);
+    const [deptto, setDeptto] = useState([]);
+    const [stattus, setStattus] = useState([]);
+    const [levvel, setLevvel] = useState([]);
 
     //RECUPERA DO LOCALSTORAGE O USER SALVO
     useEffect(() => {
@@ -35,15 +38,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-    }, [userRecovered]);
+    }, [userRecovered, userLogged], dataAge, deptto, stattus, levvel);
     
-    // Atualização assíncrona para a variável logged
+/*     // Atualização assíncrona para a variável logged
     useEffect(() => {
     }, [userLogged]);
 
     // Atualização assíncrona para a variável dataAge
     useEffect(() => {
-    }, [dataAge]);
+    }, [dataAge]); */
 
     
     useEffect(() => {
@@ -118,6 +121,16 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
 
+            try {
+                const depptoStattus = await depptoStatus();
+                setDeptto(depptoStattus.deptto)
+                setStattus(depptoStattus.stattus)
+                setLevvel(depptoStattus.level)
+            } catch (error) {
+                console.error('Ocorreu um erro durante a consulta:', error);
+                setLoading(false);
+            }
+
             setUser({
                 userLogin: response.data.userLogin,
                 token: token
@@ -157,6 +170,9 @@ export const AuthProvider = ({ children }) => {
                         userLogged,
                         dataAge,
                         userStatus,
+                        deptto,
+                        stattus,
+                        levvel,
                         /*FUNÇÕES */
                         login,
                         logout,

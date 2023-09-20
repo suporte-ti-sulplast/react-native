@@ -13,6 +13,9 @@ function BarraSuperior() {
   const { logout, userLogged, dataAge, updateDataAge } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const daysPwrdAlert = userLogged.settings[1].valueSet; //recupera do userLogged quantos dias antes vai emitir o alerta de senha expirando
+  const maxAgePassword = userLogged.settings[0].valueSet; //recupera do userLogged qual idade máxima da senha
+
   //  MENSAGENS DE ERRO
   const [errorSenha, setErrorSenha] = useState("mensagem inicial");
   const [errorRedigiteSenha, setErrorRedigiteSenha] = useState("mensagem inicial");
@@ -40,8 +43,9 @@ function BarraSuperior() {
   const [newDataAge, setNewDataAge] = useState(dataAge); //reseta a idade da senha
   const [redirect, setRedirect] = useState(false); //controla o estado do botão cancela do modal => false só cancela, true redireciona
 
-  var name = userLogged.logged.nameComplete.split(' '); 
+  var name = userLogged.logged.nameComplete.split(' '); //pega somente o primeiro nome do nome completo do usuário
 
+  //chama a função de logout no context 
   const handleSubmit = () => {
       logout();
   }
@@ -67,7 +71,7 @@ function BarraSuperior() {
     setTypeofRePassword("password")
     setErrorSenhaExpirada("");
     setModalClosed(true);
-    setNewDataAge('90');
+    setNewDataAge(maxAgePassword);
   };
   const redirectToLogin = () => {
     navigate("/");
@@ -145,7 +149,7 @@ function BarraSuperior() {
   const handleCopy = () => {
     setNewPassword(password);
     setNewPasswordConfirm(password);
-  }; //FIM DA ALTERAÇÃO DE SENHA
+  }; //FIM DA ALTERAÇÃO DE SENHA 
 
   //VERIFICA SE A SENHA ESTÁ EXPIRADA OU O USUÁRIO TEM QUER TROCAR A SENHA - ABRE O MODAL DE TROCA DE SENHA
   useEffect(() => {
@@ -179,12 +183,10 @@ function BarraSuperior() {
                 <p>Bem-vindo, <br />
                     <strong>{name[0].toUpperCase()}</strong>! <br />
                 </p>
-            </div>
-            <div className="divider"></div>
-            <div className='psswd'>
-                <p>Senha expira em:  <br />
-                        <strong>{newDataAge}</strong> dias <br />
-                </p>
+                <div
+                className="errAgePswd"
+                style={{ display: dataAge < daysPwrdAlert ? 'block' : 'none' }}
+                ><strong> Senha Expira em: {dataAge} dias </strong></div>
                 <div className="alter-pswd" onClick={() => handleChangePassword(userLogged.logged.idUser, userLogged.logged.login)} >
                     Alterar Senha 
                 </div>
@@ -262,7 +264,7 @@ function BarraSuperior() {
         <button className="password Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
 
           <input id="gerasenha" className="textPassword" value={password} readOnly />
-          <img className="copy" src={"../../images/copy-branco.png"} alt=""
+          <img className="copy" src={"../../images/copy-branco.png"} alt="copy-branco"
             onClick={() => {
               handleCopy();
               setErrorSenha("");
