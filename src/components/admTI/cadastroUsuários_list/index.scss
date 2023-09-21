@@ -36,7 +36,6 @@
             width: 11rem;
             margin: auto 0 !important;
             
-
             label, select{
                 border: 1px solid gray;
                 color: $white-color;
@@ -76,7 +75,7 @@
             flex-direction: row !important;
             justify-content: space-around!important;
             gap: 0.5rem;
-            margin: 0 4rem;
+            margin: 0 1rem 0 0.5rem ;
 
             .search{
                 margin-left: 1rem;
@@ -90,7 +89,7 @@
                     align-items: center;
 
                     img{
-                        width: 35px;
+                        width: 30px;
                     }
                 }
             }

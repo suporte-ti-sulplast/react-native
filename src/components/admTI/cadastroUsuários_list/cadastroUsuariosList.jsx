@@ -1,18 +1,20 @@
+import { consulta } from "../../../services/apiDELSOFT"; //PARA TESTE DE SELECT DA DELSOFT
+
 import "./index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
+import './modalStyles.scss'; // Importo estilos dos modais
 import Pagination from "react-bootstrap/Pagination";
-import { findUsers, editUser, depptoStatus, alterPassword, validPassword, deleteUser, numberUsers, searchUsers} from "../../../services/api";
-import { consulta } from "../../../services/apiDELSOFT";
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
+import { findUsers, editUser, depptoStatus, alterPassword, validPassword, deleteUser, searchUsers} from "../../../services/api";
+import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import { AuthContext } from '../../../contexts/auth';
 import validadorSenha from '../../../functions/validadorSenha';
 import geradorSenha from '../../../functions/geradorSenha';
 import converteData from '../../../functions/converteData';
 import calcularDiferencaEmDias from '../../../functions/calculaIdadeSenha';
-import './modalStyles.scss'; // Importo estilos dos modais
+
 Modal.setAppElement('#root'); 
 
 const CadastroUsuarios =  () => {
@@ -31,7 +33,7 @@ const CadastroUsuarios =  () => {
     limit: limitArowsPage,
     pages: [],
     activePage: 1,
-    maxRegisters: 100
+    lastPage: 1
   });
 
   const handlePageChange = (pageNumber) => {
@@ -46,15 +48,8 @@ const CadastroUsuarios =  () => {
     setState((prev) => ({ ...prev, activePage: 1 }));
   };
 
-  // Função para lidar com a mudança na seleção do MAXIMO por busca
-  const handleSelectChangeMaxRegisters = (event) => {
-    // Atualize o estado com o novo valor selecionado
-    const newValue = parseInt(event.target.value);
-    setState((prev) => ({ ...prev, maxRegisters: newValue }));
-  };
-
   useEffect(() => {
-  }, [state.limit, state.maxRegisters, state.activePage]);
+  }, [state.limit, state.activePage]);
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,6 +79,7 @@ const CadastroUsuarios =  () => {
   const [newDataAge, setNewDataAge] = useState(dataAge);
   const [filterHidden, setFilterHidden] = useState(true);
   const [haveSearch, setHaveSearch] = useState("0"); //variavel para verifica se tem alguma pesquisa ou não
+  const [reset, setReset] = useState(false); //variavel para resetar a consulta
 
   //CONTROLE DE VISIBILIDADE DA SENHA
   const [eyeSenha, setEyeSenha] = useState("aberto") //variavel para abrir ou fechar o olho
@@ -107,28 +103,14 @@ const CadastroUsuarios =  () => {
 
   useEffect(() => {
     //desailitar o botão pesquisar //
-
-  console.log(filter)
   },[filter])
 
   //BUSCA NO SERVIDOR A LISTA DE USUÁRIOS
   useEffect(() => {
     const fetchData = async () => {
-      //BUSCA NO SERVIDOR A QUANTIDADE DE REGISTROS DE USUÁRIOS
       try {
-        const response = await numberUsers();
-        setState(prevState => ({
-          ...prevState, // Certifique-se de espalhar o estado anterior para não perder os outros valores
-          users: response.data.countRegisters // Defina o novo valor de `users`
-        }));
-        setLoading(false);
-      } catch (err) {
-        console.error('Ocorreu um erro durante a consulta:', err);
-        setLoading(false);
-      }
-      //BUSCA NO SERVIDOR A LISTA DE USUÁRIOS
-      try {
-        const response = await findUsers(state.limit, state.activePage, state.maxRegisters);
+        const response = await findUsers(state.limit, state.activePage);
+        setState((prev) => ({ ...prev, lastPage: response.data.quantidadePaginas }));
         const usersData = response.data.users;
         setUsers(usersData);  
         setLoading(false);
@@ -139,18 +121,17 @@ const CadastroUsuarios =  () => {
       }
     };
     fetchData();
-  }, [control, state.activePage, state.limit, state.maxRegisters]);
+  }, [control, state.activePage, state.limit, reset]);
 
   useEffect(() => {
-    var lastPage = Math.ceil(state.users /state.limit) //CALCULA O NUMERO DE PAGINAS DIVINDO O REGISTRO PELO LIMITE
     // Cria um array com números de 1 até lastPage
-    const pagesArray = Array.from({ length: lastPage }, (_, index) => index + 1);
+    const pagesArray = Array.from({ length: state.lastPage }, (_, index) => index + 1);
     // Atualiza o estado com o novo array de páginas
     setState(prevState => ({
       ...prevState,
       pages: pagesArray
     }));
-  }, [state.users, state.limit]);
+  }, [state.users, state.limit, state.lastPage]);
 
   // DEVOLVE PARA O CONTEXT A VARIVAL AGE DA SENHA ATUALIZADA
   useEffect(() => {
@@ -158,13 +139,7 @@ const CadastroUsuarios =  () => {
   }, [newDataAge]);
 
   useEffect(() => {
-  }, [users]);
-
-  useEffect(() => {
-    console.log(haveSearch)
-  }, [haveSearch]);
-
-  
+  }, [users, reset, haveSearch]);
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -327,6 +302,8 @@ const CadastroUsuarios =  () => {
   };
 
   const handleClear = () => {
+    setReset(!reset)
+    console.log(reset)
     setHaveSearch("0")
     setFilter
     (prevState =>
@@ -348,12 +325,18 @@ const CadastroUsuarios =  () => {
 
   const handleSearch = async () => {
     setHaveSearch("1")
-    try {
-      const res = await searchUsers(filter);
-      console.log(res)
-    } catch (error) {
-      
-    }
+      try {
+        const response = await searchUsers(filter, state.limit, state.activePage);
+        setState((prev) => ({ ...prev, lastPage: response.data.quantidadePaginas }));
+        const usersDataSearche = response.data.users;
+        setUsers(usersDataSearche);  
+
+        setLoading(false);
+        setControl(false)
+      } catch (err) {
+        console.error('Ocorreu um erro durante a consulta:', err);
+        setLoading(false);
+      }
   };
 
 
@@ -495,7 +478,7 @@ const CadastroUsuarios =  () => {
                     setHaveSearch("1");
                   }}
                  >
-                 <option value="todos">Todos</option>
+                 <option value="Todos">Todos</option>
                     {depptto.map((dept) => (
                       <option key={dept.department} value={dept.department}>
                        {dept.department}
@@ -515,7 +498,7 @@ const CadastroUsuarios =  () => {
                   setHaveSearch("1");
                 }}
               >
-                <option value="todos">Todos</option>
+                <option value="Todos">Todos</option>
                     {level.map((lvl) => (
                       <option key={lvl.accessLevel} value={lvl.accessLevel}>
                        {lvl.accessLevel}
@@ -535,7 +518,7 @@ const CadastroUsuarios =  () => {
                       setHaveSearch("1");
                     }}
                   >
-                  <option value="todos">Todos</option>
+                  <option value="Todos">Todos</option>
                       {sttattus.map((stt) => (
                         <option key={stt.stattus} value={stt.status}>
                         {stt.status}
@@ -580,9 +563,9 @@ const CadastroUsuarios =  () => {
                       setHaveSearch("1");
                     }}
                   >
-                    <option value="todos">Todos</option>
-                    <option value="sim">Sim</option>
-                    <option value="não">Não</option>
+                    <option value="Todos">Todos</option>
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
                   </select>
               </div>
 
@@ -597,9 +580,9 @@ const CadastroUsuarios =  () => {
                       setHaveSearch("1");
                     }}
                   >
-                    <option value="todos">Todos</option>
-                    <option value="sim">Sim</option>
-                    <option value="não">Não</option>
+                    <option value="Todos">Todos</option>
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
                   </select>
               </div>
 

@@ -32,28 +32,12 @@ export const findLogged = async (user) =>
   }
 };
 
-//BUSCA QUANTIDADE DE USUÁRIOS
-export const numberUsers = async () => 
-{
-  try
-  {
-    const use =  await api.get("/user-number")
-    return use;
-  }   
-  catch (error)
-  {
-    console.error("Ocorreu um erro ao fazer a requisição:", error);
-    throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
-  }
-};
-
-
 //LISTA TODOS OS USUÁRIOS
-export const findUsers = async (limit, page, max) =>
+export const findUsers = async (limit, page) =>
 {
   try
   {
-    const use =  await api.post("/user-list", {limit, page, max})
+    const use =  await api.post("/user-list", {limit, page})
     return use;
   }   
   catch (error)
@@ -174,22 +158,18 @@ export const validPassword = async (id, newPasword ) =>
 };
 
 //PESQUISA DE USUÁRIO
-export const searchUsers = async ( filter) =>
+export const searchUsers = async ( filter, limit, page) =>
 {
-
-  console.log(filter)
-/*   try
+  try
   {
-    const response = await api.post("/user-delete",{id});
-    return response.data; // Retornar os dados da resposta da API
+    const response = await api.post("/user-search",{filter, limit, page});
+    return response; // Retornar os dados da resposta da API
   }
   catch (error)
   {
     console.error("Ocorreu um erro ao fazer a requisição:", error);
     throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
-  } */
-
-  return "voltou da api"
+  }
 };
 
 //DELETA USUÁRIO DO BANCO DE DADOS
