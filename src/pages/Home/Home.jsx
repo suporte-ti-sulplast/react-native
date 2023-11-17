@@ -10,7 +10,6 @@ import Noticias from '../../components/home_noticias/Noticias';
 function Home() {
 
   const [body, setBody] = useState();
-
   const { retract } = useRetract();
   
   useRetractEffect(retract, setBody);

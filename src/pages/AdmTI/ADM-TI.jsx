@@ -9,7 +9,6 @@ import MenuCadastroTI from '../../components/admTI/_menuCadastroTI/menuCadastroT
 function AdmTI() {
 
   const [body, setBody] = useState();
-
   const { retract } = useRetract();
   
   useRetractEffect(retract, setBody); 
@@ -29,4 +28,4 @@ function AdmTI() {
   )
 }
 
-export default AdmTI
+export default AdmTI;

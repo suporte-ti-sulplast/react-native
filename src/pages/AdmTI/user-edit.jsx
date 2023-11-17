@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
 import MenuCadastroTI from '../../components/admTI/_menuCadastroTI/menuCadastroTI';
-import CadastroUsuariosEdit from '../../components/admTI/cadastroUsuários_edit/cadastroUsuariosEdit';
+import CadastroUsuariosEdit from '../../components/admTI/Usuarios/cadastroUsuários_edit/cadastroUsuariosEdit';
 
 function UserEdit() {
 
@@ -35,4 +35,4 @@ function UserEdit() {
   )
 }
 
-export default UserEdit
+export default UserEdit;

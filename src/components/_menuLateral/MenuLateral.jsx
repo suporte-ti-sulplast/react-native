@@ -9,14 +9,20 @@ function MenuLateral() {
 const { userLogged } = useContext(AuthContext);
 const { retract, setRetract } = useRetract();
 
+console.log(userLogged)
+
 const [arrow, setArrow] = useState('')
+
 useEffect(() => {
   if(retract === 'show'){
     setArrow('rigth')
   } else {
     setArrow('left')
   }
-}, [retract]); // useEffect será executado sempre que o estado (state) for alterado
+}, [retract]);
+
+
+
 
 
   const handleRetract = () => {

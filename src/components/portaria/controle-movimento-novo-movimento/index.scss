@@ -1,0 +1,156 @@
+@import '../../../../variables';
+
+.NovoMovimento{
+
+    .content{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h2{
+        font-size: 1.5rem;
+        margin: 0.8rem;
+        padding: 0.2rem;
+    }
+
+    h3{
+        text-decoration: underline;
+        margin: 2rem;
+    }
+
+    form, .saida, .retorno{
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .linha{
+            width: 100%;
+            justify-content: space-between;
+            align-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            margin: 0.5rem 0;
+        }
+
+        .destino, .motorista, .km, .data, .hora, .observacao, .liberador{
+            display: flex;
+            label{
+                width: 7rem;
+                margin: 0.1rem 0;
+            }
+
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                filter: invert(1); /* Inverte as cores do ícone */
+                color: #eeff00; /* Altere a cor do ícone para vermelho */
+            }
+
+            input::placeholder{
+                color: rgb(209, 191, 191);
+                text-transform: none;
+            }
+
+            input{
+                margin-left: 0.5rem;
+            }
+        }
+
+        /* Estilo para input somente leitura */
+        .input-leitura {
+            color: #b1abab; /* Cor do texto */
+            cursor: not-allowed; /* Cursor não permitido */
+        }
+
+        .observacao{
+            textarea{
+                width: 82rem;
+                height: 3.3rem;
+                margin-left: 0.5rem;  
+            } 
+
+            textarea::placeholder{
+                color: rgb(209, 191, 191);
+            }
+
+            p{
+                margin-left: 0.5rem !important;
+            }
+        }
+
+        .lbl-hora, .lbl-data, .lbl-km{
+            width: 5rem !important;
+        }
+
+        #km, #hora, #data{
+            width: 8rem;
+        } 
+
+        #destino{
+            width: 82rem;
+        }
+
+        #motorista{
+            width: 20rem;
+        }
+
+        input, select, textarea{
+            padding: 0.3rem 1rem;
+            border: 1px solid $shadow-color;
+            background-color: $dark-text-color;
+            color: aliceblue;
+            border-radius: 8px;
+        }
+
+        label, .erros{
+            padding: 0.3rem 1rem;
+            font-weight: 700;
+            text-align: right;
+            border-radius: 8px;
+            box-shadow: 2px 2px 2px  $shadow-color;
+            box-sizing: border-box;
+            
+        }
+
+        .erros{
+            background-color: bisque!important;
+            box-shadow: -2px 2px 2px  $shadow-color;
+            text-align: center;
+            color: red;
+        }
+        .none{
+            opacity: 0;
+        }
+
+        .desabilitado{
+            color: $placeholder;
+        }
+    }
+
+    .okBtn, .escBtn{
+        width: 15rem;
+        height: 35px !important;
+        margin: 0 0 0 0.5rem  !important;
+        padding: 0;
+    }
+    
+
+    .hidden{
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .success{
+        opacity: 1;
+        background-color: aquamarine;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .error{
+        opacity: 1;
+        background-color: rgb(255, 127, 127);
+        transition: all 0.2s ease-in-out;
+    }
+}

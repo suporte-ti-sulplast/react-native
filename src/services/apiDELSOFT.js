@@ -6,13 +6,12 @@ export const api = axios.create({
 
 
 //BUSCA QUATIDADE DE USUÁRIOS
-export const consulta = async () => 
+export const consulta = async (data) => 
 {
-    console.log("chegou aqui")
   try
   {
-    const use =  await api.get("/consulta")
-    return use;
+    const response =  await api.post("/consultaFechamentoEstoque", {data});
+    return response;
   }   
   catch (error)
   {

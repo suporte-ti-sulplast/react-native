@@ -50,16 +50,6 @@
     z-index: 99;
   }
 
-  .copy{
-    position: absolute;
-    transform: translateY(5px);
-    width: 15px;
-    height: 21px;
-    cursor: pointer;
-    z-index: 99;
-    left: 73%;
-  }
-
   .inp{
     position: absolute;
     width: 20rem !important;
@@ -112,6 +102,17 @@
     display: flex;
     gap: 1rem;    
   }
+
+  .inpCopy{
+    position: relative;
+  }
+
+  .copy{
+    position: absolute !important;
+    left: 85% !important;
+  }
+
+  
 
   .textPassword{
     width: 10rem !important;

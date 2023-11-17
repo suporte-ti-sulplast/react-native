@@ -11,6 +11,10 @@
     margin: 0.5rem;
     padding-bottom: 0.5rem;
 
+    .carousel{
+        width: 99%;
+    }
+
     h1 {
         font-size: 1.8rem ;
         margin: 0.5rem ;
@@ -43,20 +47,30 @@
             color: aliceblue;
             background-color: $dark-text-color;
             
+
     
             h3{
-                font-size: 2.5rem;
-                margin: 0.7rem;
+                width: 85%;
+                font-size: 2.3rem;
+                margin-bottom: 0.7rem !important;
             }
 
             h5{
-                font-size: 1.8rem;
-                margin: 0.7rem;
+                font-size: 1.4rem;
+                margin-bottom: 0.7rem !important;
             }
     
-            p{
-                width: 70%;
+            p{  
+                font-size: 0.8rem;
+                margin-bottom: 0.7rem !important;
+                width: 85%;
                 text-align: justify;
+            }
+
+            a{
+                color: aliceblue;
+                text-decoration: underline !important;
+                margin: 0 !important;
             }
         }
     }
@@ -67,5 +81,9 @@
         height: 15px;
         border-radius: 50%;
         }
+    }
+
+    .carousel-control-prev, .carousel-control-next{
+        width: 7% !important;
     }
 }

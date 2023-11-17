@@ -1,0 +1,66 @@
+@import '../../../../variables';
+
+.controleMovimentoVeiculos{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1{
+        font-size: 1.5rem;
+        margin: 0.8rem;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .veiculos{
+
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        
+
+        .image{
+            position: relative;
+            cursor: pointer;
+            
+            img{
+                width: 350px;
+                border: 1px dashed black;
+                padding: 1rem;
+                border-radius: 10px;
+                background-color: $background;
+                margin: 0.5rem;
+                box-shadow: 6px 6px 8px $shadow-color; 
+            }
+            
+             img:hover{
+                border: 3px solid gray;
+             }
+
+            h2{
+                position: absolute;
+                bottom: 0;
+                right: 10px;
+                font-weight: bolder;
+            }
+        }
+
+        .car{
+            position: absolute !important;
+            width: 50px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background-color: transparent !important;
+            border: none !important;
+            top: 20px !important;
+            z-index: 99;
+            left: 20px;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+
+        
+    }
+
+}

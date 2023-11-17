@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { createSession, findLogged, depptoStatus } from "../services/api";
+import { createSession, findLogged } from "../services/apiLoginUser";
+import { depptoStatus } from "../services/apiMASTER";
 
 export const AuthContext = createContext();
 
@@ -40,14 +41,6 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
     }, [userRecovered, userLogged], dataAge, deptto, stattus, levvel);
     
-/*     // Atualização assíncrona para a variável logged
-    useEffect(() => {
-    }, [userLogged]);
-
-    // Atualização assíncrona para a variável dataAge
-    useEffect(() => {
-    }, [dataAge]); */
-
     
     useEffect(() => {
         // Define a lógica para atualizar a variável 'logged' com base em 'userStatus'
@@ -81,27 +74,27 @@ export const AuthProvider = ({ children }) => {
         switch(setUserOk) {
             case 1:
                 setUserStatus(1);
-                navigate("/");         
+                navigate("/");    //não tem usuário     
             break;
 
             case 2:
                 setUserStatus(2);
-                navigate("/");   
+                navigate("/");    // tem, mas está diferente de ativo => 2
             break;
 
             case 3:
                 setUserStatus(3);
-                navigate("/");  
+                navigate("/");  // tem, mas a senha está errada => 3 
             break;
 
             case 4:
                 setUserStatus(4);
-                navigate("/");  
+                navigate("/");  // tem, mas errou a senha e foi bloqueado => 4
             break;
 
             case 5:
                 setUserStatus(5);
-                navigate("/");  
+                navigate("/");   // tudo certo => 5
             break;
         }
 
@@ -112,6 +105,7 @@ export const AuthProvider = ({ children }) => {
             //chama a api que pega os dados do usuário e repassa para o context para ser usado no cabeçalho de todas as páginas
             try {
                 const resp = await findLogged(response.data.userLogin);
+                console.log(resp)
                 setUserLogged(resp);
                 setDataAge(resp.dataAge);
                 setLoading(false);
@@ -173,6 +167,7 @@ export const AuthProvider = ({ children }) => {
                         deptto,
                         stattus,
                         levvel,
+                        setUserOk,
                         /*FUNÇÕES */
                         login,
                         logout,

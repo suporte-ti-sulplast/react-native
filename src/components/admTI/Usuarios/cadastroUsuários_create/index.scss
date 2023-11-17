@@ -1,0 +1,141 @@
+@import '../../../../../variables';
+
+.cadastrarUsuarios{
+
+    .content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .tips{
+        font-size: 0.9rem;
+        color: $dark-text-color;
+    }
+
+    h2{
+        font-size: 1.5rem;
+        margin: 0.8rem;
+        padding: 0.2rem;
+    }
+
+    .eye{
+        position: absolute;
+        top: 50%;
+        right: 16rem;
+        top: 7px;
+        width: 23px;
+        cursor: pointer;
+        z-index: 99;
+      }
+
+      .copy{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0.5rem;
+        width: 18px;
+        cursor: pointer;
+        z-index: 99;
+      }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+
+        .ladoEsq, .ladoDir{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+
+            .form-group{
+                margin-top: 0.5rem;
+                display: flex;
+                gap: 0.5rem;
+                text-align: center;
+                align-items: center;
+            }
+        }  
+
+        label{
+            width: 15rem;
+            padding: 0.3rem 1rem;
+            font-weight: 700;
+            text-align: right;
+            border-radius: 8px;
+            box-shadow: 2px 2px 2px  $shadow-color;
+        }
+
+
+        input{
+            width: 25rem;
+            padding: 0.3rem 1rem;
+            border: 1px solid $shadow-color;
+            background-color: $dark-text-color;
+            color: $select-input-background;
+            border-radius: 8px;
+        }
+
+        select{
+            width: 25rem;
+            padding: 0.3rem 1rem;
+            border: 1px solid $shadow-color;
+            background-color: $dark-text-color;
+            color: $select-input-background;
+            border-radius: 8px;
+        }
+
+        .erros{
+            width: 15rem;
+            text-align: left;
+            color: $erro;
+        }
+
+        .none{
+            opacity: 0;
+        }
+
+        .desabilitado{
+            color: $placeholder;
+        }
+    }
+
+    .okBtn, .escBtn{
+        margin-top: 0 !important;
+    }
+
+    .textPassword{
+        height: 2rem;
+        width: 10rem;
+        color: $dark-text-color;
+        border-radius: 6px;
+        background-color: transparent;
+        border: 1px solid $dark-text-color
+    }
+    .radio-block{
+        width: 10rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap:0.2rem;
+        color: $dark-text-color;
+        border-radius: 6px;
+        background-color: transparent;
+        border: 1px solid $dark-text-color
+    }
+
+    .radio{
+        width: 1rem;
+    }
+
+    .senha, .confirmSenha, .gerador{
+        position: relative;
+    }
+    
+}

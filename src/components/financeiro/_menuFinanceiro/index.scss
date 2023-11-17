@@ -1,0 +1,60 @@
+@import '../../../../variables';
+
+.menuFinanceiro{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: auto;
+    margin: 0.5rem;
+    background-color: $bck-color;
+    padding: 0.5rem;
+    border: 1px solid $border-color;
+    border-radius: 7px;
+    box-shadow: 3px 3px 5px $shadow-color;
+    align-items: center;
+
+    .title{
+        width: 27rem;
+        display: flex;
+        gap: 1rem;
+
+    }
+
+    .cadastro{
+        width: 39rem;
+
+    }
+
+    h1{
+        margin: auto;
+        font-size: 1.8rem !important;
+    }
+
+    p{
+        border-bottom: 1px solid black;
+    }
+
+    img{
+        width: 40px !important;
+    }
+
+    ul{
+        width: auto;
+        margin: auto;
+        padding: 0;
+        align-content: end;
+    }
+
+    a{
+        margin: 0;
+        padding: 1.5rem;
+        color: $dark-text-color;
+        transition: all 0.2s;
+    }
+
+    a:hover{
+        background-color: $background;
+        font-weight: bold;
+    }
+
+}

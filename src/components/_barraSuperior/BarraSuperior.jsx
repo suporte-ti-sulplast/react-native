@@ -3,9 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
-import validadorSenha from '../../functions/validadorSenha';
-import generatePassword from '../../functions/geradorSenha';
-import { alterPassword, validPassword } from "../../services/api";
+import { alterPassword, validPassword } from "../../services/apiLoginUser";
+import { validadorSenha, generatePassword } from '../../functions/manipuladorSenhas';
 import './modalStyles.scss'; // Importo estilos dos modais
 
 function BarraSuperior() {
@@ -263,16 +262,19 @@ function BarraSuperior() {
         <div className="gerador-senha">
         <button className="password Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
 
+        <div className="inpCopy">
           <input id="gerasenha" className="textPassword" value={password} readOnly />
-          <img className="copy" src={"../../images/copy-branco.png"} alt="copy-branco"
-            onClick={() => {
-              handleCopy();
-              setErrorSenha("");
-              setErrorSenhaClass("hidden")
-              setErrorRedigiteSenha("");
-              setErrorConfimSenhaClass("hidden");
-            }}
-          />
+            <img className="copy" src={"../../images/copy-branco.png"} alt="copy-branco"
+              onClick={() => {
+                handleCopy();
+                setErrorSenha("");
+                setErrorSenhaClass("hidden")
+                setErrorRedigiteSenha("");
+                setErrorConfimSenhaClass("hidden");
+              }}
+            />
+          </div>
+          
         </div>
         
         <div className="btn">
