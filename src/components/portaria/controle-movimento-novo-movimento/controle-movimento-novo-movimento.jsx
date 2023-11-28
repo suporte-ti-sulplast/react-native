@@ -260,7 +260,7 @@ const NewMoviment = ( props ) => {
       <div className="content">
         <form className="form" onSubmit={handleSubmit}>
 
-          <div className="">
+          <div className="saida">
             <h3>Informações da saída do veículo</h3>
 
             <div className="linha">
@@ -410,8 +410,8 @@ const NewMoviment = ( props ) => {
           </div>  
 
            <div className="botoes">
-              <button style={{height: "33px"}} className="escBtn Btn" type="button" onClick={() => handleCancel(veiculoId, name)}>Cancelar</button>
-              <button className="okBtn Btn" type="submit" >Salvar</button>
+              <button className="defaultBtn escBtn" type="button" onClick={() => handleCancel(veiculoId, name)}>Cancelar</button>
+              <button className="defaultBtn okBtn" type="submit" >Salvar</button>
             </div>
 
           <div className="form-group">

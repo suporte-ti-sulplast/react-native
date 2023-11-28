@@ -44,7 +44,6 @@ const NewsCreate = () => {
 
     //FUNÇÃO QUE FAZ O UPLOAD DA IMAGEM NO SERVIDOR
     const uploadImagem = async (image) => {
-      console.log("chegou aqui no upload da imagem")
       const formData = new FormData();
       formData.append('image', image);
 
@@ -141,12 +140,12 @@ const NewsCreate = () => {
     
     //RENDERIZAÇÃO DA PÁGINA ****************************************************
     return (
-    <section className="Noticias">
+    <section className="NoticiasCreate">
 
-      <h2>INSERIR UMA NOVA NOTÍCIA</h2>
-      <hr />
+      <h2>Inserir nova notícia</h2>
 
       <div className="content">
+      
         <form className="form" onSubmit={handleSubmit} encType="multipart/form-data">
 
           <div className="linha">
@@ -216,15 +215,20 @@ const NewsCreate = () => {
 
           <div className="linha">
             <div className="arquivo">
-                <label id="arquivoLabel" htmlFor="file">Escolher imagem JPG/PNG</label>
-                <input 
-                  id="file"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={(e) => {
-                setImage(e.target.files[0]); 
-                setFileName(e.target.files[0].name);
+             <label id="arquivoLabel" htmlFor="file">Escolher imagem JPG/PNG</label>
+              <div className="upload">
+                <p>{fileName || "Nenhum arquivo selecionado"}</p>
+                <button className="uploadImage" onClick={() => document.getElementById('file').click()}>Adicionar</button>
+              </div>
+              <input 
+                id="file"
+                type="file"
+                name="image"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0]); 
+                  setFileName(e.target.files[0].name);
                 }} />
             </div>
             <div className="link">
@@ -239,19 +243,20 @@ const NewsCreate = () => {
             <div className={"erros " + textErroClass}>{textErro}</div>
           </div>  
 
-           <div className="botoes">
-              <button style={{height: "33px"}} className="escBtn Btn" type="button" onClick ={handleCancel}>Cancelar</button>
-              <button className="okBtn Btn" type="submit" >Criar</button>
-            </div>
+          <hr />
 
-          <div className="form-group">
-            <div className={'msg ' + msgType}>{msg}</div>
-          </div>
+           <div className="botoes">
+              <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+              <button className="defaultBtn okBtn" type="submit" >Criar</button>
+            </div>
                       
         </form>
 
       </div>
-      
+
+      <div className="form-group">
+        <div className={'msg ' + msgType}>{msg}</div>
+      </div>      
     </section> 
   )
 };

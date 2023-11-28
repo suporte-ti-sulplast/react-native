@@ -1,11 +1,17 @@
 @import '../../../../../variables';
 
 .cadastroNoticias{
-
+    transform: translateY(-125px);
 
     .tabela{
-        height: 600px !important;
-        overflow-y: visible !important;
+        height: 625px !important;
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+
+        thead{
+            position: sticky;
+            top: 0;
+        }
     }
 
     h2{
@@ -19,135 +25,6 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 1rem;
-
-        .px-4{
-            width: 50rem;
-            margin: auto 0 !important;
-            --bs-pagination-border-color: gray !important;
-        }
-    }
-
-    .paginação{
-        width: auto;
-        display: flex;
-        margin: auto 0 !important;
-        
-
-        .input-group{
-            width: 11rem;
-            margin: auto 0 !important;
-            
-            label, select{
-                border: 1px solid gray;
-                color: $white-color;
-            }
-
-            label{
-                background-color: #0d6efd;
-            }
-
-            #inputGroupSelect01{
-                color: $dark-text-color !important;
-            }
-        }
-
-        label{
-            background-color: #0d6efd;
-        }
-    }
-
-    
-    .filtro{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .btn-filtros{
-            cursor: pointer;
-        }
-
-        .linhafilterHidden{
-            display: none !important;
-            transition: all 0.2s ease-in-out;
-        }
-    
-        .linha {
-            display: flex !important;
-            flex-direction: row !important;
-            justify-content: space-around!important;
-            gap: 0.5rem;
-            margin: 0 1rem 0 0.5rem ;
-
-            .search{
-                margin-left: 1rem;
-                display: flex !important;
-                gap: 1rem;
-                align-content: center;
-
-                button{
-                    background-color: transparent ;
-                    margin-top: 0.5rem;
-                    align-items: center;
-
-                    img{
-                        width: 30px;
-                    }
-                }
-            }
-
-            .input-filtro{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                width: 12rem;
-
-                .data{
-                    width: auto!important;
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    width: auto;
-
-
-                }
-                
-                input{
-                    margin-top: 0.15rem;
-                }
-
-                label{
-                    border: 1px solid black;
-                    border-radius: 8px 8px 0 0;
-                    font-weight: bold;
-                    background-color: #0d6efd;
-                    color: $white-color;
-                }
-
-                input, select{
-                    border: 1px solid black;
-                    border-radius: 0 0 8px 8px;
-                    padding: 0 0.5rem;
-                    color: $dark-text-color;
-                    line-height: none;
-                }
-            }
-
-            .dtInicio{
-                border-radius: 0 0 0 8px !important;
-            }
-
-            .dtFim{
-                border-radius: 0 0 8px 0 !important;
-            }
-
-            .input-filtro-menor{
-                width: 8rem !important
-            }
-
-            .input-filtro-data{
-                width: 17rem !important
-            }
-
-        }
     }
 
     .table{
@@ -156,10 +33,11 @@
         overflow-y: visible !important;
     }
 
-    td{
+    td, th{
         padding: 0.1rem 0.5rem !important;
         font-size: 0.9rem !important;
         height: 5px !important;
+        white-space: nowrap;
     }
 
    .icon{
@@ -208,6 +86,53 @@
         transition: all 0.2s ease-in-out;
     }
 
+}
 
+@media (max-width: 1370px) {
+
+    .cadastroNoticias{
+        .tabela{
+            height: 360px !important;
+        }
+
+        .titulo{
+            margin: 0;
+            padding: 0 0.7rem;
+
+            h2{
+                font-size: 1.2rem;
+                margin: 0.5rem;
+                padding: 0.2rem;
+            }
+    
+            .btn-filtros{
+                cursor: pointer;
+                font-size: 0.9rem !important;
+            }
+        
+        }
+
+        .filtro{
+            p{
+                font-size: 0.9rem !important;
+            }
+        }
+
+        .table{
+            text-align: left;
+            width: 100% !important;
+            overflow-y: visible !important;
+        }
+    
+        td, th{
+            padding: 0.1rem 0.5rem !important;
+            font-size: 0.7rem !important;
+            height: 5px !important;
+        }
+
+        .icon{
+            width: 15px;
+        }   
+    }
 
 }

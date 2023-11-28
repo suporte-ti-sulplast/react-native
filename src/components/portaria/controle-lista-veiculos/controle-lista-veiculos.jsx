@@ -32,7 +32,6 @@ const ControleMovimentoVeiculos = () => {
 
       <h1>Registro de entrada e saída de veículos</h1>
 
-      <br /><br /><br /><br />
       <div className="veiculos">
         {veiculos.map((veiculos) => 
           (

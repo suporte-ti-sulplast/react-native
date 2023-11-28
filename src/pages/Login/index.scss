@@ -104,11 +104,54 @@
       opacity: 1;
     }
     
-    .entrarBtn{
-      width: 100% !important;
-      margin-top: 2rem;
-      padding: 0.6rem !important;
+    .botão-login{
+      width: 97%;
+      height: 33px;
     }
+    
   }
 
+}
+
+@media (max-width: 1370px) {
+  .group{
+    .leftSide{
+
+      img{
+          width: 10rem;
+          margin: 0.8rem;
+      }
+    }
+
+    
+
+    .rigthSide{
+      .form-group {
+        margin: 10px 0 !important;
+
+        .error-message{
+          font-size: 0.7rem;
+        } 
+      }
+                
+      .form-group label {
+        margin-bottom: 0.2rem;
+      }
+        
+      .form-group input {
+        padding: 9px;
+      }
+
+      .entrarBtn{
+        width: 98% !important;
+        margin-top: 1rem;
+        padding: 0.3rem !important;
+        font-size: 0.9rem;
+      }
+
+      .eye{
+        width: 20px;
+      }
+    }
+  }
 }

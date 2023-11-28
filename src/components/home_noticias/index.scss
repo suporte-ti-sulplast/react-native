@@ -23,7 +23,7 @@
         .inner {
             display: grid;
             grid-template-columns: 1.5fr 3.5fr;
-            margin: 1rem;
+            margin: 3rem 1rem 0 1rem;
             height: 400px;
             justify-content: center;
             padding: 0;
@@ -31,7 +31,7 @@
         img{
             width: 100% !important;
             height: 100% !important;
-            border: 2px solid black;
+            border: 2px solid $blue-letter;
             border-radius: 20px 0 0 20px;
             border-right: none;
         }
@@ -40,7 +40,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid black;
+            border: 2px solid $blue-letter;
             border-left: none;
             border-radius: 0 20px 20px 0;    
             padding: 0;
@@ -51,13 +51,14 @@
     
             h3{
                 width: 85%;
-                font-size: 2.3rem;
+                font-size: 2rem;
                 margin-bottom: 0.7rem !important;
             }
 
             h5{
                 font-size: 1.4rem;
                 margin-bottom: 0.7rem !important;
+                color: $blue-letter;
             }
     
             p{  
@@ -68,7 +69,7 @@
             }
 
             a{
-                color: aliceblue;
+                color: $select-input-background;
                 text-decoration: underline !important;
                 margin: 0 !important;
             }
@@ -86,4 +87,56 @@
     .carousel-control-prev, .carousel-control-next{
         width: 7% !important;
     }
+}
+
+@media (max-width: 1370px) {
+
+    .Noticias{
+        height: 370px !important;
+
+        h1 {
+            font-size: 1.85em ;
+            margin: 0.5rem ;
+        }
+
+        height: 342px;
+        margin: 0.3rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .inner {
+        margin: 0.8rem;
+        height: 260px !important;
+        grid-template-columns: 1.3fr 3.7fr !important;
+        margin: 1.5rem 1rem 0 1rem !important; 
+
+        .card{
+
+            h3{
+                font-size: 1.3rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            h5{
+                font-size: .9rem !important;
+                margin-bottom: 0.7rem !important;
+            }
+
+            p{  
+                font-size: 0.8rem !important;
+                margin-bottom: 0.7rem !important;
+            }
+
+            tbody, td, tfoot, th, thead, tr {
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .carousel-indicators button {
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    
 }

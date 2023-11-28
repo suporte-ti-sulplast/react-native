@@ -21,10 +21,6 @@ useEffect(() => {
   }
 }, [retract]);
 
-
-
-
-
   const handleRetract = () => {
 
     if(retract === 'show'){

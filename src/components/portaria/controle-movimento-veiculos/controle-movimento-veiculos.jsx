@@ -1,6 +1,6 @@
 import "./index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './modalStyles.scss'; // Importo estilos dos modais
+import './modalStylesVisualizar.scss'; // Importo estilos dos modais
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Modal from 'react-modal';
 import { findMovimentVehicles } from "../../../services/apiConcierge";
@@ -148,11 +148,11 @@ const ControleMovimentoVeiculos = ( props ) => {
 
   return (
     <section className="controleMovimentoVeiculos">
-
+      {/* Titulo e botão novo */}
       <div className="titulo">
         <h2>Registros de entradas e saídas do veículo: <strong>{veiculoNome}</strong></h2>  
-        <div>
-          <button className="Btn defaultBtn" type="button" style={{ display: moveOpen ? 'none' : 'block' }} onClick ={handleNew}>Novo registro</button>
+        <div className="botoes">
+          <button className="defaultBtn inBtn" type="button" style={{ display: moveOpen ? 'none' : 'block' }} onClick ={handleNew}>Novo registro</button>
         </div>
       </div>
       
@@ -161,6 +161,8 @@ const ControleMovimentoVeiculos = ( props ) => {
           <thead>
             <tr>
               <th className="short" hidden>#</th>
+              <th style={{textAlign: "center"}}>Fechar</th>
+              <th style={{textAlign: "center"}}>Visualizar</th>
               <th style={{width: "15rem", borderRight: '1px solid gray'}}>Destino</th>
               <th>Saída<br />Motorista</th>  
               <th>Data</th>
@@ -171,27 +173,12 @@ const ControleMovimentoVeiculos = ( props ) => {
               <th>Hora</th>
               <th style={{borderRight: '1px solid gray'}}>Km</th>
               <th style={{borderRight: '1px solid gray', textAlign: "center"}}>Distância<br />percorrida</th>
-              <th style={{textAlign: "center"}}>Fechar</th>
-              <th style={{textAlign: "center"}}>Visualizar</th>
             </tr>
           </thead>
           <tbody className="">
               {movimento.map((mv) => (
                 <tr key={mv.id}>
                   <td hidden>{mv.id}</td>
-                  <td style={{borderRight: '1px solid gray'}}>{mv.destiny}</td>
-                  {/* //dados da saida */}
-                  <td>{mv.departure_driver}</td>
-                  <td>{converteData(mv.departure_date)}</td>
-                  <td>{converteHora(mv.departure_time)} hs</td>
-                  <td style={{borderRight: '1px solid gray'}}>{formatarNumeroComPontos(mv.departure_km)}</td>
-                  {/* //dados da chegada */}
-                  <td>{mv.arrival_driver}</td>
-                  <td>{converteData(mv.arrival_date)}</td>
-                  <td>{converteHora(mv.arrival_time)} hs</td>
-                  <td style={{borderRight: '1px solid gray'}}>{formatarNumeroComPontos(mv.arrival_km)}</td>
-                  <td style={{borderRight: '1px solid gray', textAlign: "center"}}>{mv.arrival_km === null ? ""  :  formatarNumeroComPontos(mv.arrival_km - mv.departure_km) } km</td>
-
                   <td style={{textAlign: "center"}}>
                     {mv.status === 0 ? 
                     <img className="icon" src="../images/editar2.png" alt="editar2" 
@@ -233,6 +220,18 @@ const ControleMovimentoVeiculos = ( props ) => {
                           mv.arrival_observation
                         )} />
                   </td>
+                  <td style={{borderRight: '1px solid gray'}}>{mv.destiny}</td>
+                  {/* //dados da saida */}
+                  <td>{mv.departure_driver}</td>
+                  <td>{converteData(mv.departure_date)}</td>
+                  <td>{converteHora(mv.departure_time)} hs</td>
+                  <td style={{borderRight: '1px solid gray'}}>{formatarNumeroComPontos(mv.departure_km)}</td>
+                  {/* //dados da chegada */}
+                  <td>{mv.arrival_driver}</td>
+                  <td>{converteData(mv.arrival_date)}</td>
+                  <td>{converteHora(mv.arrival_time)} hs</td>
+                  <td style={{borderRight: '1px solid gray'}}>{formatarNumeroComPontos(mv.arrival_km)}</td>
+                  <td style={{borderRight: '1px solid gray', textAlign: "center"}}>{mv.arrival_km === null ? ""  :  formatarNumeroComPontos(mv.arrival_km - mv.departure_km) } km</td>
                 </tr>
               ))}
           </tbody>
@@ -261,7 +260,7 @@ const ControleMovimentoVeiculos = ( props ) => {
         distanceTravel={distanceTravel}
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        className="custom-modal" // Classe personalizada para estilização
+        className="custom-modal-visualizar-movimento" // Classe personalizada para estilização
       >
 
               <h2>Visualizar movimento</h2>
@@ -294,9 +293,9 @@ const ControleMovimentoVeiculos = ( props ) => {
               <h3>Distância percorrida: <span>{distanceTravel} km</span></h3>
               
               {/* BOTOÕES */}
-              <div className="btn">
-                <button className="Btn escBtn" onClick={closeModal}>Fechar</button>
-              </div>
+                <div className="botoes">
+                  <button className="defaultBtn escBtn" onClick={closeModal}>Fechar</button>
+                </div>          
 
       </Modal>
 

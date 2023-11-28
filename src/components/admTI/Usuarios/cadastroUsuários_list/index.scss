@@ -1,70 +1,65 @@
 @import '../../../../../variables';
 
 .cadastroUsuarios{
-
+    transform: translateY(-125px);
 
     .tabela{
-        height: 600px !important;
-        overflow-y: visible !important;
-    }
-
-    h2{
-        font-size: 1.5rem;
-        margin: 0.8rem;
-        padding: 0.2rem;
+        height: 625px !important;
+        overflow-y: scroll !important;
+        overflow-x: scroll !important;
+        
+        thead{
+            position: sticky;
+            top: 0;
+        }
     }
 
     .titulo{
         display: flex;
         align-items: center;
+        align-content: center;
         justify-content: space-between;
         padding: 0 1rem;
-    
-        .px-4{
-            width: 50rem;
-            margin: auto 0 !important;
-            --bs-pagination-border-color: $border-color-gray !important;
+
+        h2{
+            font-size: 1.5rem;
+            margin: 0.5rem;
+            padding: 0.2rem;
+        }
+
+        .btn-filtros{
+            cursor: pointer;
+            font-size: 1.1rem !important;
         }
     }
 
-    .paginação{
-        width: auto;
-        display: flex;
+    .input-group{
+        width: 11rem;
         margin: auto 0 !important;
         
-
-        .input-group{
-            width: 11rem;
-            margin: auto 0 !important;
-            
-            label, select{
-                border: 1px solid $border-color-gray;
-                color: $white-color;
-            }
-
-            label{
-                background-color: $blue-default;
-            }
-
-            #inputGroupSelect01{
-                color: $dark-text-color !important;
-            }
+        label, select{
+            border: 1px solid $border-color-gray;
+            color: $white-color;
         }
 
         label{
             background-color: $blue-default;
         }
+
+        #inputGroupSelect01{
+            color: $dark-text-color !important;
+        }
     }
 
+    label{
+        background-color: $blue-default;
+    }
     
+
     .filtro{
         display: flex;
         flex-direction: column;
         justify-content: center;
-
-        .btn-filtros{
-            cursor: pointer;
-        }
 
         .linhafilterHidden{
             display: none !important;
@@ -148,22 +143,27 @@
         }
     }
 
-
     .table{
         text-align: left;
         width: 100% !important;
         overflow-y: visible !important;
     }
 
-    td{
+    td, th{
         padding: 0.1rem 0.5rem !important;
         font-size: 0.9rem !important;
         height: 5px !important;
+        white-space: nowrap;
     }
 
    .icon{
         width: 20px;
         cursor: pointer;
+   }
+
+   .lixeira{
+    width: 15px;
+    cursor: pointer;
    }
 
    .disable{
@@ -172,7 +172,6 @@
 
    .shared{
        cursor: default !important;
-       
    }
 
    .short{
@@ -206,7 +205,54 @@
         background-color: $msg-erro;
         transition: all 0.2s ease-in-out;
     }
+}
 
 
+@media (max-width: 1370px) {
+
+    .cadastroUsuarios{
+        .tabela{
+            height: 360px !important;
+        }
+
+        .titulo{
+            margin: 0;
+            padding: 0 0.7rem;
+
+            h2{
+                font-size: 1.2rem;
+                margin: 0.5rem;
+                padding: 0.2rem;
+            }
+    
+            .btn-filtros{
+                cursor: pointer;
+                font-size: 0.9rem !important;
+            }
+        
+        }
+
+        .filtro{
+            p{
+                font-size: 0.9rem !important;
+            }
+        }
+
+        .table{
+            text-align: left;
+            width: 100% !important;
+            overflow-y: visible !important;
+        }
+    
+        td, th{
+            padding: 0.1rem 0.5rem !important;
+            font-size: 0.7rem !important;
+            height: 5px !important;
+        }
+
+        .icon{
+            width: 15px;
+        }   
+    }
 
 }

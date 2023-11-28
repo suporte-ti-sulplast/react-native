@@ -1,11 +1,17 @@
 @import '../../../../variables';
 
 .controleMovimentoVeiculos{
+    transform: translateY(-140px);
 
     .tabela{
         width: 100%;
-        height: 600px !important;
-        overflow-y: visible !important;
+        height: 640px !important;
+        overflow-y: scroll !important;
+       
+        thead{
+            position: sticky;
+            top: 0;
+        }
     }
 
     h2{
@@ -20,44 +26,8 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 1rem;
-    
-        .px-4{
-            width: 50rem;
-            margin: auto 0 !important;
-            --bs-pagination-border-color: gray !important;
-        }
     }
 
-    .paginação{
-        width: auto;
-        display: flex;
-        margin: auto 0 !important;
-        
-
-        .input-group{
-            width: 11rem;
-            margin: auto 0 !important;
-            
-            label, select{
-                border: 1px solid gray;
-                color: $white-color;
-            }
-
-            label{
-                background-color: #0d6efd;
-            }
-
-            #inputGroupSelect01{
-                color: $dark-text-color !important;
-            }
-        }
-
-        label{
-            background-color: #0d6efd;
-        }
-    }
-
-    
     .filtro{
         display: flex;
         flex-direction: column;
@@ -161,10 +131,11 @@
         vertical-align: bottom;
     }
 
-    td{
+    td, th{
         padding: 0.1rem 0.5rem !important;
         font-size: 0.9rem !important;
         height: 5px !important;
+        white-space: nowrap;
     }
 
    .icon{
@@ -203,16 +174,65 @@
 
     .success{
         opacity: 1;
-        background-color: aquamarine;
+        background-color: $msg-sucesso;
         transition: all 0.2s ease-in-out;
     }
 
     .error{
         opacity: 1;
-        background-color: rgb(255, 127, 127);
+        background-color: $msg-erro;
         transition: all 0.2s ease-in-out;
     }
+}
 
+@media (max-width: 1370px) {
 
+    .controleMovimentoVeiculos{    
+
+        .tabela{
+            height: 395px !important;
+            overflow-x:hidden!important;
+        }
+
+        .titulo{
+            margin: 0;
+            padding: 0 0.7rem;
+
+            h2{
+                font-size: 1.2rem;
+                margin: 0.5rem;
+                padding: 0.2rem;
+            }
+    
+            .btn-filtros{
+                cursor: pointer;
+                font-size: 0.9rem !important;
+            }
+        
+        }
+
+        .filtro{
+            p{
+                font-size: 0.9rem !important;
+            }
+        }
+
+        .table{
+            text-align: left;
+            width: 100% !important;
+            overflow-y: visible !important;
+        }
+    
+        td, th{
+            padding: 0.1rem 0.5rem !important;
+            font-size: 0.65rem !important;
+            height: 5px !important;
+        }
+
+        .icon{
+            width: 15px;
+        }    
+    }
+    
 
 }

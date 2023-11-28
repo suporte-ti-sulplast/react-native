@@ -7,7 +7,6 @@ export const api = axios.create({
 
 //UPLOAD DE IMAGENS NO BACKEND
 export const upload = async (image) => {
-    console.log('chegou no API do front', image)
     try{ 
       const response = await api.post("/upload", image)
       return response.data;

@@ -226,6 +226,7 @@ const CadastroUsuariosCreate = ( props ) => {
                 setTextSenha("");
                 setTextConfirmaSenha("");
                 setCodCQ("");
+                setTextBirthdate("");
 
                 // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
                 setTimeout(() => {
@@ -260,13 +261,12 @@ const CadastroUsuariosCreate = ( props ) => {
     <section className="cadastrarUsuarios">
 
       <h2>Inserir novo usuário</h2>
-      <hr />
 
       <div className="content">
         
         <form className="form" onSubmit={handleSubmit}>
           
-          <div style={{display:"grid", gridTemplateColumns: "1fr 1fr", gap: '3rem'} }>
+          <div className="bloco">
             
             <div className="ladoEsq">
 
@@ -304,69 +304,62 @@ const CadastroUsuariosCreate = ( props ) => {
                   <div className={"erros " +  textErroNomeClass}>{textErroNome}</div>
                 </div> 
 
-                {/* Grupo CQ */}
+                {/* Grupo Aniversário */}
                 <div className="form-group">
-                  <label htmlFor="nivel">Código CQ: &emsp;</label>
-                  <input id="nivel" type="text" value={codCQ} onChange={(e) => {
-                    setCodCQ(e.target.value);
-                    setTextErroCQ("");
-                    setTextErroCQClass("hidden");
+                  <label htmlFor="aniversario">Aniversário: &emsp;</label>
+                  <input id="aniversario" type="text" value={textBirthdate} onChange={(e) => {
+                    setTextBirthdate(e.target.value);
+                    setTextErroAniversario("");
+                    setTextErroAniversarioClass("hidden");
                     }} />
-                  <div className={"erros " +  textErroCQClass}>{textErroCQ}</div>
+                  <div className={"erros " +  textErroAniversarioClass}>{textErroAniversario}</div>
                 </div> 
-
-              {/* Grupo Aniversário */}
-              <div className="form-group">
-                <label htmlFor="aniversario">Aniversário: &emsp;</label>
-                <input id="aniversario" type="text" value={textBirthdate} onChange={(e) => {
-                  setTextBirthdate(e.target.value);
-                  setTextErroAniversario("");
-                  setTextErroAniversarioClass("hidden");
-                  }} />
-                <div className={"erros " +  textErroAniversarioClass}>{textErroAniversario}</div>
-              </div> 
-              <div className="tips">Usar o formato: <strong>dd/mm</strong>. SEM O ANO</div>
+                <div className="tips">Usar o formato: <strong>dd/mm</strong>. SEM O ANO</div>
 
                 {/* Grupo Senha */}
                 <div className="form-group senha">
                   <label htmlFor="usersenha">Senha: &emsp;</label>
-                  <input 
-                  id="usersenha"
-                    value={textSenha}
-                    type={typeofPassword}
-                    onChange={(e) => {
-                      setTextSenha(e.target.value);
-                      setTextErroSenha("");
-                      setTextErroSenhaClass("hidden")
-                    }}
-                  />
-                  <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt=""
-                  onClick={(e) => {
-                    eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
-                    typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
-                    }}
-                  />
+                  <div className="type-senha">
+                    <input 
+                    id="usersenha"
+                      value={textSenha}
+                      type={typeofPassword}
+                      onChange={(e) => {
+                        setTextSenha(e.target.value);
+                        setTextErroSenha("");
+                        setTextErroSenhaClass("hidden")
+                      }}
+                    />
+                    <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt=""
+                    onClick={(e) => {
+                      eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
+                      typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
+                      }}
+                    />
+                  </div>
                   <div className={"erros " + textErroSenhaClass}>{textErroSenha}</div>
                 </div> 
 
                 {/* Grupo Confirma a Senha */}
                 <div className="form-group confirmSenha">
                   <label htmlFor="confirmSenha">Confirme a Senha: &emsp;</label>
-                  <input
-                    id="confirmSenha"
-                    value={textConfirmaSenha}
-                    type={typeofRePassword}
-                    onChange={(e) => {
-                      setTextConfirmaSenha(e.target.value); 
-                      setTextErroConfirmSenha("");
-                      setTextErroConfirmSenhaClass("hidden")
-                    }} />
-                  <img className="eye" src={"../../images/olho-" + eyeReSenha +  ".png"} alt=""
-                    onClick={(e) => {
-                      eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
-                      typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
-                      }}
-                  />
+                  <div className="type-senha">
+                    <input
+                      id="confirmSenha"
+                      value={textConfirmaSenha}
+                      type={typeofRePassword}
+                      onChange={(e) => {
+                        setTextConfirmaSenha(e.target.value); 
+                        setTextErroConfirmSenha("");
+                        setTextErroConfirmSenhaClass("hidden")
+                      }} />
+                    <img className="eye" src={"../../images/olho-" + eyeReSenha +  ".png"} alt=""
+                      onClick={(e) => {
+                        eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
+                        typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
+                        }}
+                    />
+                  </div>
                   <div className={"erros " + textErroConfirmSenhaClass}>{textErroConfirmSenha}</div>
                 </div> 
               <div className="tips">A senha precisa ter <strong>8 caracteres</strong>  e conter ao menos: <br />
@@ -426,6 +419,16 @@ const CadastroUsuariosCreate = ( props ) => {
                 </select>
               </div> 
 
+              {/* Grupo CQ */}
+              <div className="form-group">
+                  <label htmlFor="nivel">Código CQ: &emsp;</label>
+                  <input id="nivel" type="text" value={codCQ} onChange={(e) => {
+                    setCodCQ(e.target.value);
+                    setTextErroCQ("");
+                    setTextErroCQClass("hidden");
+                    }} />
+                </div> 
+
             </div>  {/* fecha o lado direito */}
 
           </div> {/* fecha AMBOS OS LADOS */}
@@ -437,7 +440,7 @@ const CadastroUsuariosCreate = ( props ) => {
             <div className="ladoEsq">
               {/* GERADOR DE SENHA */}      
               <div className="form-group gerador">
-                  <button className="Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
+                  <button className="defaultBtn inBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
                   <input id="gerarSenha" className="textPassword" type="text" value={password} readOnly />
                   <img className="copy" src={"../../images/copy.png"} alt=""
                     onClick={() => {
@@ -447,25 +450,25 @@ const CadastroUsuariosCreate = ( props ) => {
                       setTextErroConfirmSenha("");
                       setTextErroConfirmSenhaClass("hidden");
                     }}
-              />
+                  />
+              </div>
             </div>
-          </div>
-          <div className="ladoDir">
-            <div className="form-group">
-              <button className="escBtn Btn" type="button" onClick ={handleCancel}>Cancelar</button>
-              <button className="okBtn Btn" type="submit">Criar &emsp; <small style={{ color: 'black' }}>(Duplo clique)</small></button>
-            </div> 
-          </div>   
 
-          <div className="form-group">
-            <div className={'msg ' + msgType}>{msg}</div>
-          </div>
-
+            <div className="ladoDir">
+              <div className="form-group botoes">
+                <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+                <button className="defaultBtn okBtn" type="submit">Criar &emsp; <small style={{ color: 'black' }}>(Duplo clique)</small></button>
+              </div> 
+            </div>   
           </div>
                       
         </form>
 
       </div>
+      <div className="form-group">
+        <div className={'msg ' + msgType}>{msg}</div>
+      </div>
+
       
     </section> 
   )

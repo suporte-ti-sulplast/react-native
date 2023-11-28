@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import React, { useState } from "react";
 import useRetractEffect from '../../hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -22,8 +23,10 @@ function Etiq() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
-          <MenuEtiquetas />
-          <EtiquetasTeste />
+          <AnimatedContainer>
+            <MenuEtiquetas />
+            <EtiquetasTeste />
+          </AnimatedContainer>
         </div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 import { useRetract } from '../../contexts/retract';
 import { useState } from 'react';
 import useRetractEffect from '../../hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
-import { useLocation } from "react-router-dom";
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
 import MenuPortaria from '../../components/portaria/_menuPortaria/menuPortaria';
@@ -23,8 +23,10 @@ function ControlePortaria() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
-          <MenuPortaria />
-          <ControleListaVeiculos />
+          <AnimatedContainer>
+            <MenuPortaria />
+            <ControleListaVeiculos />
+          </AnimatedContainer>
         </div>
       </div>
     </section>

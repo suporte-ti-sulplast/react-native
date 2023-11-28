@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import { useState } from 'react';
 import useRetractEffect from '../../hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import { useLocation } from "react-router-dom";
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
@@ -26,8 +27,10 @@ function PrinterEdit() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
-          <MenuCadastroTI />
-          <CadastroImpressorasEdit userData={printerId} />
+          <AnimatedContainer>
+            <MenuCadastroTI />
+            <CadastroImpressorasEdit userData={printerId} />
+          </AnimatedContainer>
         </div>
       </div>
     </section>

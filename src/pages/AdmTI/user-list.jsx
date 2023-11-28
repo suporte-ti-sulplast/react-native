@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import { useState } from 'react';
 import useRetractEffect from '../../../src/hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -22,8 +23,10 @@ function UserList() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
-          <MenuCadastroTI />
-          <CadastroUsuarios />
+          <AnimatedContainer>
+            <MenuCadastroTI />
+            <CadastroUsuarios />
+          </AnimatedContainer>
         </div>
       </div>
     </section>

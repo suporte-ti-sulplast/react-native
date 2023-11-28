@@ -58,8 +58,8 @@ const CadastroUsuarios =  () => {
   }
 
   //EDITA A NOTICIA
-  const handleEdit = async (idNews, title, date, imageName, link, dateInit, dateEnd, status, text) => {
-    const NewsData = { idNews, title, date, imageName, link, dateInit, dateEnd, status, text }   
+  const handleEdit = async (idNews, title, date, imageName, link, dateInit, dateEnd, status, text, image) => {
+    const NewsData = { idNews, title, date, imageName, link, dateInit, dateEnd, status, text , image}   
     navigate("/ADM-TI/cadastro-noticias/edit",  {state: NewsData  }); 
   };
 
@@ -128,8 +128,10 @@ const CadastroUsuarios =  () => {
       <div className="titulo">
 
         <h2>Notícias</h2>
-         
-        <button className="Btn defaultBtn" type="button" onClick ={handleNew}>Nova Notícia</button>
+         <div className="botoes">
+          <button className="defaultBtn inBtn" type="button" onClick ={handleNew}>Nova notícia</button>
+         </div>
+        
       </div>
       
       <hr />
@@ -139,46 +141,48 @@ const CadastroUsuarios =  () => {
           <thead>
             <tr>
               <th className="short" hidden>#</th>
+              <th style={{textAlign: "center"}}>Editar</th>
+              <th style={{textAlign: "center"}}>Excluir</th>
+              <th style={{textAlign: "center"}}>Status</th>
               <th>Título</th>
               <th>Data</th>  
               <th>Imagem</th>
               <th>Link</th>
               <th style={{textAlign: "center"}}>Data de Início</th>
               <th style={{textAlign: "center"}}>Data de Fim</th>
-              <th style={{textAlign: "center"}}>&nbsp;&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;</th>
               <th>Criado em</th>
-              <th style={{textAlign: "center"}}>Editar</th>
-              <th style={{textAlign: "center"}}>Excluir</th>
-              <th style={{textAlign: "center"}} hidden>Texto</th>
+              <th style={{textAlign: "center"}}>Texto</th>
+              <th hidden>Nome no banco</th>
             </tr>
           </thead>
           <tbody className="">
               {news.map((nw) => (
                 <tr key={nw.idNews}>
                   <td hidden>{nw.idNews}</td>
+                  
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../../images/editar2.png" alt="editar2" 
+                    onClick={() => handleEdit(nw.idNews, nw.title, nw.date, nw.imageName, nw.link, nw.dateInit, nw.dateEnd, nw.status, nw.text, nw.image )} />
+                  </td>
+
+                  <td style={{textAlign: "center"}}>
+                      <img className="icon" src="../../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
+                      onClick={() => handleDelete(nw.idNews, nw.title,)} />
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                    {nw.status === 1 ? 'Ativo' : 'Inativo'}&nbsp;
+                    <img className="icon" src="../../images/setaCimaBaixo.png" alt="editar2"
+                          onClick={() => handleAlterStatus(nw.idNews, nw.status)} />
+                  </td>
                   <td>{nw.title}</td>
                   <td>{nw.date}</td>
                   <td>{nw.imageName ? nw.imageName.split('\\').pop() : ''}</td>
                   <td>{nw.link}</td>
                   <td style={{textAlign: "center"}}>&nbsp;&nbsp;&nbsp;&nbsp;{converteData(nw.dateInit)}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                   <td style={{textAlign: "center"}}>&nbsp;&nbsp;&nbsp;&nbsp;{converteData(nw.dateEnd)}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td style={{textAlign: "center"}}>
-                    {nw.status === 1 ? 'Ativo' : 'Inativo'}&nbsp;
-                    <img className="icon" src="../images/setaCimaBaixo.png" alt="editar2"
-                          onClick={() => handleAlterStatus(nw.idNews, nw.status)} />
-                  </td>
                   <td>{converteData(nw.createdAt)}</td>
-
-                  <td style={{textAlign: "center"}}>
-                    <img className="icon" src="../images/editar2.png" alt="editar2" 
-                    onClick={() => handleEdit(nw.idNews, nw.title, nw.date, nw.imageName, nw.link, nw.dateInit, nw.dateEnd, nw.status, nw.text )} />
-                  </td>
-
-                  <td style={{textAlign: "center"}}>
-                      <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
-                      onClick={() => handleDelete(nw.idNews, nw.title,)} />
-                  </td>
-                  <td hidden >{nw.text}</td>
+                  <td>{nw.text}</td>
+                  <td hidden>{nw.image}</td>
                 </tr>
               ))}
           </tbody>
@@ -201,9 +205,9 @@ const CadastroUsuarios =  () => {
 
         <p>Tem certeza que deseja excluir a noticia <br /><span>{selectedTitleToDelete}</span> ?</p>
 
-        <div className="btn">
-          <button className="Btn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
-          <button className="Btn okBtn" onClick={() => handleDeleteNewConfirmed(selectediDToDelete)}>Confirmar</button>
+        <div className="botoes">
+          <button className="defaultBtn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
+          <button className="defaultBtn okBtn" onClick={() => handleDeleteNewConfirmed(selectediDToDelete)}>Confirmar</button>
         </div>
 
       </Modal>

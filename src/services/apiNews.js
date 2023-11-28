@@ -32,6 +32,8 @@ export const findNews = async (data) =>
 };
 
 
+
+
 //DELETA NOTICIA DO BANCO DE DADOS
 export const deleteNew = async (id) =>
 {
@@ -63,10 +65,10 @@ export const alterNewStatus = async (idNews, status) =>
 };
 
 //EDITA NOTICIA NA TABELA DE NOTICIAS
-export const editNews = async (idNews, textTiulo, data, textTexto, fileName, newFileName, status, dataInit, dataEnd, link) =>
+export const editNews = async (data, newFileName) =>
 {
   try{ 
-    const response = await api.post("/news-updatebd", {idNews, textTiulo, data, textTexto, fileName, newFileName, status, dataInit, dataEnd, link})
+    const response = await api.post("/news-updatebd", {data, newFileName})
     return response.data;
   }   catch (error) {
     console.error("Ocorreu um erro ao fazer a requisição:", error);

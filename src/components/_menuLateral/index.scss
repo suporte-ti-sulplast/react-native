@@ -44,7 +44,23 @@
         height: 30px;
         margin-right: 0.5rem;
     }
-
-    
-
 }
+
+@media (max-width: 1370px) {
+    .menuLateral{
+        ul li a img{
+            width: 23px;
+            height: 23px;
+            margin-right: 0.4rem;
+        }
+    }
+
+    .arrow-left{
+        width: 15px !important;
+        margin: 0.5rem;
+    }
+
+    .text{
+        font-size: 0.8rem;
+    }
+  }

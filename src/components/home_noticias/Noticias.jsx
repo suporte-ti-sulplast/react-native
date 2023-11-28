@@ -56,31 +56,34 @@ function Noticias() {
     <section className="Noticias">
       <h1>NOTÍCIAS</h1>
 
-      <Carousel className="carousel">
-        <Carousel.Item> 
-          <div className="inner">
-            <div>
-            <img src="../../images/bolo.png" alt="bolo" />
-            </div>
+      <Carousel className="carousel" interval={8000}>
 
-            <div className="card">
-              <h3>Aniversariantes da semana</h3>
-              <h5>Semana de {primeiroDia} a {ultimoDia}</h5>
-              <table style={{maxWidth: "100%"}}>
-                  <tbody>
-                      {birthdayPeople.map((aniversarios) => (
-                        <tr key={aniversarios.idUser}>
-                          <td style={{padding: "0 1rem", textAlign: "right", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }} >{aniversarios.nameComplete}</td>
-                          <td style={{padding: "0 1rem", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }}>{aniversarios.birthdate}</td>
-                          <td style={{padding: "0 1rem", textAlign: "left", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }}>{aniversarios.Department.department}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>                
-            </div>
-          </div>
-        </Carousel.Item>
+        {/* ITEM PARA MOSTRAR OS ANIVERSARIANTES DA SEMANA */}
+        {birthdayPeople && birthdayPeople.length > 0 && ( //se não existir não mostra esse item
+          <Carousel.Item> 
+            <div className="inner">
+              <div>
+              <img src="../../images/bolo.png" alt="bolo" />
+              </div>
 
+              <div className="card">
+                <h3>ANIVERSARIANTES DA SEMANA</h3>
+                <h5>SEMANA DE  {primeiroDia} A {ultimoDia}</h5>
+                <table style={{maxWidth: "100%"}}>
+                    <tbody>
+                        {birthdayPeople.map((aniversarios) => (
+                          <tr key={aniversarios.idUser}>
+                            <td style={{padding: "0 1rem", textAlign: "right", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }} >{aniversarios.nameComplete}</td>
+                            <td style={{padding: "0 1rem", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }}>{aniversarios.birthdate}</td>
+                            <td style={{padding: "0 1rem", textAlign: "left", fontWeight: aniversarios.birthdate === hoje ? "bold" : "normal" }}>{aniversarios.Department.department}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>                
+              </div>
+            </div>
+          </Carousel.Item>
+        )}
 
         {news.map((newsItem) => (
           <Carousel.Item key={newsItem.id}> 

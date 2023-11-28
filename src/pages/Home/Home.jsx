@@ -6,6 +6,7 @@ import MenuLateral from '../../components/_menuLateral/MenuLateral'
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
 import LinksUteis from '../../components/home_linksUteis/LinksUteis';
 import Noticias from '../../components/home_noticias/Noticias';
+import AnimatedContainer from '../../hooks/motion';
 
 function Home() {
 
@@ -15,18 +16,20 @@ function Home() {
   useRetractEffect(retract, setBody);
 
   return (
-    <section>
-       <BarraSuperior />
-      <div className={'corpo ' + body}>
-        <div className="lateralEsquerda">
-          <MenuLateral />
+      <section>
+        <BarraSuperior />
+        <div className={'corpo ' + body}>
+          <div className="lateralEsquerda">
+            <MenuLateral />
+          </div>
+          <div className="lateralDireita">
+            <AnimatedContainer>
+              <LinksUteis />
+              <Noticias />
+            </AnimatedContainer>
+          </div>
         </div>
-        <div className="lateralDireita">
-          <LinksUteis />
-          <Noticias />
-        </div>
-      </div>
-    </section>
+      </section>
   )
 }
 

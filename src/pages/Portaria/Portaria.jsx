@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import React, { useState } from "react";
 import useRetractEffect from '../../hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -21,7 +22,9 @@ function Portaria() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
+        <AnimatedContainer>
           <MenuPortaria />
+        </AnimatedContainer>
         </div>
       </div>
     </section>

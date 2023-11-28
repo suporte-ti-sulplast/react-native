@@ -44,3 +44,28 @@
     }
 
 }
+
+@media (max-width: 1370px) {
+
+    .linksUteis{
+        margin-bottom: 0.5rem !important;
+
+        h1 {
+            font-size: 1.85em ;
+            margin: 0.5rem ;
+        }
+
+        .link a img{
+            width: 40px;
+            height: 40px;
+            margin: 0 2.2rem;
+        }
+
+        height: 115px;
+        margin: 0.3rem;
+        padding-bottom: 0.3rem;
+    }
+
+    
+    
+}

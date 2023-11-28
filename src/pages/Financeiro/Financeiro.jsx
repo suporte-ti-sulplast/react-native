@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import React, { useState } from "react";
 import useRetractEffect from '../../hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
@@ -14,17 +15,20 @@ function Fin() {
   useRetractEffect(retract, setBody); 
  
   return (
-    <section>
-       <BarraSuperior />
-      <div className={'corpo ' + body}>
-        <div className="lateralEsquerda">
-          <MenuLateral />
+      <section>
+        <BarraSuperior />
+        <div className={'corpo ' + body}>
+          <div className="lateralEsquerda">
+            <MenuLateral />
+          </div>
+          <div className="lateralDireita">
+          <AnimatedContainer>
+            <MenuFinanceiro />
+          </AnimatedContainer>
+          </div>
         </div>
-        <div className="lateralDireita">
-          <MenuFinanceiro />
-        </div>
-      </div>
-    </section>
+      </section>
+
   )
 }
 

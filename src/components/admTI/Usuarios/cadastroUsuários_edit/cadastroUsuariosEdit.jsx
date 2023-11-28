@@ -161,7 +161,7 @@ const CadastroUsuariosEdit = ( props ) => {
 
       <form className="form" onSubmit={handleSubmit}>
 
-        <div style={{display:"grid", gridTemplateColumns: "1fr 1fr", gap: '3rem'}}>
+        <div className="bloco">
           
           <div className="ladoEsq">
 
@@ -269,8 +269,8 @@ const CadastroUsuariosEdit = ( props ) => {
         <hr />
         
         <div className="form-group botoes">
-          <button className="Btn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
-          <button className="Btn okBtn" type="submit">SALVAR &emsp; <small style={{ color: 'black' }}>(Duplo clique)</small></button>
+          <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+          <button className="defaultBtn okBtn" type="submit">SALVAR &emsp; <small style={{ color: 'black' }}>(Duplo clique)</small></button>
         </div>  
 
         <div className="form-group">

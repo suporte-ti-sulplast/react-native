@@ -1,6 +1,14 @@
 @import '../../../../../variables';
 
 .editarUsuarios{
+    height: 710px;
+    transform: translateY(-125px);
+
+    .bloco{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0rem;
+    }
 
     h2{
         font-size: 1.5rem;
@@ -105,16 +113,75 @@
         background-color: $msg-erro;
         transition: all 0.2s ease-in-out;
     }
+}
 
-    .esc, .confirm{
-        margin-top: 2rem;
-        padding:  0.5rem;
+@media (max-width: 1370px) {
+
+    .editarUsuarios{
+        height: 440px !important;
+
+        h2{
+            font-size: 1.2rem;
+            margin: 0.3rem;
+            padding: 0;
+        }
+
+        .tips{
+            font-size: 0.7rem;
+        }
+
+        hr{
+            padding: 0;
+            margin: 0.4rem;
+        }
+
+        .eye{
+            width: 14px;
+        }
+    
+        .copy{
+        width: 14px;
+        }
+
+        .form{
+
+            .ladoEsq, .ladoDir{
+                .form-group{
+                    padding: 0.2rem;
+                }
+            }  
+            
+            label{
+                width: 10rem;
+            }    
+            input{
+                width: 17rem;
+            }
+
+            select{
+                width: 17rem;
+
+            }
+
+            .erros{
+                width: 7rem;
+            }
+        }
+
+        .botoes{
+            .okBtn, .escBtn{
+                width: 9rem;
+                font-size: 0.7rem;
+                margin: 0.2rem;
+            }
+        }
+        
+
+        .textPassword{
+            width: 8rem !important;
+            height: 1.71rem;
+
+        }
     }
-
-    .botoes{
-        display: flex;
-        gap: 0.5rem
-    }
-
 
 }

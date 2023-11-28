@@ -41,7 +41,7 @@ p{
 }
 
 .corpo{
-    height: 800px;
+    height: 810px;
     margin: 0 0.8rem;
     border-radius: 10px;
     background-color: $background;
@@ -51,7 +51,7 @@ p{
         background-color: $white-color;
         border: 1px solid $border-color;
         box-shadow: 2px 2px 2px $shadow-color;
-        border-radius: 8px;
+        border-radius: 8px;        
     }
 }
 
@@ -68,57 +68,73 @@ p{
     transition: all 0.2s ease-in-out;
 }
 
-.Btn{
+//classe botão geral
+.botoes{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.2rem;
+}
+
+//classe botão default
+.defaultBtn{
     width: 11rem;
     height: auto;
-    padding: 0.27rem !important;
-    border: none;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 0.95rem;    
-    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.46), 0 3px 6px rgba(0, 0, 0, 0.43);
-    transition: 0.2s ease;
-    cursor: pointer;
-}
-
-.Btn:active{
-    transform: translate(3px, -3px);
-}
-
-.defaultBtn{
-    color: #eee;
-    background-color: $defaultBtn;
+    border-radius: 7px;
+    box-shadow: 3px 3px 3px $shadow-color;
+    margin: 0.5rem;
+    padding: 0.2rem 0;
+    color: $white-color;
+    transition: all 0.2s ease-in-out;
 }
 
 .defaultBtn:hover{
-    background-color: $defaultBtn-hover
+    transition: all 0.2s ease-in-out;
 }
 
+.defaultBtn:active{
+    transform: translate(2px, -2px);
+}
+
+.defaultBtn:disabled{
+    cursor: not-allowed !important;
+    transform: none;
+}
+
+//botão OK
 .okBtn{ 
-    margin-top: 1.5rem;
-    color: #eee;
     background-color: $okBtn;
 }
 
-.okBtn:hover{
-    background-color: $okBtn-hover
+.okBtn:disabled{
+    background-color: $okBtn-hover !important;
 }
 
+.okBtn:hover{
+    background-color: $okBtn-hover;
+}
+
+//botão esc
 .escBtn{
-    margin-top: 1.5rem;
-    color: #eee;
     background-color: $escBtn;
 }
 
 .escBtn:hover{
-    background-color: $escBtn-hover
+    background-color: $escBtn-hover;
+}
+
+.inBtn{
+    background-color: $defaultBtn;
+}
+
+.inBtn:hover{
+    background-color: $defaultBtn-hover;
 }
 
 //mensagens rodapé da página
 .msg{
     position: fixed;
     left: 50%;
-    bottom: 0;
     padding: 10px;
     text-align: center;
     transform: translateX(-50%);
@@ -135,19 +151,100 @@ p{
 .hidden{
     opacity: 0;
     transition: all 0.2s ease-in-out;
+
 }
 
 .success{
     opacity: 1;
     background-color: aquamarine;
     transition: all 0.2s ease-in-out;
-    bottom: 0; /* Mostra a div no rodapé */
+    bottom: 0px; /* Mostra a div no rodapé */
+    z-index: 99;
 }
 
 .error{
     opacity: 1;
     background-color: rgb(255, 127, 127);
     transition: all 0.2s ease-in-out;
-    bottom: 0; /* Mostra a div no rodapé */
+    bottom: 0px; /* Mostra a div no rodapé */
+    z-index: 99;
 }   
 
+//menu navegação dropdowm
+.menu-nav{
+    z-index: 99;
+    overflow: visible;
+
+    .menu-principal{
+        display: flex;
+
+        li{
+            display: flex;
+            flex-direction: column;
+            width: 13rem;
+
+            :hover{
+                background-color:$background;
+                font-weight: bolder;
+            }
+
+            .sub-menu{
+                background-color:$background;
+                overflow: visible;
+
+                li{
+                    padding: 0.1rem;
+                    margin: 0.1rem;
+
+                    a{
+                        text-align: left;
+                        padding: 0;   
+                        color: $dark-text-color;
+                        font-weight: 400;
+                    }
+
+                    :hover{
+                        font-weight: bolder;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1370px) {
+    *{
+        font-size: 97.2%;
+    }
+
+    .corpo{
+        height: 530px;
+    
+        .lateralEsquerda, .lateralDireita{
+            margin: 0.4rem;
+        }
+    }
+
+
+    .expanded{
+        grid-template-columns: 140px auto;
+    }
+    
+    .retract{
+        grid-template-columns: 75px auto;
+    }
+
+    h1{
+        font-size: 1.8rem;
+    }
+    
+    h3{
+        font-size: 1rem;
+    }
+
+    .defaultBtn{
+        width: 9rem;
+        border-radius: 5px;
+        box-shadow: 3px 3px 3px $shadow-color;
+    }
+  }

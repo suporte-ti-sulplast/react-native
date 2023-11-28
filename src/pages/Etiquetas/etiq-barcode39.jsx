@@ -1,20 +1,20 @@
 import { useRetract } from '../../contexts/retract';
-import { useState } from 'react';
+import React, { useState } from "react";
 import useRetractEffect from '../../hooks/useRetract';
 import AnimatedContainer from '../../hooks/motion';
 
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
 import BarraSuperior from '../../components/_barraSuperior/BarraSuperior';
-import MenuFinanceiro from '../../components/financeiro/_menuFinanceiro/menuFinanceiro';
-import RelatorioFechamentoEstoque from '../../components/financeiro/relatorio-fechamentoEstoque/relatorio-fechamentoEstoque';
+import MenuEtiquetas from '../../components/etiquetas/_menuEtiquetas/menuEtiquetas';
+import EtiquetasBarCode39 from '../../components/etiquetas/etiquetaBarCode39/etiquetas-barcode39';
 
-function FechamentoEstoque() {
+function Etiq() {
 
   const [body, setBody] = useState();
   const { retract } = useRetract();
   
-  useRetractEffect(retract, setBody);
-
+  useRetractEffect(retract, setBody); 
+ 
   return (
     <section>
        <BarraSuperior />
@@ -24,8 +24,8 @@ function FechamentoEstoque() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuFinanceiro />
-            <RelatorioFechamentoEstoque />
+            <MenuEtiquetas />
+            <EtiquetasBarCode39 />
           </AnimatedContainer>
         </div>
       </div>
@@ -33,4 +33,4 @@ function FechamentoEstoque() {
   )
 }
 
-export default FechamentoEstoque
+export default Etiq

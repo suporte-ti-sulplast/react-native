@@ -19,7 +19,6 @@
         flex-direction: row;
         gap: 2rem;
         
-
         .image{
             position: relative;
             cursor: pointer;
@@ -63,4 +62,31 @@
         
     }
 
+}
+
+@media (max-width: 1370px) {
+
+    .controleMovimentoVeiculos{
+        .image{
+            img{
+                width: 280px !important;
+            }
+            
+             img:hover{
+                border: 3px solid gray;
+             }
+
+            h2{
+                right: 8px !important;
+            }
+
+            .car{
+                width: 40px !important;
+                top: 15px !important;
+                left: 15px;
+            }
+        }
+
+        
+    }
 }

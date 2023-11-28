@@ -1,6 +1,7 @@
 import { useRetract } from '../../contexts/retract';
 import { useState } from 'react';
 import useRetractEffect from '../../../src/hooks/useRetract';
+import AnimatedContainer from '../../hooks/motion';
 
 import { useLocation } from "react-router-dom";
 import MenuLateral from '../../components/_menuLateral/MenuLateral';
@@ -27,8 +28,10 @@ function UserEdit() {
           <MenuLateral />
         </div>
         <div className="lateralDireita">
-          <MenuCadastroTI />
-          <CadastroUsuariosEdit  userData={data}/>
+          <AnimatedContainer>
+            <MenuCadastroTI />
+            <CadastroUsuariosEdit  userData={data}/>
+          </AnimatedContainer>
         </div>
       </div>
     </section>

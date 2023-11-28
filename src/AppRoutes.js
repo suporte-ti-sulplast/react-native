@@ -5,7 +5,8 @@ import {
     BrowserRouter as Router,
     Route,
     Routes,
-    Navigate
+    Navigate,
+    useLocation
 } from "react-router-dom";
 
 import Login from './pages/Login/Login';
@@ -39,19 +40,21 @@ import EtiquetasCura from "./pages/Etiquetas/etiq-cura";
 import EtiquetasData from "./pages/Etiquetas/etiq-data";
 import EtiquetasTeste from "./pages/Etiquetas/etiq-teste";
 import EtiquetasRoto from "./pages/Etiquetas/etiq-roto";
+import EtiquetasBarCode39 from "./pages/Etiquetas/etiq-barcode39";
 
 import Portaria from "./pages/Portaria/Portaria";
 import PortControleMovimentoVeiculos from "./pages/Portaria/controle-movimento-veiculos";
 import PortControleListaVeiculos from "./pages/Portaria/controle-lista-veiculos";
 import PortControleMovimentoNovo from "./pages/Portaria/controle-movimento-novo";
+import { AnimatePresence } from "framer-motion";
 
 
 const AppRoutes = () => {
 
     const Private = ({ children }) => {
 
-       
         const { userLogged, loading, setUserOk } = useContext(AuthContext);
+        console.log(userLogged)
         const recoveredUser = localStorage.getItem('user')
         if(loading){
             return <div className="loading">Carregando ...</div>
@@ -63,128 +66,131 @@ const AppRoutes = () => {
         return children ;
     };
 
+    const location = useLocation();
+
     return (
-        <Router>
             <AuthProvider>
                 <RetractProvider>
-                    <Routes>
-                        <Route exact path="/" element={<Login />} />
+                    <AnimatePresence>
+                        <Routes location={location} key={location.pathname} >
+                            <Route exact path="/" element={<Login />} />
 
-                        <Route exact path="/HOME" element={
+                            <Route exact path="/HOME" element=
+                                {<Private>
+                                    <Home />
+                                </Private>} />
 
-                                <Home />
-
-                            }
-                            />
-
-
-                        <Route exact path="/ADM-TI" element=
-                            {<Private>
-                                <AdmTI />
-                            </Private>} />     
+                            <Route exact path="/ADM-TI" element=
+                                {<Private>
+                                    <AdmTI />
+                                </Private>} />     
 
 
-                        <Route exact path="/ADM-TI/cadastro-usuarios" element=
-                            {<Private>
-                                <UserList/>
-                            </Private>} />    
-                        <Route exact path="/ADM-TI/cadastro-usuarios/edit" element=
-                            {<Private>
-                                <UserEdit/>
-                            </Private>} />        
-                        <Route exact path="/ADM-TI/cadastro-usuarios/create" element=
-                            {<Private>
-                                <UserCreate/>
-                            </Private>} />     
+                            <Route exact path="/ADM-TI/cadastro-usuarios" element=
+                                {<Private>
+                                    <UserList/>
+                                </Private>} />    
+                            <Route exact path="/ADM-TI/cadastro-usuarios/edit" element=
+                                {<Private>
+                                    <UserEdit/>
+                                </Private>} />        
+                            <Route exact path="/ADM-TI/cadastro-usuarios/create" element=
+                                {<Private>
+                                    <UserCreate/>
+                                </Private>} />     
 
 
-                        <Route exact path="/ADM-TI/cadastro-impressoras" element=
-                            {<Private>
-                                <PrinterList/>
-                            </Private>} />       
-                        <Route exact path="/ADM-TI/cadastro-impressoras/create" element=
-                            {<Private>
-                                <PrinterCreate/>
-                            </Private>} /> 
-                        <Route exact path="/ADM-TI/cadastro-impressoras/edit" element=
-                            {<Private>
-                                <PrinterEdit/>
-                            </Private>} /> 
+                            <Route exact path="/ADM-TI/cadastro-impressoras" element=
+                                {<Private>
+                                    <PrinterList/>
+                                </Private>} />       
+                            <Route exact path="/ADM-TI/cadastro-impressoras/create" element=
+                                {<Private>
+                                    <PrinterCreate/>
+                                </Private>} /> 
+                            <Route exact path="/ADM-TI/cadastro-impressoras/edit" element=
+                                {<Private>
+                                    <PrinterEdit/>
+                                </Private>} /> 
 
 
-                        <Route exact path="/ADM-TI/cadastro-noticias" element=
-                            {<Private>
-                                <NoticiasList/>
-                            </Private>} />         
-                        <Route exact path="/ADM-TI/cadastro-noticias/create" element=
-                            {<Private>
-                                <NoticiasCreate/>
-                            </Private>} />      
-                        <Route exact path="/ADM-TI/cadastro-noticias/edit" element=
-                            {<Private>
-                                <NoticiasEdit/>
-                            </Private>} />       
+                            <Route exact path="/ADM-TI/cadastro-noticias" element=
+                                {<Private>
+                                    <NoticiasList/>
+                                </Private>} />         
+                            <Route exact path="/ADM-TI/cadastro-noticias/create" element=
+                                {<Private>
+                                    <NoticiasCreate/>
+                                </Private>} />      
+                            <Route exact path="/ADM-TI/cadastro-noticias/edit" element=
+                                {<Private>
+                                    <NoticiasEdit/>
+                                </Private>} />       
 
 
 
-                        <Route exact path="/Financeiro" element=
-                            {<Private>
-                                <Financeiro/>
-                            </Private>} />    
-                        <Route exact path="/Financeiro/relatorio-fechamentoEstoque" element=
-                            {<Private>
-                                <FinRelatorioFechamnetoEstoque/>
-                            </Private>} /> 
+                            <Route exact path="/Financeiro" element=
+                                {<Private>
+                                    <Financeiro/>
+                                </Private>} />    
+                            <Route exact path="/Financeiro/relatorio-fechamentoEstoque" element=
+                                {<Private>
+                                    <FinRelatorioFechamnetoEstoque/>
+                                </Private>} /> 
 
 
-                        <Route exact path="/Etiquetas" element=
-                            {<Private>
-                                <Etiquetas/>
-                            </Private>} />      
-                        <Route exact path="/Etiquetas/etiquetas-qualidade" element=
-                            {<Private>
-                                <EtiquetasQualidade/>
-                            </Private>} />  
-                        <Route exact path="/Etiquetas/etiquetas-cura" element=
-                            {<Private>
-                                <EtiquetasCura/>
-                            </Private>} />  
-                        <Route exact path="/Etiquetas/etiquetas-data" element=
-                            {<Private>
-                                <EtiquetasData/>
-                            </Private>} />
-                        <Route exact path="/Etiquetas/etiquetas-teste" element=
-                            {<Private>
-                                <EtiquetasTeste/>
-                            </Private>} />  
-                        <Route exact path="/Etiquetas/etiquetas-roto" element=
-                            {<Private>
-                                <EtiquetasRoto/>
-                            </Private>} />  
+                            <Route exact path="/Etiquetas" element=
+                                {<Private>
+                                    <Etiquetas/>
+                                </Private>} />      
+                            <Route exact path="/Etiquetas/etiquetas-qualidade" element=
+                                {<Private>
+                                    <EtiquetasQualidade/>
+                                </Private>} />  
+                            <Route exact path="/Etiquetas/etiquetas-cura" element=
+                                {<Private>
+                                    <EtiquetasCura/>
+                                </Private>} />  
+                            <Route exact path="/Etiquetas/etiquetas-data" element=
+                                {<Private>
+                                    <EtiquetasData/>
+                                </Private>} />
+                            <Route exact path="/Etiquetas/etiquetas-teste" element=
+                                {<Private>
+                                    <EtiquetasTeste/>
+                                </Private>} />  
+                            <Route exact path="/Etiquetas/etiquetas-roto" element=
+                                {<Private>
+                                    <EtiquetasRoto/>
+                                </Private>} />  
+                            <Route exact path="/Etiquetas/etiquetas-barcode39" element=
+                                {<Private>
+                                    <EtiquetasBarCode39/>
+                                </Private>} />  
 
 
-                        <Route exact path="/Portaria" element=
-                            {<Private>
-                                <Portaria/>
-                            </Private>} />  
-                        <Route exact path="/Portaria/controle-lista-veiculos" element=
-                            {<Private>
-                                <PortControleListaVeiculos/>
-                            </Private>} />   
-                        <Route exact path="/Portaria/controle-movimento-veiculos" element=
-                            {<Private>
-                                <PortControleMovimentoVeiculos/>
-                            </Private>} />   
-                        <Route exact path="/Portaria/controle-movimento-novo" element=
-                            {<Private>
-                                <PortControleMovimentoNovo/>
-                            </Private>} />   
+                            <Route exact path="/Portaria" element=
+                                {<Private>
+                                    <Portaria/>
+                                </Private>} />  
+                            <Route exact path="/Portaria/controle-lista-veiculos" element=
+                                {<Private>
+                                    <PortControleListaVeiculos/>
+                                </Private>} />   
+                            <Route exact path="/Portaria/controle-movimento-veiculos" element=
+                                {<Private>
+                                    <PortControleMovimentoVeiculos/>
+                                </Private>} />   
+                            <Route exact path="/Portaria/controle-movimento-novo" element=
+                                {<Private>
+                                    <PortControleMovimentoNovo/>
+                                </Private>} />   
 
-                        <Route exact path="*" element={<NotFound />} />
-                    </Routes>
+                            <Route exact path="*" element={<NotFound />} />
+                        </Routes>
+                    </AnimatePresence>
                 </RetractProvider>
             </AuthProvider>
-        </Router>
     );
 };
 

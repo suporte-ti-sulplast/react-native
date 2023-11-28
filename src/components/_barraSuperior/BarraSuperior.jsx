@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
 import { alterPassword, validPassword } from "../../services/apiLoginUser";
 import { validadorSenha, generatePassword } from '../../functions/manipuladorSenhas';
-import './modalStyles.scss'; // Importo estilos dos modais
+import './modalStylesBarra.scss'; // Importo estilos dos modais
 
 function BarraSuperior() {
 
@@ -207,7 +207,7 @@ function BarraSuperior() {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         shouldCloseOnOverlayClick={modalClosed} // Evita o fechamento ao clicar fora do modal
-        className="custom-modal" // Classe personalizada para estilização
+        className="custom-modal-barra" // Classe personalizada para estilização
       >
 
         <h2>Alteração de senha {errorSenhaExpirada}</h2>
@@ -216,22 +216,25 @@ function BarraSuperior() {
 
         <div className="form-group">
           {/* //INPUT DA SENHA */}
-          <input
-            id="userpass"
-            className="inp "
-            type={typeofPassword}
-            placeholder="Nova Senha"
-            value={newPassword}
-            onClick={(e) => setErrorSenhaClass("hidden")}
-            onChange={(e) => setNewPassword(e.target.value)}
-            form=""
-          />
-          <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="" 
-            onClick={(e) => {
-              eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
-              typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
-              }}
+          <div className="inp-senha">
+            <input
+                  id="userpass"
+                  className="inp "
+                  type={typeofPassword}
+                  placeholder="Nova Senha"
+                  value={newPassword}
+                  onClick={(e) => setErrorSenhaClass("hidden")}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  form=""
             />
+            <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="" 
+                  onClick={(e) => {
+                  eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
+                  typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
+                  }}
+            />
+          </div>
+                
           <div className={"error-message " + errorSenhaClass}>
             {errorSenha}
           </div>
@@ -239,21 +242,23 @@ function BarraSuperior() {
 
         {/* //INPUT DA CONFIRMAÇÃO DA SENHA */}
         <div className="form-group">
+          <div className="inp-senha">
             <input
-            id="userconfirmpass"
-            className="inp "
-            type={typeofRePassword}
-            placeholder="Confirmação Nova Senha"
-            value={newPasswordConfirm}
-            onClick={(e) => setErrorConfimSenhaClass("hidden")}
-            onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
-          />
-          <img className="eye" src={"../images/olho-aberto.png"} alt="erro" 
-            onClick={(e) => {
-              eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
-              typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
-              }}
-          />
+                  id="userconfirmpass"
+                  className="inp "
+                  type={typeofRePassword}
+                  placeholder="Confirmação Nova Senha"
+                  value={newPasswordConfirm}
+                  onClick={(e) => setErrorConfimSenhaClass("hidden")}
+                  onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
+            />
+            <img className="eye" src={"../images/olho-aberto.png"} alt="erro" 
+                onClick={(e) => {
+                eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
+                typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
+                }}
+           />
+          </div>
           <div className={"error-message " + errorConfimSenhaClass}>
             {errorRedigiteSenha}
           </div>
@@ -264,15 +269,15 @@ function BarraSuperior() {
 
         <div className="inpCopy">
           <input id="gerasenha" className="textPassword" value={password} readOnly />
-            <img className="copy" src={"../../images/copy-branco.png"} alt="copy-branco"
-              onClick={() => {
-                handleCopy();
-                setErrorSenha("");
-                setErrorSenhaClass("hidden")
-                setErrorRedigiteSenha("");
-                setErrorConfimSenhaClass("hidden");
-              }}
-            />
+          <img className="copy" src={"../../images/copy-branco.png"} alt="copy-branco"
+            onClick={() => {
+              handleCopy();
+              setErrorSenha("");
+              setErrorSenhaClass("hidden")
+              setErrorRedigiteSenha("");
+              setErrorConfimSenhaClass("hidden");
+            }}
+          />
           </div>
           
         </div>

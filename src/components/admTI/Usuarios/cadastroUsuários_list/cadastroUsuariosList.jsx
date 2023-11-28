@@ -1,6 +1,6 @@
 import "./index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './modalStyles.scss'; // Importo estilos dos modais
+import './modalStylesUsers.scss'; // Importo estilos dos modais
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { findUsers, editUser, alterPassword, validPassword, deleteUser, searchUsers} from "../../../../services/apiLoginUser";
@@ -306,14 +306,18 @@ const CadastroUsuarios =  () => {
       {/* Titulo e botão novo */}
       <div className="titulo">
         <h2>Usuários</h2>
-        <button className="Btn defaultBtn" type="button" onClick ={handleNew}>Novo Usuário</button>
+
+          {/* FITROS */}
+ {/*          <div className="btn-filtros" onClick={() => handleFilterShow()}> 
+            <p><strong>FILTROS  </strong></p>
+          </div>  */}
+          <div className="botoes">
+            <button className="defaultBtn inBtn" type="button" onClick ={handleNew}>Novo usuário</button>          
+          </div>
       </div>
 
       <form action="" className="filtro">
-          {/* FITROS */}
-          <div className="btn-filtros" onClick={() => handleFilterShow()}> 
-            <p><strong>FILTROS  </strong></p>
-          </div> 
+
 
           <hr style={{marginBottom: "1rem"}} className={"linha" + (filterHidden ? "filterHidden" : "")}/>
 
@@ -539,36 +543,49 @@ const CadastroUsuarios =  () => {
           <thead>
             <tr>
               <th className="short" hidden>#</th>
+              <th style={{ textAlign: "center"}}>Editar</th>
+              <th style={{ textAlign: "center"}}>Senha</th>
+              <th style={{ textAlign: "center", display: (loogedUserLevel === "SuperUser" ? "" : "none")}}>Excluir</th>
               <th >Nome</th>
               <th >Login</th>
               <th >Email</th>   
               <th >Departamento</th>
               <th >Nível de acesso</th>
-              <th >CQ</th>
+              <th style={{ textAlign: "center"}}>Código etiqueta</th>
               <th >Status</th>
-              <th >Aniversário</th>
-              <th >Idade senha</th>
+              <th style={{ textAlign: "center"}}>Aniversário</th>
+              <th style={{ textAlign: "center"}}>Idade senha</th>
               <th >Criado em</th>
               <th style={{ textAlign: "center"}}>Recebe e-mail</th>
               <th style={{ textAlign: "center"}}>Compartilhado</th>
-              <th style={{ textAlign: "center"}}>Editar</th>
-              <th style={{ textAlign: "center"}}>Alterar senha</th>
-              <th style={{ textAlign: "center"}}>Excluir</th>
+
             </tr>
           </thead>
-          <tbody className="">
+          <tbody className="tbody">
               {users.map((user) => (
                 <tr key={user.idUser}>
                   <td hidden>{user.idUser}</td>
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../images/editar2.png" alt="editar2" 
+                    onClick={() => handleEdit(user.idUser)} />
+                  </td>
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../images/senha2.png" alt="senha2"
+                      onClick={() => handleChangePassword(user.idUser, user.login)} />
+                  </td>
+                  <td style={{textAlign: "center", display: (loogedUserLevel === "SuperUser" ? "" : "none")}}>
+                      <img className="icon lixeira" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
+                      onClick={() => handleDelete(user.idUser, user.login)} /> 
+                  </td>
                   <td>{user.login}</td>
                   <td>{user.nameComplete}</td>
                   <td>{user.email}</td> 
                   <td>{user.Department.department}</td>
                   <td>{user.Department.AccessLevel.accessLevel}</td>
-                  <td>{user.codCQ}</td>
+                  <td style={{ textAlign: "center"}}>{user.codCQ}</td>
                   <td>{user.Status.status}</td>
-                  <td>{user.birthdate}</td>
-                  <td>
+                  <td style={{ textAlign: "center"}}>{user.birthdate}</td>
+                  <td style={{ textAlign: "center"}}>
                     {calcularDiferencaEmDias(user.agePassword) >= 90 ? (
                       <span style={{ color: 'red', fontWeight: 'bold'}}> {calcularDiferencaEmDias(user.agePassword)} dias</span>
                     ) 
@@ -588,58 +605,44 @@ const CadastroUsuarios =  () => {
                       <img className="icon shared" src="../images/box-unchecked.png" alt="box-unchecked" /> : 
                       <img className="icon shared" src="../images/box-checked.png" alt="box-checked" />} 
                   </td>
-                  <td style={{textAlign: "center"}}>
-                    <img className="icon" src="../images/editar2.png" alt="editar2" 
-                    onClick={() => handleEdit(user.idUser)} />
-                  </td>
-                  <td style={{textAlign: "center"}}>
-                    <img className="icon" src="../images/senha2.png" alt="senha2"
-                      onClick={() => handleChangePassword(user.idUser, user.login)} />
-                  </td>
-                  <td style={{textAlign: "center"}}>
-                      {loogedUserLevel === "SuperUser" ? 
-                      <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
-                      onClick={() => handleDelete(user.idUser, user.login)} /> :
-                      <img className="icon disable" src="../images/lixeira-com-tampa-cinza.png" alt="lixeira-com-tampa"/>
-                      }
-                  </td>
                 </tr>
               ))}
           </tbody>
         </table>
       </div>      
       
-
       {/* //MODAL PARA ALTERAR A SENHA DO USUÁRIO */}
       <Modal
         login={selectedLogin}
         userId={selectedId}
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        className="custom-modal" // Classe personalizada para estilização
+        className="custom-modal-users" // Classe personalizada para estilização
       >
 
         <h2>Alteração de senha</h2>
         <p>Digitar uma nova senha para <span>{selectedLogin}</span> </p>
 
         <div className="form-group">
-          {/* //INPUT DA SENHA */}
-          <input
-            id="userpass"
-            className="inp "
-            type={typeofPassword}
-            placeholder="Nova Senha"
-            value={newPassword}
-            onClick={(e) => setErrorSenhaClass("hidden")}
-            onChange={(e) => setNewPassword(e.target.value)}
-            form=""
-          />
-          <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="ver-senha" 
-            onClick={(e) => {
-              eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
-              typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
-              }}
+          <div className="type-senha">
+            {/* //INPUT DA SENHA */}
+            <input
+              id="userpass"
+              className="inp "
+              type={typeofPassword}
+              placeholder="Nova Senha"
+              value={newPassword}
+              onClick={(e) => setErrorSenhaClass("hidden")}
+              onChange={(e) => setNewPassword(e.target.value)}
+              form=""
             />
+            <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="ver-senha" 
+              onClick={(e) => {
+                eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
+                typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
+                }}
+              />
+          </div>
           <div className={"error-message " + errorSenhaClass}>
             {errorSenha}
           </div>
@@ -647,21 +650,23 @@ const CadastroUsuarios =  () => {
 
         {/* //INPUT DA CONFIRMAÇÃO DA SENHA */}
         <div className="form-group">
+          <div className="type-senha">
             <input
-            id="userconfirmpass"
-            className="inp "
-            type={typeofRePassword}
-            placeholder="Confirmação Senha"
-            value={newPasswordConfirm}
-            onClick={(e) => setErrorConfimSenhaClass("hidden")}
-            onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
-          />
-          <img className="eye" src={"../images/olho-aberto.png"} alt="erro" 
-            onClick={(e) => {
-              eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
-              typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
-              }}
-          />
+              id="userconfirmpass"
+              className="inp "
+              type={typeofRePassword}
+              placeholder="Confirmação Senha"
+              value={newPasswordConfirm}
+              onClick={(e) => setErrorConfimSenhaClass("hidden")}
+              onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
+            />
+            <img className="eye" src={"../images/olho-aberto.png"} alt="erro" 
+              onClick={(e) => {
+                eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
+                typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
+                }}
+            />
+          </div>
           <div className={"error-message " + errorConfimSenhaClass}>
             {errorRedigiteSenha}
           </div>
@@ -678,7 +683,7 @@ const CadastroUsuarios =  () => {
 
         {/* GERADOR DE SENHA */}
         <div className="gerador-senha">
-        <button className="password Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
+        <button className="password defaultBtn inBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
           <div className="inpCopy">
             <input id="gerasenha" className="textPassword" value={password} readOnly />
             <img className="copy" src={"../../images/copy-branco.png"} alt=""
@@ -695,9 +700,9 @@ const CadastroUsuarios =  () => {
         </div>
         
         {/* BOTOÕES */}
-        <div className="btn">
-          <button className="Btn escBtn" onClick={closeModal}>Cancelar</button>
-          <button className="Btn okBtn" onClick={handleSubmit}>Confirmar</button>
+        <div className="botoes">
+          <button className="defaultBtn escBtn" onClick={closeModal}>Cancelar</button>
+          <button className="defaultBtn okBtn" onClick={handleSubmit}>Confirmar</button>
         </div>
 
         {/* INFO DA SENHA */}
@@ -708,7 +713,7 @@ const CadastroUsuarios =  () => {
 
       {/* //MODAL PARA DELETAR O USUÁRIO */}
       <Modal
-        className="custom-modal" // Classe personalizada para estilização
+        className="custom-modal-users" // Classe personalizada para estilização
         login={selectedUserToDelete}
         userId={selectediDToDelete}
         isOpen={isDeleteModalOpen}

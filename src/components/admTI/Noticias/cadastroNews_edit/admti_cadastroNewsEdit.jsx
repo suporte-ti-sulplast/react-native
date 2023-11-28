@@ -3,6 +3,7 @@ import React, { useState, useEffect  } from 'react';
 import { useNavigate } from "react-router-dom";
 import { editNews } from "../../../../services/apiNews"
 import { upload } from "../../../../services/apiMASTER";
+import isEqual from 'lodash/isEqual';
 
 const NewsEdit  = ( props ) => {
     
@@ -13,78 +14,105 @@ const NewsEdit  = ( props ) => {
     const news = props.userData;
 
     //USESTATES QUE RECEBEM OS DADOS DOS DADOS
-    const [idNews] = useState(news.idNews);
-    const [textTiulo, setTextTiulo] = useState(news.title);
-    const [data, setData] = useState(news.date);
-    const [textTexto, setTextTexto] = useState(news.text);
-    const [image, setImage] = useState(null);
-    const [status, setStatus] = useState(news.status);
-    const [dataInit, setDataInit] = useState(news.dateInit);
-    const [dataEnd, setDataEnd] = useState(news.dateEnd);
-    const [link, setLink] = useState(news.link);
-    const [fileName, setFileName] = useState(news.imageName);
-    const [newFileName, setNewFileName] = useState("");
+    const [data, setData] = useState([]);
+    const [dataOld, setDataOld] = useState([]);
+    const [image, setImage] = useState(null); //state que guarda a imagem carregada para salvar no banco
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [newFileName, setNewFileName] = useState('');
     
     //USESTATES DOS ERROS
     const [msg, setMsg] = useState("mensagem inicial"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
     const [msgType, setMsgType] = useState("hidden"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
     const [textErroClass, setTextErroClass] = useState("hidden");
-    const [textErro, setTextErro] = useState("");
+    const [textErro, setTextErro] = useState("Necessário preencher todos os campos");
     const [mensTextMax, setMensTextMax]= useState(MAX_CARACTERES-news.text.length);  
-    const [control, setControl] = useState(false);
+    const [stateButton, setStateButon] = useState();
 
-    //verifica se todos os campos foram preenchidos e retira a mensagem de alerta de preenchimento
     useEffect(() => {
-      if(textTiulo && data && textTexto && image && status && dataInit && dataEnd && link && fileName){
-        setTextErro("");
-        setTextErroClass("hidden");   
-        setFileName(image.name); 
+      setDataOld({
+        ...data,
+        idNews: news.idNews,
+        textTiulo: news.title,
+        data: news.date,
+        textTexto: news.text,
+        status: news.status,
+        dataInit: news.dateInit,
+        dataEnd: news.dateEnd,
+        link: news.title,
+        imageName: news.imageName,
+      });
+      setData({
+        ...data,
+        idNews: news.idNews,
+        textTiulo: news.title,
+        data: news.date,
+        textTexto: news.text,
+        status: news.status,
+        dataInit: news.dateInit,
+        dataEnd: news.dateEnd,
+        link: news.title,
+        imageName: news.imageName,
+      });
+      setStateButon(true);
+    },[]);     
+
+    useEffect(() => {
+      //verifica se houve alguma alteração
+      if (!isEqual(data, dataOld)) {
+        //se houve alteração habilita o botão
+        setStateButon(false);
+      } else {
+        //se não houve alteração mantem o botão desabilitado
+        setStateButon(true);
       }
-      console.log(textTexto.length);
-      console.log("image", image);
-    },[textTiulo, data, textTexto, image, status, dataInit, dataEnd, link, fileName, control]);
+      setTextErroClass("hidden");
+    },[data, dataOld]); 
 
     useEffect(() => {
-        if(newFileName) salvaNoticiaBanco();
-    },[newFileName, fileName]);
- 
+    },[newFileName]); 
+
+    const verificaPreenchido = () => {
+      //testar se todos os campos estão preenchidos
+      const isComplete = Object.values(data).every(Boolean);
+      if(!isComplete) {
+        setTextErroClass("show");
+      } 
+    }
+
+    const salvaImagemBanco = async () => {
+      let FileName = '';
+    
+      if (image != null) {  
+        const formData = new FormData();
+        formData.append('image', image);
+    
+        const headers = {
+          'headers': {
+            'Content-type': 'application/json'
+          }
+        }
+    
+        const response = await upload(formData, headers);
+        FileName = response.name
+        setImageLoaded(true); // Adiciona esta linha
+      } else {
+        FileName = 'naoTem';
+        setImageLoaded(true); // Adiciona esta linha
+      }
+      setNewFileName(FileName);
+    }
+        
     //FUNÇÃO DO BOTÃO DE SUBMIT DO FORMULÁRIO
     const handleSubmit =  async (e) => {
       
       e.preventDefault(); //PREVINE A AÇÃO DEFULT DO FORMULÁRIO
+      verificaPreenchido();
+      salvaImagemBanco();   
 
-      if(textTexto.length < MIN_CARACTERES || textTexto.length > MAX_CARACTERES){
-        setControl(true);
-        setMsgType("show");
-        setTextErro("O texto da mensagem precisar tem entre 160 e 750 caracteres.")
+      if (imageLoaded) {
+        salvaNoticiaBanco();
       } else {
-        setMsgType("hidden");
-        setTextErro("Necessário preencher todos os campos");
-        setControl(false);
-      }; 
-
-      const formData = new FormData();
-      formData.append('image', image);
-
-      const headers = {
-        'headers': {
-          'Content-type': 'application/json'
-        }
-      }
-      
-      if(textTiulo && data && textTexto && image && status && dataInit && dataEnd && link  && !control) {
-        const response = await upload(formData, headers);
-        setNewFileName(response.name);
-
-      } else {
-        setTextErroClass("show");
-        if(image === null ||  image ===""){
-          setTextErro("Necessário anexar a imagem novamente.");
-        } else if(control){
-          setTextErro("O texto da mensagem precisar tem entre 160 e 750 caracteres.")
-        } else {
-          setTextErro("Necessário preencher todos os campos");
-        }
+        console.log('A imagem ainda está sendo carregada...');
       }
     };
       
@@ -94,10 +122,8 @@ const NewsEdit  = ( props ) => {
     }
 
     const salvaNoticiaBanco  = async () => {
-
       try {
-        const response = await editNews(idNews, textTiulo, data, textTexto, fileName, newFileName, status, dataInit, dataEnd, link);
-        console.log(response.msg);
+        const response = await editNews(data, newFileName);
         setMsg(response.msg)
                 if(response.msg_type === "success") {
                   setMsgType("success")
@@ -106,16 +132,7 @@ const NewsEdit  = ( props ) => {
                 }
 
         //LIMPA O FORMULÁRIO
-        setTextTiulo("");
-        setData("");
-        setTextTexto("");
-        setImage(null);
-        setStatus(1);
-        setDataInit("");
-        setDataEnd("");
-        setLink("");
-        setFileName("");
-        setNewFileName("");
+
         setTextErroClass("hidden")
 
         // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
@@ -135,31 +152,38 @@ const NewsEdit  = ( props ) => {
       // Limita o texto em 750 caracteres
       if (newTexto.length <= MAX_CARACTERES) {
         setMensTextMax(MAX_CARACTERES -newTexto.length);
-        setTextTexto(newTexto);
+        setData({
+          ...data,
+          textTexto: newTexto
+        });
       }
     };
 
     
     //RENDERIZAÇÃO DA PÁGINA ****************************************************
     return (
-    <section className="Noticias">
+    <section className="NoticiasEditar">
 
-      <h2>Alterar Noticia</h2>
-      <hr />
+      <h2>Alterar notícia</h2>
 
       <div className="content">
-        <form className="form" onSubmit={handleSubmit} encType="multipart/form-data">
+      <form className="form" 
+              onSubmit={handleSubmit} 
+              encType="multipart/form-data">
 
           <div className="linha">
             <div className="titulo">
               <label className="lbl-titulo" htmlFor="titulo">Título: &emsp;</label>
               <input id="titulo"
                      type="text"
-                     value={textTiulo}
+                     value={data.textTiulo}
                      placeholder="COLOQUE UM TÍTULO AQUI" 
                      onChange={(e) => {
-                setTextTiulo(e.target.value); 
-                }} />
+                      setData({
+                        ...data,
+                        textTiulo: e.target.value
+                      });
+                    }} />
             </div> 
           </div>
 
@@ -169,10 +193,13 @@ const NewsEdit  = ( props ) => {
               <label htmlFor="data">Data/Período: &emsp;</label>
               <input id="area"
                      type="text"
-                     value={data}
+                     value={data.data}
                      placeholder="AQUI É UMA DATA GENÉRICA - EX. 15 DE AGOSTO ou 01 À 12 DE MARÇO ou MÊS DE SETEMBRO" 
                      onChange={(e) => {
-                setData(e.target.value); 
+                      setData({
+                        ...data,
+                        data: e.target.value
+                      });
                 }} />
             </div>
           </div>
@@ -183,7 +210,7 @@ const NewsEdit  = ( props ) => {
               <div style={{display: "flex", flexDirection: "column", textAlign: "left"}}>
                 <textarea id="area"
                           type="text"
-                          value={textTexto}
+                          value={data.textTexto}
                           placeholder="Aqui vai um resuma do notícia com até 1.000 caracteres" 
                           onChange={handleChangeTexto}
                   />
@@ -195,20 +222,36 @@ const NewsEdit  = ( props ) => {
           <div className="linha"> 
             <div className="dataInicial">
               <label htmlFor="dataInicial">Data de início da exibição: &emsp;</label>
-              <input id="dataInicial" type="date" value={dataInit} onChange={(e) => {
-                setDataInit(e.target.value); 
-                }} />
+              <input id="dataInicial" type="date" value={data.dataInit}
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    dataInit: e.target.value
+                  });
+                }}
+              />
             </div> 
             <div className="dataFinal">
               <label htmlFor="dataFinal">Data final da exibição: &emsp;</label>
-              <input id="dataFinal" type="date" value={dataEnd} onChange={(e) => {
-                setDataEnd(e.target.value); 
+              <input id="dataFinal" type="date" value={data.dataEnd} 
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    dataEnd: e.target.value
+                  });
                 }} />
             </div> 
             <div className="status">
                 <label id="status" htmlFor="status">Notícia inicia:</label>
-                <select id="status" name="status" onChange={(e) => setStatus(e.target.value)}>
-                  <option>{status === 1 ? "Ativa" : "Inativa" }</option>
+                <select id="status" name="status" 
+                  onChange={(e) => {
+                    setData({
+                      ...data,
+                      status: e.target.value
+                    });
+                  }}
+                >
+                  <option>{data.status === 1 ? "Ativa" : "Inativa" }</option>
                   <option value="1">Ativa</option>
                   <option value="0">Inativa</option>
                 </select>
@@ -217,34 +260,46 @@ const NewsEdit  = ( props ) => {
 
           <div className="linha">
             <div className="arquivo">
-                <label id="arquivoLabel" htmlFor="file">Escolher imagem JPG/PNG</label>
-                <input 
-                  id="file"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={(e) => {
-                setImage(e.target.files[0]); 
-                setFileName(e.target.files[0].name);
+             <label id="arquivoLabel" htmlFor="file">Escolher imagem JPG/PNG</label>
+              <div className="upload">
+                <p>{data.imageName || "Nenhum arquivo selecionado"}</p>
+                <button className="uploadImage" onClick={() => document.getElementById('file').click()}>Adicionar</button>
+              </div>
+              <input 
+                id="file"
+                type="file"
+                name="image"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    imageName: e.target.files[0].name, //aqui pega o NOME da imagem
+                  });
+                  setImage(e.target.files[0]); //aqui pega o objeto IMAGEM             
+                  setImageLoaded(false); // aqui vai bloquear o evento do form até q tenha uma imagem carregada
                 }} />
             </div>
             <div className="link">
               <label htmlFor="link">Hyperlink: &emsp;</label>
-              <input id="link" type="text" value={link} onChange={(e) => {
-                setLink(e.target.value); 
+              <input id="link" type="text" value={data.link} onChange={(e) => {
+                setData({
+                  ...data,
+                  link: e.target.value
+                });
                 }} />
             </div>
           </div>
-
-          <br />
 
           <div className="erro">
             <div className={"erros " + textErroClass}>{textErro}</div>
           </div>  
 
+          <hr />
+
           <div className="botoes">
-            <button style={{height: "33px"}} className="escBtn Btn" type="button" onClick ={handleCancel}>Cancelar</button>
-            <button className="okBtn Btn" type="submit">Alterar</button>
+            <button className="escBtn defaultBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+            <button disabled={stateButton}  className="okBtn defaultBtn" type="submit">Alterar</button>
           </div>
 
           <div className="form-group">
@@ -252,7 +307,6 @@ const NewsEdit  = ( props ) => {
           </div>
                       
         </form>
-
       </div>
       
     </section> 

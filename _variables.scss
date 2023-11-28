@@ -4,7 +4,7 @@ $white-color: #ffffff;
 $bck-color: #f4f4f4;
 $border-color: #cccccc;
 $border-color-gray: gray;
-$shadow-color: #ada9a9;
+$shadow-color: #1d1a1aaf;
 $msg-erro: #FFDEAD;
 $msg-sucesso: #7FFFD4;
 $select-input-background: aliceblue;
@@ -13,14 +13,19 @@ $pagina-desativada: #b7daf0;
 $pagina-ativada: #39aaf0;
 
 $background: #c5d9e6;
-$erro:  rgb(255, 72, 72);
+$erro:  rgb(204, 5, 5);
+$background-erro: bisque;
 $placeholder: #999;
 
+
 $defaultBtn: #1197eb;
-$defaultBtn-hover: #55c9f0;
+$defaultBtn-hover: #469fd6;
+
 $okBtn: green;
 $okBtn-hover: rgb(93, 173, 93);
+
 $escBtn: orange;
 $escBtn-hover: rgb(247, 199, 109);
 
 $blue-default: #0d6efd;
+$blue-letter: #1197eb;

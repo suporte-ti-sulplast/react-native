@@ -73,5 +73,16 @@ export const labelPrintRoto = async (qtdade, codigo, material, ip) => {
 };
 
 
+//IMPRIME ETIQUETA BARCODE39
+export const labelPrintBarCode39 = async (qtdade, codigo, setLegenda, ip) => {
+  try{ 
+    const response = await api.post("/etq-barcode39-print-search", {qtdade, codigo, setLegenda, ip})
+    return response.data;
+  }   catch (error) {
+    console.error("Ocorreu um erro ao fazer a requisição:", error);
+    throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
+  }
+};
+
 
 

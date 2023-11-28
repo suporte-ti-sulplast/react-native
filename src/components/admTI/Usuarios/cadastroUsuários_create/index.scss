@@ -1,13 +1,21 @@
 @import '../../../../../variables';
 
 .cadastrarUsuarios{
+    height: 710px;
+    transform: translateY(-125px);
 
     .content{
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
 
+        .bloco{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0rem;
+        }
+    }
 
     .tips{
         font-size: 0.9rem;
@@ -20,12 +28,16 @@
         padding: 0.2rem;
     }
 
+    .type-senha{
+        position: relative;
+    }
+
     .eye{
         position: absolute;
         top: 50%;
-        right: 16rem;
-        top: 7px;
-        width: 23px;
+        transform: translateY(-50%);
+        right: 7px;
+        width: 19px;
         cursor: pointer;
         z-index: 99;
       }
@@ -54,7 +66,7 @@
             align-items: center;
 
             .form-group{
-                margin-top: 0.5rem;
+                padding: 0.3rem;
                 display: flex;
                 gap: 0.5rem;
                 text-align: center;
@@ -70,7 +82,6 @@
             border-radius: 8px;
             box-shadow: 2px 2px 2px  $shadow-color;
         }
-
 
         input{
             width: 25rem;
@@ -117,6 +128,7 @@
         background-color: transparent;
         border: 1px solid $dark-text-color
     }
+
     .radio-block{
         width: 10rem;
         height: 2rem;
@@ -134,8 +146,70 @@
         width: 1rem;
     }
 
-    .senha, .confirmSenha, .gerador{
+    .gerador{
         position: relative;
     }
     
+}
+
+@media (max-width: 1370px) {
+
+    .cadastrarUsuarios{
+        height: 440px !important;
+
+        h2{
+            font-size: 1.2rem;
+            margin: 0.3rem;
+            padding: 0;
+        }
+
+        .tips{
+            font-size: 0.7rem;
+        }
+
+        hr{
+            padding: 0;
+            margin: 0.4rem;
+        }
+
+        .eye{
+            width: 14px;
+        }
+    
+        .copy{
+        width: 14px;
+        }
+
+        .form{
+
+            .ladoEsq, .ladoDir{
+                .form-group{
+                    padding: 0.2rem;
+                }
+            }  
+            
+            label{
+                width: 10rem;
+            }    
+            input{
+                width: 17rem;
+            }
+
+            select{
+                width: 17rem;
+
+            }
+
+            .erros{
+                width: 7rem;
+            }
+        }
+
+        .textPassword{
+            width: 8rem !important;
+            height: 1.71rem;
+
+        }
+    }
+
 }
