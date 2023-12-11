@@ -13,10 +13,13 @@ const EtiQualidade  = () => {
     const etiquetaRef = useRef();
     const data = converteData(new Date());
     const { userLogged } = useContext(AuthContext);
+    const codCQ = (userLogged.logged.codCQ?.match(/CQ\d{2}/) ?? '')?.[0];
+    const login = userLogged.logged.login;
 
     const [qtade, setQtade] = useState('1');
     const [printers, setPrinters] = useState([]);
     const [selectedPrinter, setSelectedPrinter] = useState([]);
+    const [date, setDate] = useState(data);
     const [printNetField, setPintNetField] = useState("hidden");
     const [printUsbField, setPintUsbField] = useState("hidden");
     const [netUsbValue, setNetUsbValue] = useState();
@@ -38,6 +41,10 @@ const EtiQualidade  = () => {
       }
       buscaImpressoras(userLogged.logged.Department.idDept);
     },[])
+
+    useEffect(() => {
+
+    },[date])
 
     //FUNÇÃO PARA RETORNAR O PADRÃO DA IMPRESSORA SELECIONADA 
     const findNetUsbValue = (printerName) => {
@@ -81,7 +88,7 @@ const EtiQualidade  = () => {
     const handleImprimirRede =  async (e) => {
       
       try {
-        const response = await labelPrintQualidade(userLogged.logged.codCQ, data, qtade, ipValue);
+        const response = await labelPrintQualidade(codCQ, data, qtade, ipValue);
         setMsg(response.msg);
 
         if(response.msg_type === "success") {
@@ -154,126 +161,141 @@ const EtiQualidade  = () => {
       navigate("/Etiquetas"); 
     }
 
+    /* RENDEZIÇÃO DA PÁGINA ********************************************** */
     return (
     <section className="etiQualidade">
 
-      <div className="titulo"></div>
-      <h2>Etiquetas - Controle de qualidade</h2>
-      <br />
+      <div className="subTitulo">
+        <h2>Etiquetas - Controle de qualidade</h2>
+      </div>
 
-      <div className="body">
-        <h2>Operador CQ:&nbsp; <span>{userLogged.logged.login}</span></h2>
-        <h2>Código CQ: &nbsp;<span>{userLogged.logged.codCQ}</span></h2>
-        <h2>Data: &nbsp;<span>{data}</span></h2>
-
-        <br />
+      <div className="corpoBloco">
 
         <div id="etiqueta" className="etiqueta etiqueta_para imprimir"
             ref={etiquetaRef}>
           <div className="item">
-            <h4>{userLogged.logged.codCQ}</h4>
-            <p>{data}</p>
+            <h4>{codCQ}</h4>
+            <p>{date}</p>
           </div>
           <div className="item">
-            <h4>{userLogged.logged.codCQ}</h4>
-            <p>{data}</p>
+            <h4>{codCQ}</h4>
+            <p>{date}</p>
           </div>
           <div className="item">
-            <h4>{userLogged.logged.codCQ}</h4>
-            <p>{data}</p>
+            <h4>{codCQ}</h4>
+            <p>{date}</p>
           </div>
           <div className="item">
-            <h4>{userLogged.logged.codCQ}</h4>
-            <p>{data}</p>
+            <h4>{codCQ}</h4>
+            <p>{date}</p>
           </div>
         </div>
+
+        <div className="campos">
+          <h2>Operador CQ:&nbsp; <span>{login}</span></h2>
+          <h2>Código CQ: &nbsp;<span>{codCQ}</span></h2>
+          <h2>Data: &nbsp;
+            <span>
+            <input className="inputTexto"
+              type="text"
+              name="texto"
+              id="texto"
+              value={date}
+              onChange={(e) => {
+                const value = e.target.value;
+                setDate(value);
+              }}
+            />
+            </span>
+          </h2>
+        </div>
+        
+
+        {/* Grupo Impressoras */}
+        <div className="impreessoras">
+            {printers.length > 0 ? (
+              <select
+                className="select"
+                id="impressoras"
+                name="impressoras"
+                value={selectedPrinter}
+                onChange={(e) => setSelectedPrinter(e.target.value)}
+              >
+                <option>
+                  Selecione uma impressora
+                </option>
+                {printers.map((pt, idPrinter) => (
+                  <option key={idPrinter} value={pt.Printer.printerName}>
+                    {pt.Printer.printerName}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div>
+                <p style={{color: "red"}}><strong>Não existem impressoras cadastradas para esse departamento.</strong></p>
+              </div>
+            )}
+        </div>
+
+        {
+          netUsbValue !== null && (
+            <div className="btnImprimir">
+              {netUsbValue === 0 ? (
+                <div className="botoes">
+                  <button className="escBtn defaultBtn" type="button" onClick={handleCancel}>
+                    Cancelar
+                  </button>
+                  <button
+                    id="imprimirUsb"
+                    className={"okBtn defaultBtn"}
+                    type="button"
+                    onClick={handleImprimirUsb}
+                  >
+                    Imprimir
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className={"qtdade"}>
+                    <div className="conta">
+                      <p>Quantidade de etiquetas: &nbsp;</p>
+                      <input
+                        type="number"
+                        name="qtade"
+                        id="qtade"
+                        value={qtade}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          setQtade(isNaN(value) ? 0 : value);
+                        }}
+                      />
+                    </div>
+                    <div className={"conta"}>
+                      <p>{qtade * 4}&nbsp;etiquetas serão impressas: </p>
+                    </div>
+                  </div>
+                  <div className="botoes">
+                    <button className="escBtn defaultBtn" type="button" onClick={handleCancel}>
+                      Cancelar
+                    </button>
+                    <button
+                      id="imprimirRede"
+                      className="okBtn defaultBtn"
+                      type="button"
+                      onClick={handleImprimirRede}
+                    >
+                      Imprimir
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        }
+
       </div>
 
-      <br /><br />
 
-      {/* Grupo Impressoras */}
-      <div>
-          {printers.length > 0 ? (
-            <select
-              className="select"
-              id="impressoras"
-              name="impressoras"
-              value={selectedPrinter}
-              onChange={(e) => setSelectedPrinter(e.target.value)}
-            >
-              <option>
-                Selecione uma impressora
-              </option>
-              {printers.map((pt, idPrinter) => (
-                <option key={idPrinter} value={pt.Printer.printerName}>
-                  {pt.Printer.printerName}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div>
-              <p style={{color: "red"}}><strong>Não existem impressoras cadastradas para esse departamento.</strong></p>
-            </div>
-          )}
-        </div>
-
-        <br /><br />
-
-      {
-        netUsbValue !== null && (
-          <>
-            {netUsbValue === 0 ? (
-              <div style={{display:"flex"}}>
-                <button style={{ height: "33px" }} className="escBtn Btn" type="button" onClick={handleCancel}>
-                  Cancelar
-                </button>
-                <button
-                  id="imprimirUsb"
-                  className={"okBtn Btn"}
-                  type="button"
-                  onClick={handleImprimirUsb}
-                >
-                  Imprimir
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className={"qtdade"}>
-                  <div className="conta">
-                    <p>Quantidade de etiquetas: &nbsp;</p>
-                    <input
-                      type="number"
-                      name="qtade"
-                      id="qtade"
-                      value={qtade}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        setQtade(isNaN(value) ? 0 : value);
-                      }}
-                    />
-                  </div>
-                  <div className={"conta"}>
-                    <p>{qtade}&nbsp;etiquetas serão impressas: </p>
-                  </div>
-                </div>
-                <div style={{display:"flex"}}>
-                <button style={{ height: "33px" }} className="escBtn Btn" type="button" onClick={handleCancel}>
-                  Cancelar
-                </button>
-                <button
-                  id="imprimirRede"
-                  className={"okBtn Btn"}
-                  type="button"
-                  onClick={handleImprimirRede}
-                >
-                  Imprimir
-                </button>
-                </div>
-              </>
-            )}
-          </>
-        )
-      }
 
     < div className={'msg ' + msgType}>{msg}</div>
 

@@ -23,7 +23,9 @@ function Portaria() {
         </div>
         <div className="lateralDireita">
         <AnimatedContainer>
-          <MenuPortaria />
+          <div>
+            <MenuPortaria />
+          </div>
         </AnimatedContainer>
         </div>
       </div>

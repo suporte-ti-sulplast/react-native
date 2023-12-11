@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./index.scss";
+import Modal from 'react-modal';
 import { AuthContext } from "../../contexts/auth";
 import AnimatedContainer from '../../hooks/motion';
+import './modalStylesForgot.scss'; // Importo estilos dos modais
 
 const Login = () => {
 
@@ -15,6 +17,7 @@ const Login = () => {
     const [textErroPassword, setTextErroPassword] = useState("texto")
     const [eyeSenha, setEyeSenha] = useState("aberto") //variavel para abrir ou fechar o olho
     const [typeofPassword, setTypeofPassword] = useState("password") //variavel para mudar o type de senha
+    const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
     const erros = (userStatus) => {
         switch(userStatus) {
@@ -84,15 +87,21 @@ const Login = () => {
         };
     };
 
+    const handleForgot = () => {
+        setIsForgotModalOpen(true);
+    }
+
     return (
         <AnimatedContainer>
             <section className="login">
                 <div className="group">
 
                     <div className="leftSide">
-                        <img src="../images/logoSulplastBranco.png" alt="logoSulplastBranco" />
-                        <h1>Sulplast</h1>
-                        <h3>Bem-vindo à INTRANET</h3>
+                        <a href="https://www.sulplast.com.br/pt_BR" target="_blank" rel="noopener noreferrer">
+                            <img src="../images/logoSulplastBranco.png" alt="logoSulplastBranco" />
+                            <h1>Sulplast</h1>
+                            <h3>Bem-vindo à INTRANET</h3>
+                        </a>
                     </div>
 
                     <div className="rigthSide">
@@ -139,11 +148,31 @@ const Login = () => {
                                     setErrorLogin("error-message-hidden");
                                     setErrorPassword("error-message-hidden");
                                 }}>Entrar</button>
+                                <p className="forget"
+                                    onClick={handleForgot}>Esqueci a senha ...</p>
                             </div>
                         </form>
                     </div>
 
                 </div>
+
+        {/* //MODAL PARA ESQUECIA A SENHA */}
+      <Modal
+        className="custom-modal-forgot" // Classe personalizada para estilização
+        isOpen={isForgotModalOpen}
+        onRequestClose={() => {
+          setIsForgotModalOpen(false);
+        }}
+      >
+        <h2>Solicitar uma nova senha</h2>
+
+        <p><span>Para solictar uma nova senha, favor entrar em <br />contato com o departamento de TI</span> - Ramal 114</p>
+
+        <div className="botoes">
+          <button className="defaultBtn escBtn" onClick={() => setIsForgotModalOpen(false)}>Fechar</button>
+        </div>
+
+      </Modal>  
             </section>
         </AnimatedContainer>
     );

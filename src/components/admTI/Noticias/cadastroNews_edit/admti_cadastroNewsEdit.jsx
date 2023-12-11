@@ -9,7 +9,6 @@ const NewsEdit  = ( props ) => {
     
     const navigate = useNavigate();
     const MAX_CARACTERES = 750;    
-    const MIN_CARACTERES = 160; 
 
     const news = props.userData;
 
@@ -24,7 +23,7 @@ const NewsEdit  = ( props ) => {
     const [msg, setMsg] = useState("mensagem inicial"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
     const [msgType, setMsgType] = useState("hidden"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
     const [textErroClass, setTextErroClass] = useState("hidden");
-    const [textErro, setTextErro] = useState("Necessário preencher todos os campos");
+    const [textErro] = useState("Necessário preencher todos os campos");
     const [mensTextMax, setMensTextMax]= useState(MAX_CARACTERES-news.text.length);  
     const [stateButton, setStateButon] = useState();
 
@@ -59,7 +58,8 @@ const NewsEdit  = ( props ) => {
     useEffect(() => {
       //verifica se houve alguma alteração
       if (!isEqual(data, dataOld)) {
-        //se houve alteração habilita o botão
+        console.log("houve alteração")
+        verificaPreenchido();
         setStateButon(false);
       } else {
         //se não houve alteração mantem o botão desabilitado
@@ -94,11 +94,13 @@ const NewsEdit  = ( props ) => {
     
         const response = await upload(formData, headers);
         FileName = response.name
-        setImageLoaded(true); // Adiciona esta linha
+        setImageLoaded(true);
       } else {
         FileName = 'naoTem';
-        setImageLoaded(true); // Adiciona esta linha
+        setImageLoaded(true);
       }
+    
+      console.log(FileName);
       setNewFileName(FileName);
     }
         
@@ -106,7 +108,6 @@ const NewsEdit  = ( props ) => {
     const handleSubmit =  async (e) => {
       
       e.preventDefault(); //PREVINE A AÇÃO DEFULT DO FORMULÁRIO
-      verificaPreenchido();
       salvaImagemBanco();   
 
       if (imageLoaded) {
@@ -122,14 +123,15 @@ const NewsEdit  = ( props ) => {
     }
 
     const salvaNoticiaBanco  = async () => {
+
       try {
         const response = await editNews(data, newFileName);
         setMsg(response.msg)
-                if(response.msg_type === "success") {
-                  setMsgType("success")
-                } else {
-                  setMsgType("error")
-                }
+              if(response.msg_type === "success") {
+                setMsgType("success")
+              } else {
+                setMsgType("error")
+              }
 
         //LIMPA O FORMULÁRIO
 
@@ -308,6 +310,8 @@ const NewsEdit  = ( props ) => {
                       
         </form>
       </div>
+
+
       
     </section> 
   )

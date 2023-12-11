@@ -23,7 +23,9 @@ function Fin() {
           </div>
           <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuFinanceiro />
+            <div>
+              <MenuFinanceiro />
+            </div>
           </AnimatedContainer>
           </div>
         </div>

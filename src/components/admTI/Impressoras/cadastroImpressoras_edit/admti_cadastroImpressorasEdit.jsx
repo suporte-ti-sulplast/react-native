@@ -48,14 +48,18 @@ const CadastroImpressorasEdit = ( props ) => {
 
     /* CARREGA A LISTA DE DEPARTAMENTOS E STATES AO CARREGAR A PÁGINA */
     useEffect(() => {
-      getPrinterData(printer.idPrinter);
-      getUserDeptoStatus();
-    },[])
+      const fetchData = async () => {
+        await getPrinterData(printer.idPrinter);
+        await getUserDeptoStatus();
+      };
+
+      fetchData();
+    }, []);
 
     useEffect(() => {
-            // Extrai apenas os nomes dos departamentos
-            const nomesDepartamentos = departamentos.map((dept) => dept.Department.department);
-            setGrupoDepto(nomesDepartamentos);
+        // Extrai apenas os nomes dos departamentos
+        const nomesDepartamentos = departamentos.map((dept) => dept.Department.department);
+        setGrupoDepto(nomesDepartamentos);
     },[ip, departamentos ])
 
     /* VERIFICA SE O ARRAY grupoDepto ESTÁ VAZIO A CADA ALTERAÇÃO DO MESMO */
@@ -118,7 +122,7 @@ const CadastroImpressorasEdit = ( props ) => {
         setTextErroDeptoClass("Show");
       }
       
-      /* verifica se nãovai criar duplicida de nome e ip */
+      /* verifica se não vai criar duplicida de nome e ip */
       try {
         const response = await verificaNomeIP(nome, ip, controle, nomeOld, ipOld);
         erro = response.erro;
@@ -157,7 +161,6 @@ const CadastroImpressorasEdit = ( props ) => {
       }; 
 
       /* Se todos os campos preenchidos e há pelo menos 1 departamento segue com o salvamento  */
-      console.log(erro)
       if(nome && fabricante && modelo && erro === 0 &&  grupoDepto.length > 0) {
         /* atribui os dados a uma variável */
         const dadosParaEnviar = {
@@ -185,18 +188,12 @@ const CadastroImpressorasEdit = ( props ) => {
                 setMsg(response.msg);
                 setNome("");
                 setFabricante("");
-                setModelo("");
-                setStatus("");
-                setNetUsb("1");
-                setIp("");
-                setSelectedDept("");
-                setIpField("show");
-                setGrupoDepto([]); 
                 erro = null;
 
                 // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
                 setTimeout(() => {
                   setMsgType("hidden");
+                  navigate("/ADM-TI/cadastro-impressoras"); 
                 }, 3000);
         } catch (err) {
           console.error('Ocorreu um erro durante a consulta:', err);
@@ -212,6 +209,7 @@ const CadastroImpressorasEdit = ( props ) => {
     /* FUNÇÃO DO BOTÃO ADICIONAR GRUPOS DA IMPRESSORA */
     const handleAdicionaGrupo = () => {
       if (selectedDept && selectedDept !== "Adicione um ou mais departamentos" && !grupoDepto.includes(selectedDept)) {
+        console.log(grupoDepto)
           setGrupoDepto([...grupoDepto, selectedDept]);
           setSelectedDept('');
           setTextErroDeptoClass("hidden");  // Para ocultar a mensagem de erro, se estiver visível
@@ -239,15 +237,15 @@ const CadastroImpressorasEdit = ( props ) => {
     /* RENDERIZAÇÃO DA PÁGINA **************************************************** */
     return (
     <section className="editarImpressoras">
-
-      <h2>Visualizar ou alterar impressora</h2>
-      <hr />
+      <div className="subTitulo">
+        <h2>Visualizar ou alterar impressora</h2>
+      </div>
 
       <div className="content">
         
         <form className="form" onSubmit={handleSubmit}>
           
-          <div style={{display:"grid", gridTemplateColumns: "1fr 1fr"} }>
+          <div className="bloco">
             
             <div className="ladoEsq">
 
@@ -373,7 +371,7 @@ const CadastroImpressorasEdit = ( props ) => {
                   onClick={handleAdicionaGrupo}
                 />
               </div>
-              <div style={{width:"auto"}} className={"erros " +  textErroDeptoClass}>{textErroDepto}</div>
+              <div style={{width:"auto"}} className={"errosDepto " +  textErroDeptoClass}>{textErroDepto}</div>
 
               <div className="tabela"> 
                 <table className="">
@@ -403,21 +401,15 @@ const CadastroImpressorasEdit = ( props ) => {
 
           </div> {/* fecha AMBOS OS LADOS */}
 
-          <hr />
+            <div className="botoes">
+              <button className="escBtn defaultBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+              <button className="okBtn defaultBtn" type="submit">Salvar</button>
 
-          <div style={{display:"grid", gridTemplateColumns: "1fr", gap: '3rem'} }>
-
-            <div className="form-group">
-              <button className="escBtn Btn" type="button" onClick ={handleCancel}>Cancelar</button>
-              <button className="okBtn Btn" type="submit">Salvar</button>
+              <div className="form-group">
+                <div className={'msg ' + msgType}>{msg}</div>
+              </div>
             </div> 
 
-          <div className="form-group">
-            <div className={'msg ' + msgType}>{msg}</div>
-          </div>
-
-          </div>
-                      
         </form>
 
       </div>

@@ -27,8 +27,10 @@ function ControlePortaria() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuPortaria />
-            <ControleMovimentoVeiculos userData={vehicleId} />
+            <div className='split'>
+              <MenuPortaria />
+              <ControleMovimentoVeiculos userData={vehicleId} />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

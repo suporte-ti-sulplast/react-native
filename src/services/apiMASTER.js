@@ -30,3 +30,24 @@ export const depptoStatus = async () =>
     throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
   }
 };
+
+//BUSCAR ARQUIVOS NA PASTA SGI
+export const fetchPdfBlob = async (fileName) => {
+
+  console.log(fileName)
+
+  try
+  {
+    const response = await api.get(`/api/pdf/${fileName}`);
+    console.log(response.data)
+    return response.data; // Retornar os dados da resposta da API
+
+  }
+  catch (error)
+  {
+    console.error("Ocorreu um erro ao fazer a requisição:", error);
+    throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
+  }
+
+
+};

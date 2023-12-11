@@ -80,11 +80,11 @@ export const checkLoginEmailCQ = async (login, email, codCQ) =>
 
 
 //ADICIONA O USUÁRIO NO BANO DE DADOS
-export const createUser = async (login, name, email, setorId, statusId, compart, recebeEmail, senha, codCQ) =>
+export const createUser = async (login, name, email, setorId, statusId, compart, recebeEmail, senha, codCQ, birthdate) =>
 {
   try
   {
-    const response = await api.post("/user-addbd", { login, name, email, setorId, statusId, compart, recebeEmail, senha, codCQ });
+    const response = await api.post("/user-addbd", { login, name, email, setorId, statusId, compart, recebeEmail, senha, codCQ, birthdate });
     return response.data; // Retornar os dados da resposta da API
   }
   catch (error)
@@ -96,11 +96,11 @@ export const createUser = async (login, name, email, setorId, statusId, compart,
 
 
 //ATUALIZA O USUÁRIO NO BANCO DE DADOS
-export const updateUser = async ( userId, textEmail, textName, setorId, statusId, shared, recebeEmail, codCQ) =>
+export const updateUser = async ( userId, textEmail, textName, setorId, statusId, shared, recebeEmail, codCQ, birthdate) =>
 {
   try
   {
-    const response = await api.post("/user-updatebd", { userId, textName, textEmail, setorId, statusId, shared, recebeEmail, codCQ });
+    const response = await api.post("/user-updatebd", { userId, textName, textEmail, setorId, statusId, shared, recebeEmail, codCQ, birthdate});
     return response.data; // Retornar os dados da resposta da API
   } 
   catch (error) 

@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 99.5%;
+  font-size: 100%;
   font-family: $font-sans-serif;
   vertical-align: baseline;
   overflow: hidden;
@@ -24,8 +24,22 @@ a{
     margin: auto;
 }
 
-body{
-    width: 100%;
+.app{
+    height: 99%;
+
+    section{
+        display: grid;
+        grid-template-rows: auto 1fr;
+
+        height: 100%;
+
+        .barraSuperior{
+            display: flex;
+            flex-direction: row;
+            margin: 0 !important;
+            padding: 0.5rem 1rem;
+        }
+    }
 }
 
 h1{
@@ -41,7 +55,7 @@ p{
 }
 
 .corpo{
-    height: 810px;
+    height: 100%;
     margin: 0 0.8rem;
     border-radius: 10px;
     background-color: $background;
@@ -53,8 +67,13 @@ p{
         box-shadow: 2px 2px 2px $shadow-color;
         border-radius: 8px;        
     }
-}
 
+    .split{
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+    }
+}
 
 .expanded{
     display: grid;
@@ -66,6 +85,42 @@ p{
     display: grid;
     grid-template-columns: 90px auto;
     transition: all 0.2s ease-in-out;
+}
+
+.geral{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: auto;
+    margin: 0.5rem;
+    background-color: $bck-color;
+    padding: 0.5rem;
+    border: 1px solid $border-color;
+    border-radius: 7px;
+    box-shadow: 3px 3px 5px $shadow-color;
+    overflow: visible;
+    z-index: 99;
+    height: 50px;
+}
+
+//classe subTitulos das páginas
+.subTitulo{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    border-bottom: 1px dashed $border-color-gray;
+
+    h2{
+        font-size: 1.5rem;
+        margin: 0.5rem;
+        padding: 0.2rem;
+    }
+
+    img{
+        width: 35px;
+    }
 }
 
 //classe botão geral
@@ -127,6 +182,10 @@ p{
     background-color: $defaultBtn;
 }
 
+.inBtn:disabled{
+    background-color: $defaultBtn-hover !important;
+}
+
 .inBtn:hover{
     background-color: $defaultBtn-hover;
 }
@@ -138,12 +197,12 @@ p{
     padding: 10px;
     text-align: center;
     transform: translateX(-50%);
-    width: 50%;
+    width: 35%;
     margin: 2rem auto;
-    padding:  0.5rem 1rem;
+    padding:  0.6rem 1rem;
     color: $dark-text-color;
     font-weight: 700;
-    border-radius: 9px;
+    border-radius: 7px;
     bottom: -100px; /* Começa escondida abaixo da tela */
     transition: bottom 0.3s ease; /* Adiciona uma transição suave */
 }
@@ -151,37 +210,41 @@ p{
 .hidden{
     opacity: 0;
     transition: all 0.2s ease-in-out;
-
 }
 
 .success{
     opacity: 1;
-    background-color: aquamarine;
+    background-color: $msg-sucesso;
     transition: all 0.2s ease-in-out;
-    bottom: 0px; /* Mostra a div no rodapé */
+    bottom: 20px; /* Mostra a div no rodapé */
     z-index: 99;
 }
 
 .error{
     opacity: 1;
-    background-color: rgb(255, 127, 127);
+    background-color: $msg-erro;
     transition: all 0.2s ease-in-out;
-    bottom: 0px; /* Mostra a div no rodapé */
+    bottom: 20px; /* Mostra a div no rodapé */
     z-index: 99;
 }   
 
 //menu navegação dropdowm
 .menu-nav{
-    z-index: 99;
     overflow: visible;
-
+    
     .menu-principal{
         display: flex;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto;
+        z-index: 99;
+        position: absolute;
+        right: 40px;
 
         li{
             display: flex;
             flex-direction: column;
-            width: 13rem;
+            width: 15rem;
 
             :hover{
                 background-color:$background;
@@ -190,7 +253,6 @@ p{
 
             .sub-menu{
                 background-color:$background;
-                overflow: visible;
 
                 li{
                     padding: 0.1rem;
@@ -212,19 +274,16 @@ p{
     }
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
     *{
-        font-size: 97.2%;
+        font-size: 97.5%;
     }
 
     .corpo{
-        height: 530px;
-    
         .lateralEsquerda, .lateralDireita{
             margin: 0.4rem;
         }
     }
-
 
     .expanded{
         grid-template-columns: 140px auto;
@@ -232,6 +291,23 @@ p{
     
     .retract{
         grid-template-columns: 75px auto;
+    }
+
+    .geral{
+        gap: 1rem !important;
+        margin: 0.5rem !important;
+        padding: 0.3rem !important;
+    }
+
+    .subTitulo{
+        margin: 0;
+        padding: 0 0.7rem;
+
+        h2{
+            font-size: 1.2rem;
+            margin: 0.5rem;
+            padding: 0.2rem;
+        }
     }
 
     h1{
@@ -247,4 +323,12 @@ p{
         border-radius: 5px;
         box-shadow: 3px 3px 3px $shadow-color;
     }
+
+    //mensagens rodapé da página
+    .msg{
+        margin: 1rem auto;
+        padding:  0.3rem 0.6rem;
+        font-size: 0.7remm;
+    }
+ 
   }

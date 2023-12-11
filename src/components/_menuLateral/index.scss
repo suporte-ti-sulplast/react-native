@@ -2,6 +2,10 @@
 
 .menuLateral{
     width: auto;
+    
+    .screen{
+        color: rgb(159, 159, 192);
+    }
 
     .arrow {
         text-align: right;
@@ -27,40 +31,63 @@
         transition: opacity 0.3s ease-in-out; /* Adicionar uma transição de 0.3 segundos com suavização (ease) */
     }
 
-    .nav-link{
-        display: flex;
-    }
-
-    ul li{
+    .nav-item{
         border: 1px solid $border-color;
-    }
 
-    ul li a{
-        color: $dark-text-color;    
-    }
+        .nav-link{
+            display: flex;
+ 
+            img{
+                width: 25px;
+                height: 25px;
+                margin-right: 0.5rem;
+                transition: width 0.3s, height 0.3s
+            }
 
-    ul li a img{
-        width: 30px;
-        height: 30px;
-        margin-right: 0.5rem;
+            .text {
+                color: $dark-text-color;   
+            }
+            
+        }
+
+        &:hover{
+            background-color: $background;
+            .nav-link .text {
+                font-weight: bolder;
+            }
+
+            .nav-link img {
+                width: 30px;
+                height: 30px;
+            }
+        }
     }
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
     .menuLateral{
-        ul li a img{
-            width: 23px;
-            height: 23px;
-            margin-right: 0.4rem;
-        }
-    }
 
     .arrow-left{
         width: 15px !important;
         margin: 0.5rem;
     }
 
-    .text{
-        font-size: 0.8rem;
+    .nav-item{
+        .nav-link{
+            img{
+                width: 23px;
+                height: 23px;
+                margin-right: 0.4rem;
+            }        
+        }
+
+        &:hover{
+            .nav-link img {
+                width: 27px;
+                height: 27px;
+            }
+        }
     }
+
   }
+}

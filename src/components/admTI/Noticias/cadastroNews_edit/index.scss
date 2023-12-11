@@ -1,8 +1,6 @@
 @import '../../../../../variables';
 
 .NoticiasEditar{
-    transform: translateY(-125px);
-
 
     .content{
         width: 100%;
@@ -172,7 +170,6 @@
             text-align: center;
             color: $erro;
         }
-
 
         .none{
             opacity: 0;

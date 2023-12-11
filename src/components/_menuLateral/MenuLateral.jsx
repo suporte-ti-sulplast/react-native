@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { useRetract } from '../../contexts/retract';
+import { tScreen } from '../../functions/tscreen';
 
 function MenuLateral() {
 
 const { userLogged } = useContext(AuthContext);
 const { retract, setRetract } = useRetract();
+const [ tscreen, setTscreen ] = useState();
 
 console.log(userLogged)
 
@@ -31,6 +33,10 @@ useEffect(() => {
       setArrow('rigth')
     }
   }
+
+  useEffect(() => {
+    setTscreen(tScreen());
+  }, []);
 
   useEffect(() => {
     // Código a ser executado somente quando o estado do componente (state) for alterado
@@ -58,6 +64,10 @@ useEffect(() => {
             </li>
             ))}
         </ul>
+
+        <div className="screen">
+            <p>{tscreen}</p>
+        </div>
     </section>
   )
 }

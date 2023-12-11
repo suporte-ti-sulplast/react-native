@@ -3,48 +3,31 @@
 .cadastrarImpressoras{
 
     .content{
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-
 
     .tips{
         font-size: 0.9rem;
         color: $dark-text-color;
     }
 
-    h2{
-        font-size: 1.5rem;
-        margin: 0.8rem;
-        padding: 0.2rem;
-    }
-
-    .eye{
-        position: absolute;
-        top: 50%;
-        right: 16rem;
-        top: 7px;
-        width: 23px;
-        cursor: pointer;
-        z-index: 99;
-      }
-
-      .copy{
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 0.5rem;
-        width: 18px;
-        cursor: pointer;
-        z-index: 99;
-      }
-
     form{
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding: 1rem;
+
+        .bloco{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed gray;
+            margin-left: 1rem;
+        }
 
         .ladoEsq, .ladoDir{
             position: relative;
@@ -54,7 +37,7 @@
             align-items: center;
 
             .form-group{
-                margin-top: 0.5rem;
+                padding: 0.3rem;
                 display: flex;
                 gap: 0.5rem;
                 text-align: center;
@@ -91,7 +74,7 @@
         }
 
         .erros{
-            width: 15rem;
+            width: 11rem;
             text-align: left;
             color: $erro;
         }
@@ -130,19 +113,6 @@
         }
     }
 
-    .okBtn, .escBtn{
-        margin: 0.5rem 0.25rem !important;
-
-    }
-
-    .textPassword{
-        height: 2rem;
-        width: 10rem;
-        color: $dark-text-color;
-        border-radius: 6px;
-        background-color: transparent;
-        border: 1px solid $dark-text-color
-    }
     .radio-block{
         width: 10rem;
         height: 2rem;
@@ -160,8 +130,56 @@
         width: 1rem;
     }
 
-    .senha, .confirmSenha, .gerador{
-        position: relative;
-    }
+}
+
+@media (max-width: 1520px) {
+
+    .cadastrarImpressoras{
+
+        .tips{
+            font-size: 0.7rem;
+        }
+
+        .form{
+
+            .ladoEsq, .ladoDir{
+                .form-group{
+                    padding: 0.2rem;
+                }
+            }  
+            
+            label{
+                width: 10rem;
+            }    
+            input{
+                width: 17rem;
+            }
+
+            select{
+                width: 17rem;
+
+            }
+
+            .erros{
+                width: 7rem;
+            }
+        }
+
+        .depto{          
+            .icon{
+                width: 21px;
+            }
+        }
     
+        .lixo{
+            width: 12px;
+        }
+    
+        .tabela{
+            th, td{
+                font-size: 0.7rem;
+            }
+        }
+    }
+
 }

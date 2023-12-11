@@ -17,6 +17,7 @@ function AdmTI() {
   return (
       <section>
         <BarraSuperior />
+
         <div className={'corpo ' + body}>
           <div className="lateralEsquerda">
             <MenuLateral />
@@ -28,7 +29,6 @@ function AdmTI() {
           </div>
         </div>
       </section>
-
   )
 }
 

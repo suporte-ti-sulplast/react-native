@@ -1,17 +1,36 @@
 import "./index.scss";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../../../../contexts/auth';
 import { checkLoginEmailCQ, createUser } from "../../../../services/apiLoginUser";
-import validator from 'validator'
 import { validadorSenha, generatePassword } from '../../../../functions/manipuladorSenhas';
 import { validarFormatoDDMM } from '../../../../functions/manipuladorDataHora';
-
 
 const CadastroUsuariosCreate = ( props ) => {
     
     //PEGA OS PARÂMETROS PASSADOS PELA PROPS
     const deptto = props.userData.deptto;
+    const { userLogged } = useContext(AuthContext);
     const stattus = props.userData.stattus;
+    
+    const userAcess = userLogged.logged.Department.AccessLevel.accessLevel;
+
+    // Verificar se o nível de acesso é 'SuperUser' para não aparcer na lista de departamentos cao não seja Super-user
+    const isSuperUser = userAcess === 'SuperUser';
+    console.log('isSuperUser:', isSuperUser);
+
+    // Filtrar a lista de departamentos
+    const departmentsList = deptto
+      .filter((department, index) => {
+        // Se for 'SuperUser', incluir todos os departamentos
+        if (isSuperUser) {
+          return true;
+        }
+
+        // Se não for 'SuperUser', excluir apenas o primeiro departamento ('SUPER-USER')
+        return index !== 0;
+      })
+      .map(department => ({ ...department }));
 
     //INICIALIZA AS VARIAVEIS DEPPTO E STATTUS
     const initialDepartment = deptto.length > 0 ? deptto[0].department : "";
@@ -52,6 +71,7 @@ const CadastroUsuariosCreate = ( props ) => {
     const [textErroConfirmSenhaClass, setTextErroConfirmSenhaClass] = useState("show");
 
     //USESTATES DE APOIO
+    const [tempEmail, setTempEmail] = useState('');
     const [login, setLogin] = useState(false);
     const [passwd, setPasswd] = useState(false);
     const [email, setEmail] = useState(false);
@@ -63,70 +83,88 @@ const CadastroUsuariosCreate = ( props ) => {
     const [passwordLength] = useState(8);
     
     //CONTROLE DE VISIBILIDADE DA SENHA
-    const [eyeSenha, setEyeSenha] = useState("aberto") //variavel para abrir ou fechar o olho
-    const [typeofPassword, setTypeofPassword] = useState("password") //variavel para mudar o tipo de senha
-    const [eyeReSenha, setEyeReSenha] = useState("aberto") //variavel para abrir ou fechar o olho
-    const [typeofRePassword, setTypeofRePassword] = useState("password") //variavel para mudar o tipo de senha
+    const [eyeSenha, setEyeSenha] = useState("aberto"); //variavel para abrir ou fechar o olho
+    const [typeofPassword, setTypeofPassword] = useState("password"); //variavel para mudar o tipo de senha
+    const [eyeReSenha, setEyeReSenha] = useState("aberto"); //variavel para abrir ou fechar o olho
+    const [typeofRePassword, setTypeofRePassword] = useState("password"); //variavel para mudar o tipo de senha
     const [msg, setMsg] = useState("mensagem inicial"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
     const [msgType, setMsgType] = useState("hidden"); //MENSAGEM DE RETORNO DA API DO BANCO RODAPÉ
 
     //FUNÇÃO QUE PEGA O DEPARTAMENTO E LIGA COM O NIVEL DE ACESSO Á CADA ALTERAÇÃO DO DEPPTO
     useEffect(() => {
       // Encontrar o departamento correspondente no array
-      const selectedDept = deptto.find((dept) => dept.department === depto);
+      const selectedDept = departmentsList.find((dept) => dept.department === depto);
       // Atualizar o estado do nível de acesso
       if (selectedDept) {
         setNivel(selectedDept.AccessLevel.accessLevel);
       }
-    }, [depto, deptto]);
+    }, [depto, departmentsList]);
 
-    
-
-    //FUNÇÃO QUE PEGA O DEPARTAMENTO E LIGA COM O NIVEL DE ACESSO Á CADA ALTERAÇÃO DO DEPPTO
+    //VALIDA O FORMATO DO EMAIL
     useEffect(() => {
-      console.log(textLogin, textEmail, textName, depto,
-                  nivel, status, codCQ,  recebeEmail, 
-                  compart, textSenha, textConfirmaSenha, textBirthdate)
-                }, [textLogin, textEmail, textName, depto,
-                  nivel, status, codCQ,  recebeEmail, 
-                  compart, textSenha, textConfirmaSenha, textBirthdate]);
+      // Verifica se textErroEmail contém apenas letras, números e pontos
+      const isValid = /^[a-zA-Z0-9.]+$/.test(tempEmail);
   
-    //FUNÇÃO DO BOTÃO DE SUBMIT DO FORMULÁRIO
-    const handleSubmit =  async (e) => {
-      e.preventDefault(); //PREVINE A AÇÃO DEFULT DO FORMULÁRIO
+      if (isValid) {
+        setTextErroEmailClass("hidden");
+      } else {
+        setTextErroEmail("Formato de email invãlido");
+        setTextErroEmailClass("show");
+      }
+    }, [tempEmail]);
 
-      // Expressão regular para validar o formato xxxx.xxxx sem números
+    useEffect(() => {
+       //VERIFICA REGRAS DAS SENHAS
+      //SE AMBAS ESTÃO PREENCHIDAS CONFIRMAÇÃO DE SENHA
+      if(senha && confirmaSenha ){
+        if(textConfirmaSenha !== textSenha){
+          setTextErroSenha("Senhas não conferem");
+          setTextErroConfirmSenha("Senhas não conferem");
+          setTextErroConfirmSenhaClass("show");
+          setTextErroSenhaClass("show");
+        } else  if(!validadorSenha(textSenha)){
+          setTextErroSenha("Formato de senha inválido");
+          setTextErroConfirmSenha("Formato de senha inválido");
+          setTextErroConfirmSenhaClass("show");
+          setTextErroSenhaClass("show");
+        } else{
+          setPasswd(true);
+        }
+      }
+    }, [textSenha, textConfirmaSenha, senha, confirmaSenha]);
+
+    useEffect(() => {
+    }, [login, name,  email, passwd, aniversario]);
+
+    useEffect(() => {
       var formatoLogin = /^[a-z]+(\.[a-z]+)+$/;
 
-      //ESSE GRUPO VERIFICA OS CAMPOS REQUERIDOS E MOSTRA AS RESPECTIVAS MENSAGENS DE ERRO
       //VERIFICA SE ESTÁ PREENCHIDA A VARIÁVEL LOGIN
       if(textLogin === "" || textLogin === undefined) {
         setTextErroLogin("Login requerido");
-        setTextErroLoginClass("show")
+        setTextErroLoginClass("show");
       } else if(!formatoLogin.test(textLogin)){
         setTextErroLogin("Formato inválido");
-        setTextErroLoginClass("show")
+        setTextErroLoginClass("show");
       } else {
         setLogin(true);
       }
 
       //VERIFICA SE ESTÁ PREENCHIDA A VARIÁVEL EMAIL
-      if(textEmail === "" || textEmail === undefined) {
+      if(tempEmail === "" || tempEmail === undefined) {
         setTextErroEmail("Email requerido");
-        setTextErroEmailClass("show")
-      } else if(!validator.isEmail(textEmail)){
-        setTextErroEmail("Formato inválido");
-        setTextErroEmailClass("show")
+        setTextErroEmailClass("show");
       } else {
-        setEmail(true)
+        setTextEmail(`${tempEmail}@sulplast.com.br`);
+        setEmail(true);
       }
-      
+
       //VERIFICA SE ESTÁ PREENCHIDA A VARIÁVEL NOME
       if(textName === "" || textName === undefined) {
         setTextErroNome("Nome requerido");
-        setTextErroNomeClass("show")
+        setTextErroNomeClass("show");
       } else {
-        setName(true)
+        setName(true);
       }
 
       //VALIDA A VARIAVEL ANIVERSARIO 
@@ -135,9 +173,9 @@ const CadastroUsuariosCreate = ( props ) => {
       } else {
         if (!validarFormatoDDMM(textBirthdate)) {
           setTextErroAniversario("Formáto inválido");
-          setTextErroAniversarioClass("show")
+          setTextErroAniversarioClass("show");
         } else {
-          setAniversario(true)
+          setAniversario(true);
         }
       }
 
@@ -145,99 +183,83 @@ const CadastroUsuariosCreate = ( props ) => {
       //VERIFICA SE ESTÁ PREENCHIDA A VARIÁVEL SENHA
       if(textSenha === "" || textSenha === undefined) {
         setTextErroSenha("Senha requerida");
-        setTextErroSenhaClass("show")
+        setTextErroSenhaClass("show");
       } else {
-        setSenha(true)
+        setSenha(true);
       }
 
       //VERIFICA REGRAS DAS SENHAS
       //VERIFICA SE ESTÁ PREENCHIDA A VARIÁVEL CONFIRMAÇÃO DE SENHA
       if(textConfirmaSenha === "" || textConfirmaSenha === undefined) {
         setTextErroConfirmSenha("Confirmação de senha requerida");
-        setTextErroConfirmSenhaClass("show")
+        setTextErroConfirmSenhaClass("show");
       } else {
-       setConfirmaSenha(true)
+       setConfirmaSenha(true);
       }
-      
-      //VERIFICA REGRAS DAS SENHAS
-      //SE AMBAS ESTÃO PREENCHIDAS CONFIRMAÇÃO DE SENHA
-      if(senha && confirmaSenha ){
-        if(textConfirmaSenha !== textSenha){
-          setTextErroSenha("Senhas não conferem");
-          setTextErroConfirmSenha("Senhas não conferem");
-          setTextErroConfirmSenhaClass("show")
-          setTextErroSenhaClass("show")
-        } else  if(!validadorSenha(textSenha)){
-          setTextErroSenha("Formato de senha inválido");
-          setTextErroConfirmSenha("Formato de senha inválido");
-          setTextErroConfirmSenhaClass("show")
-          setTextErroSenhaClass("show")
-        } else{
-          setPasswd(true)
-        }
-      }
-      
+    }, [textLogin, textName, textEmail, compart, recebeEmail, textSenha, textConfirmaSenha, codCQ, textBirthdate ]);
+
+    //FUNÇÃO DO BOTÃO DE SUBMIT DO FORMULÁRIO
+    const handleSubmit =  async (e) => {
+      e.preventDefault(); //PREVINE A AÇÃO DEFULT DO FORMULÁRIO
+
+      console.log("chegou aqui no submit")
+      console.log("login", login)
+      console.log("name", name)
+      console.log("email", email)
+      console.log("passwd", passwd)
+      console.log("aniversario", aniversario)
+
       //ESSE GRUPO VERIFICA OS CAMPOS REQUERIDOS E REGRA DE SENHA
-      if(login && name && email && passwd && aniversario) {
+      if(login && name && email && passwd && aniversario ) {
 
             //SE TUDO CERTO, VERIFICA NA API SE JÁ EXITE LOGIN E EMAIL OU CÓDIGO CQ
-            setPasswd(false) //VOLTA A CONDIÇÃO PASSWD COMO FALSE (NÃO OK)
             try {
               const response = await checkLoginEmailCQ(textLogin, textEmail, codCQ );
+              console.log(response)
               //SE JÁ EXISTE LOGIN OU EMAIL APRESENTA AS RESPECITIVAS MENSAGENS DE ERRO
               if(response.haveLogin || response.haveEmail || response.haveCodCQ){
                 if(response.haveLogin){
                   setTextErroLogin("Login já existe");
-                  setTextErroLoginClass("show")
+                  setTextErroLoginClass("show");
                 };
                 if(response.haveEmail){
                   setTextErroEmail("Email já existe");
-                  setTextErroEmailClass("show")
+                  setTextErroEmailClass("show");
                 };
                 if(response.haveCodCQ){
                   setTextErroCQ("Código CQ já existe");
-                  setTextErroCQClass("show")
+                  setTextErroCQClass("show");
                 };
 
               // SE TUDO OK CHAMA A API QUE VAI GRAVAR OS DADOS NO BANCO
               } else {
+                setPasswd(false) //VOLTA A CONDIÇÃO PASSWD COMO FALSE (NÃO OK)
 
                 //CONVERTE SETOR E STATUS NOVAMENTE EM IDs
                 const statusId = stattus.find(item => item.status === status)?.idStatus;
                 const setorId = deptto.find(item => item.department === depto)?.idDept;
 
-                const response = await createUser(textLogin, textName, textEmail, setorId, statusId, compart, recebeEmail, textSenha, codCQ);
+                const response = await createUser(textLogin, textName, textEmail, setorId, statusId, compart, recebeEmail, textSenha, codCQ, textBirthdate);
                 setMsg(response.msg)
                 if(response.msg_type === "success") {
-                  setMsgType("success")
+                  setMsgType("success");
                 } else {
-                  setMsgType("error")
+                  setMsgType("error");
                 }
-
-                //LIMPA O FORMULÁRIO
-                setMsg(response.msg)
-                setTextLogin("");
-                setTextEmail("");
-                setTextName("");
-                setDepto(initialDepartment);
-                setStatus(initialStattus)
-                setRecebeEmail("0");
-                setCompart("0");
-                setTextSenha("");
-                setTextConfirmaSenha("");
-                setCodCQ("");
-                setTextBirthdate("");
 
                 // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
                 setTimeout(() => {
                   setMsgType("hidden");
+                  navigate("/ADM-TI/cadastro-usuarios"); 
                 }, 3000);
 
               };
             } catch (err) {
               console.error('Ocorreu um erro durante a consulta:', err);
             };         
-      };
+      } else {
+        console.log("está caindo no else")
+      }
     };
 
     /* FUNÇÃO DO BOTÃO CANCELAR ... VOLTA PARA LISTA DE USERS */
@@ -260,7 +282,10 @@ const CadastroUsuariosCreate = ( props ) => {
     return (
     <section className="cadastrarUsuarios">
 
-      <h2>Inserir novo usuário</h2>
+      <div className="subTitulo">
+        <h2>Inserir novo usuário</h2>
+        <img src={"../../images/ajuda.png"} alt="" srcset="" />
+      </div>
 
       <div className="content">
         
@@ -285,13 +310,14 @@ const CadastroUsuariosCreate = ( props ) => {
                 {/* Grupo Email */}
                 <div className="form-group">
                   <label htmlFor="useremail">Email: &emsp;</label>
-                  <input id="useremail" value={textEmail} type="text" onChange={(e) => {
-                    setTextEmail(e.target.value); 
+                  <input id="useremail"  type="text" onChange={(e) => {
+                    setTempEmail(e.target.value); 
                     setTextErroEmail("");
                     setTextErroEmailClass("hidden")
                     }} />
                   <div className={"erros " +  textErroEmailClass}>{textErroEmail}</div>
                 </div> 
+                <div className="tips">{tempEmail}@sulplast.com.br</div>
 
                 {/* Grupo Nome */}
                 <div className="form-group">
@@ -316,6 +342,18 @@ const CadastroUsuariosCreate = ( props ) => {
                 </div> 
                 <div className="tips">Usar o formato: <strong>dd/mm</strong>. SEM O ANO</div>
 
+                {/* Grupo CQ */}
+                <div className="form-group">
+                  <label htmlFor="nivel">Código Etiquetas: &emsp;</label>
+                  <input id="nivel" type="text" value={codCQ} onChange={(e) => {
+                    setCodCQ(e.target.value);
+                    setTextErroCQ("");
+                    setTextErroCQClass("hidden");
+                    }} />
+                    <div className={"erros " +  textErroCQClass}>{textErroCQ}</div>
+                </div> 
+                
+
                 {/* Grupo Senha */}
                 <div className="form-group senha">
                   <label htmlFor="usersenha">Senha: &emsp;</label>
@@ -330,7 +368,7 @@ const CadastroUsuariosCreate = ( props ) => {
                         setTextErroSenhaClass("hidden")
                       }}
                     />
-                    <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt=""
+                    <img className="eye" src={"../../images/olho-" + eyeSenha +  ".png"} alt="olho_senha"
                     onClick={(e) => {
                       eyeSenha === "aberto" ? setEyeSenha("fechado") : setEyeSenha("aberto")
                       typeofPassword === "password" ? setTypeofPassword("texto") : setTypeofPassword("password")
@@ -353,7 +391,7 @@ const CadastroUsuariosCreate = ( props ) => {
                         setTextErroConfirmSenha("");
                         setTextErroConfirmSenhaClass("hidden")
                       }} />
-                    <img className="eye" src={"../../images/olho-" + eyeReSenha +  ".png"} alt=""
+                    <img className="eye" src={"../../images/olho-" + eyeReSenha +  ".png"} alt="olho_senha"
                       onClick={(e) => {
                         eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
                         typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
@@ -373,7 +411,8 @@ const CadastroUsuariosCreate = ( props ) => {
               <div className="form-group">
                 <label htmlFor="department">Departamento: &emsp;</label>
                 <select id="department" name="department" onChange={(e) => setDepto(e.target.value)}>
-                  {deptto.map((dept) => (
+                  <option>Selecione um departamento</option>
+                  {departmentsList.map((dept) => (
                     <option key={dept.department} value={dept.department}>
                       {dept.department}
                     </option>
@@ -419,36 +458,28 @@ const CadastroUsuariosCreate = ( props ) => {
                 </select>
               </div> 
 
-              {/* Grupo CQ */}
-              <div className="form-group">
-                  <label htmlFor="nivel">Código CQ: &emsp;</label>
-                  <input id="nivel" type="text" value={codCQ} onChange={(e) => {
-                    setCodCQ(e.target.value);
-                    setTextErroCQ("");
-                    setTextErroCQClass("hidden");
-                    }} />
-                </div> 
+
 
             </div>  {/* fecha o lado direito */}
 
           </div> {/* fecha AMBOS OS LADOS */}
 
-          <hr />
-
-          <div style={{display:"grid", gridTemplateColumns: "1fr 1fr", gap: '3rem'} }>
+          <div className="btns">
 
             <div className="ladoEsq">
               {/* GERADOR DE SENHA */}      
               <div className="form-group gerador">
                   <button className="defaultBtn inBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
                   <input id="gerarSenha" className="textPassword" type="text" value={password} readOnly />
-                  <img className="copy" src={"../../images/copy.png"} alt=""
+                  <img className={`copy ${password ? '' : 'disabled'}`} src={"../../images/copy.png"} style={{ cursor: password ? 'pointer' : 'not-allowed' }} alt=""
                     onClick={() => {
-                      handleCopy();
-                      setTextErroSenha("");
-                      setTextErroSenhaClass("hidden")
-                      setTextErroConfirmSenha("");
-                      setTextErroConfirmSenhaClass("hidden");
+                      if (password) {
+                        handleCopy();
+                        setTextErroSenha("");
+                        setTextErroSenhaClass("hidden");
+                        setTextErroConfirmSenha("");
+                        setTextErroConfirmSenhaClass("hidden");
+                      }
                     }}
                   />
               </div>
@@ -457,7 +488,7 @@ const CadastroUsuariosCreate = ( props ) => {
             <div className="ladoDir">
               <div className="form-group botoes">
                 <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
-                <button className="defaultBtn okBtn" type="submit">Criar &emsp; <small style={{ color: 'black' }}>(Duplo clique)</small></button>
+                <button className="defaultBtn okBtn" type="submit">Criar</button>
               </div> 
             </div>   
           </div>
@@ -465,10 +496,10 @@ const CadastroUsuariosCreate = ( props ) => {
         </form>
 
       </div>
+
       <div className="form-group">
         <div className={'msg ' + msgType}>{msg}</div>
       </div>
-
       
     </section> 
   )

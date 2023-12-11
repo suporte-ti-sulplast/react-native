@@ -125,16 +125,13 @@ const CadastroUsuarios =  () => {
     /* RENDERIZAÇÃO DA PÁGINA ********************************************************* */
     return (
     <section className="cadastroNoticias">
-      <div className="titulo">
 
+      <div className="subTitulo">
         <h2>Notícias</h2>
          <div className="botoes">
           <button className="defaultBtn inBtn" type="button" onClick ={handleNew}>Nova notícia</button>
          </div>
-        
       </div>
-      
-      <hr />
       
       <div className="tabela"> 
         <table className="table table-striped">

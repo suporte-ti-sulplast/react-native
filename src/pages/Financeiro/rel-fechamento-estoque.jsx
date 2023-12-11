@@ -24,8 +24,10 @@ function FechamentoEstoque() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuFinanceiro />
-            <RelatorioFechamentoEstoque />
+            <div className='split'>
+              <MenuFinanceiro />
+              <RelatorioFechamentoEstoque />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

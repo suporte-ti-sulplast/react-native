@@ -151,23 +151,21 @@ const EtiData = () => {
 
     return (
     <section className="etiData">
-      <div className="titulo"></div>
-      <h2>Etiquetas - Data</h2>
-      <br /><br />
+      <div className="subTitulo">
+        <h2>Etiquetas - Data</h2>
+      </div>
 
-      <div className="body">
+      <div className="corpoBloco">
 
-      <div className="etiqueta etiqueta_para imprimir"
+        <div className="etiqueta etiqueta_para imprimir"
             ref={etiquetaRef}>
           <div className="item">
             <h4>{data}</h4>
           </div>
         </div>
-        <br />
-
 
         {/* Grupo Impressoras */}
-        <div>
+        <div className="impreessoras">
           {printers.length > 0 ? (
             <select
               className="select"
@@ -192,64 +190,63 @@ const EtiData = () => {
           )}
         </div>
 
-        <br /><br />
+        {
+          netUsbValue !== null && (
+            <div className="btnImprimir">
+              {netUsbValue === 0 ? (
+                <div className="botoes">
+                  <button className="escBtn defaultBtn" type="button" onClick={handleCancel}>
+                    Cancelar
+                  </button>
+                  <button
+                    id="imprimirUsb"
+                    className={"okBtn defaultBtn"}
+                    type="button"
+                    onClick={handleImprimirUsb}
+                    >
+                    Imprimir
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className={"qtdade"}>
+                    <div className="conta">
+                      <p>Quantidade de etiquetas: &nbsp;</p>
+                      <input
+                        type="number"
+                        name="qtade"
+                        id="qtade"
+                        value={qtade}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          setQtade(isNaN(value) ? 0 : value);
+                        }}
+                        />
+                    </div>
+                    <div className={"conta"}>
+                      <p>{qtade}&nbsp;etiquetas serão impressas: </p>
+                    </div>
+                  </div>
+                  <div className="botoes">
+                  <button className="escBtn defaultBtn" type="button" onClick={handleCancel}>
+                    Cancelar
+                  </button>
+                  <button
+                    id="imprimirRede"
+                    className={"okBtn defaultBtn"}
+                    type="button"
+                    onClick={handleImprimirRede}
+                    >
+                    Imprimir
+                  </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        }
 
       </div>
-      {
-        netUsbValue !== null && (
-          <>
-            {netUsbValue === 0 ? (
-              <div style={{display:"flex"}}>
-                <button style={{ height: "33px" }} className="escBtn Btn" type="button" onClick={handleCancel}>
-                  Cancelar
-                </button>
-                <button
-                  id="imprimirUsb"
-                  className={"okBtn Btn"}
-                  type="button"
-                  onClick={handleImprimirUsb}
-                >
-                  Imprimir
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className={"qtdade"}>
-                  <div className="conta">
-                    <p>Quantidade de etiquetas: &nbsp;</p>
-                    <input
-                      type="number"
-                      name="qtade"
-                      id="qtade"
-                      value={qtade}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        setQtade(isNaN(value) ? 0 : value);
-                      }}
-                    />
-                  </div>
-                  <div className={"conta"}>
-                    <p>{qtade}&nbsp;etiquetas serão impressas: </p>
-                  </div>
-                </div>
-                <div style={{display:"flex"}}>
-                <button style={{ height: "33px" }} className="escBtn Btn" type="button" onClick={handleCancel}>
-                  Cancelar
-                </button>
-                <button
-                  id="imprimirRede"
-                  className={"okBtn Btn"}
-                  type="button"
-                  onClick={handleImprimirRede}
-                >
-                  Imprimir
-                </button>
-                </div>
-              </>
-            )}
-          </>
-        )
-      }
 
 
     < div className={'msg ' + msgType}>{msg}</div>

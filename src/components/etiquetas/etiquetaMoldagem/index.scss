@@ -1,0 +1,162 @@
+@import '../../../../variables';
+
+.etiMoldagem{
+    display: flex;
+    flex-direction: column;
+    height: auto;  
+
+    .corpoBloco{
+        width: 25rem;
+        margin: 5rem auto;
+    }
+
+    .etiqueta{
+        display: flex;
+        justify-content: center;
+        width: 25rem;
+        border: 1px dashed $border-color-gray;
+        border-radius: 8px;
+        background-color: $bck-color;
+        padding: 0.5rem;
+
+        .item{
+            position: relative;
+            width: 22rem;
+            height: 5.95rem;
+            background-color: $background;
+            border-radius: 8px;
+            font-weight: bold;
+    
+            h4, h5{
+                font-size: 1.3rem;
+                font-weight: bolder;
+            }
+
+            img{
+                position: absolute;
+                width: 30px;
+                top:50%;
+                transform: translateY(-50%);
+                left: 20px;
+            }
+
+            .linhaInferior{
+                display: flex;
+                justify-content: space-between;
+                margin: 0 2rem;
+
+                p{
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+
+    .campos{
+        width: 25rem;
+
+        h2{
+            font-size: 1.5rem;
+            padding: 0.4rem;
+        }
+
+        input{
+            border: 1px dashed $border-color-gray;
+            width: 12rem;
+            padding: 0 1rem;
+            border-radius: 5px;
+            color: $blue-default;
+            font-weight: 700;
+        }
+    }
+
+    .impreessoras{
+        width: 25rem;
+        .select{
+            margin: 1rem;
+            border: 1px dashed $border-color-gray;
+            border-radius: 5px;
+        }
+    }
+
+    .btnImprimir{
+        width: 25rem;
+
+        .qtdade{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin: auto;
+            margin-top: 1.5rem;
+
+                input{
+                width: 5rem;
+                border: 1px dashed $border-color-gray;
+                border-radius: 8px;
+                padding: 0 0.5rem;
+                color: $dark-text-color;
+                line-height: none;
+            }
+
+            .conta{
+                display: flex;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 1520px) {
+
+    .etiMoldagem{
+    
+        .corpoBloco{
+            width: 25rem;
+            margin: 1.7rem auto;
+        }
+    
+        .etiqueta{
+            width: 22rem;
+            gap: 1rem;
+    
+            .item{
+                width: 19rem;
+                height: 4.85rem;
+        
+                h4{
+                    font-size: 1.6rem;
+                    font-weight: bolder;
+                }
+            }
+        }
+    
+        .campos{
+            width: 22rem;
+    
+            h2{
+                font-size: 1.2rem;
+                padding: 0.2rem;
+            }
+    
+            input{
+                width: 9rem;
+            }
+        }
+    
+        .impreessoras{
+            width: 22rem;
+        }
+    
+        .btnImprimir{
+            width: 22rem;
+    
+            .qtdade{
+                input{
+                    width: 3rem;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+}

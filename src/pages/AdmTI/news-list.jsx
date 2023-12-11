@@ -24,8 +24,10 @@ function NewsList() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroNoticias />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroNoticias />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

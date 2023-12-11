@@ -5,7 +5,7 @@ import { depptoStatus } from "../../../../services/apiMASTER";
 import { printerCreate, verificaNomeIP } from "../../../../services/apiPrinter";
 import { AuthContext } from '../../../../contexts/auth';
 
-const CadastroUsuariosCreate = () => {
+const CadastroImpressorasCreate = () => {
   
     const navigate = useNavigate();
     const { userLogged } = useContext(AuthContext);
@@ -91,7 +91,7 @@ const CadastroUsuariosCreate = () => {
         setTextErroDeptoClass("Show");
       }
       
-      /* verifica se nãovai criar duplicida de nome e ip */
+      /* verifica se não vai criar duplicidade de nome e ip */
       try {
         const response = await verificaNomeIP(nome, ip);
         const erro = response.erro;
@@ -159,20 +159,11 @@ const CadastroUsuariosCreate = () => {
 
                 //LIMPA O FORMULÁRIO
                 setMsg(response.msg);
-                setNome("");
-                setFabricante("");
-                setModelo("");
-                setStatus("");
-                setNetUsb("1");
-                setIp("");
-                setSelectedDept("");
-                setOkIP(false);
-                setIpField("show");
-                setGrupoDepto([]);
 
                 // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
                 setTimeout(() => {
                   setMsgType("hidden");
+                  navigate("/ADM-TI/cadastro-impressoras"); 
                 }, 3000);
         } catch (err) {
           console.error('Ocorreu um erro durante a consulta:', err);
@@ -216,14 +207,15 @@ const CadastroUsuariosCreate = () => {
     return (
     <section className="cadastrarImpressoras">
 
+    <div className="subTitulo">
       <h2>Inserir nova impressora</h2>
-      <hr />
-
+    </div>
+    
       <div className="content">
         
         <form className="form" onSubmit={handleSubmit}>
           
-          <div style={{display:"grid", gridTemplateColumns: "1fr 1fr"} }>
+          <div className="bloco">
             
             <div className="ladoEsq">
 
@@ -279,7 +271,6 @@ const CadastroUsuariosCreate = () => {
                       if (e.target.value === "0") {
                         setIpField("hidden");
                         setIp("");
-                        console.log(ip)
                       } else if (e.target.value === "1") {
                         setIpField("show");
                         setIp("");
@@ -380,27 +371,21 @@ const CadastroUsuariosCreate = () => {
 
           </div> {/* fecha AMBOS OS LADOS */}
 
-          <hr />
 
-          <div style={{display:"grid", gridTemplateColumns: "1fr", gap: '3rem'} }>
-
-            <div className="form-group">
-              <button className="escBtn Btn" type="button" onClick ={handleCancel}>Cancelar</button>
-              <button className="okBtn Btn" type="submit">Criar</button>
+            <div className="botoes">
+              <button className="escBtn defaultBtn" type="button" onClick ={handleCancel}>Cancelar</button>
+              <button className="okBtn defaultBtn" type="submit">Criar</button>
             </div> 
+        </form>
 
+      </div>
           <div className="form-group">
             <div className={'msg ' + msgType}>{msg}</div>
           </div>
 
-          </div>
-                      
-        </form>
-
-      </div>
       
     </section> 
   )
 };
 
-export default CadastroUsuariosCreate;
+export default CadastroImpressorasCreate;

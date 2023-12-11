@@ -19,6 +19,7 @@ const FechamentoEstoque = () => {
   const [mes, setMes] = useState('');
   const [ano, setAno] = useState(anoAtual);
   const [textErroClass, setTextErroClass] = useState("hidden");
+  const [textErro, setTextErro] = useState("Mês se encontra em aberto.");
   const reportComprasRef = useRef();
   const reportProducaoRef = useRef();
   const [anos, setAnos] = useState([]);
@@ -27,6 +28,8 @@ const FechamentoEstoque = () => {
   useEffect(() => {
     if (ano && mes) {
       setData(getLastDayOfMonth(ano, mes));
+      setDados([])
+      setTextErro("")
     }
   }, [ano, mes, data]); 
 
@@ -45,6 +48,10 @@ const FechamentoEstoque = () => {
       const resposta = await consulta(data);
       setDados(resposta.data.resultadoConsulta);
       setTextErroClass("show");
+      console.log(resposta.data)
+      if(resposta.data.resultadoConsulta.length === 0 ){
+        setTextErro("Mês se encontra em aberto.")
+      }
     } catch (error) {
       console.error("Ocorreu um erro ao obter os dados do usuário:", error);
     }
@@ -166,216 +173,215 @@ const FechamentoEstoque = () => {
   
     //RENDERIZAÇÃO DA PÁGINA ****************************************************
     return (
-    <section className="fechamentoEstoque">
+      <section className="fechamentoEstoque">
 
-      <div className="titulo">
+        <div className="subTitulo">
 
-        <h1>Fechamento Estoque</h1>
+          <h2>Fechamento Estoque</h2>
 
-        <div className="topo">
-          
-          <select id="seletorMes" value={mes} onChange={(e) => setMes(e.target.value)}>
-            <option value="">Selecione...</option>
-            <option value="01">Janeiro</option>
-            <option value="02">Fevereiro</option>
-            <option value="03">Março</option>
-            <option value="04">Abril</option>
-            <option value="05">Maio</option>
-            <option value="06">Junho</option>
-            <option value="07">Julho</option>
-            <option value="08">Agosto</option>
-            <option value="09">Setembro</option>
-            <option value="10">Outubro</option>
-            <option value="11">Novembro</option>
-            <option value="12">Dezembro</option>
-          </select>
-
-          <select id="seletorAno" value={ano} onChange={(e) => setAno(e.target.value)}>
-            {anos.map((ano) => (
-              <option key={ano} value={ano}>
-                {ano}
-              </option>
-            ))}
-          </select>
-
-          <button className="defaultBtn okBtn" disabled={mes === "" || ano === ""} onClick={handleConsulta}>
-            Consultar
-          </button>
-          
-          <button
-            id="imprimirRede"
-            className="okBtn defaultBtn"
-            type="button"
-            disabled={dados.length === 0}
-            onClick={handleImprimir}         
-          >
-            Gerar relatório
-          </button>
-        </div>
-
-        </div>
-
-      {dados.length > 0 ?
-      (
-        <div className="relatorio">
-          <div className="report">
-            <div>
-              <h1>Fechamento estoque - <strong>Compras</strong> - {retornaMes(mes)} de {ano}</h1>
-              <div ref={reportComprasRef} className="tabela">
+          <div className="busca">
             
-                <table className="tab-esq">
-                  {/* Renderiza uma tabela para cada grupo e subgrupo */}
-                  {Object.entries(somas).map(([grupoId, subgrupos]) => {
-                    const grupo = grupos[grupoId];
-                    // Verifica se a categoria é 'compras' antes de renderizar
-                    if (grupo && grupo.categoria === 'compras') {
-                      return (
-                        <div key={grupoId}>
-                          <h2>{grupo.nome}</h2>
-                          <table className="table table-striped">
-                            <thead>
-                              <tr>
-                                <th style={{ width: '30rem' }}><p>Sub-grupo</p></th>
-                                <th style={{ width: '15rem' }}><p>Valor estoque</p></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {Object.entries(subgrupos).map(([subgrupoId, soma]) => (
-                                <tr key={subgrupoId}>
-                                  {/* Busca o nome do subgrupo no array de subgrupos do grupo */}
-                                  <td><p>{grupo.subgrupos.find(sg => sg.id === parseInt(subgrupoId, 10)).nome}</p></td>
-                                  <td><p>{soma.valorestoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p></td>
-                                </tr>
-                              ))}
-                              {/* Inclua uma linha para mostrar a soma total do grupo */}
-                              <tr>
-                                <td><p><strong>Total do grupo</strong></p></td>
-                                <td><p><strong>{somaTotalGrupo[grupoId].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr />
-                        </div>
-                      );
-                    }
-                    return null; // Retorna null para grupos que não atendem ao critério
-                  })}         
-                </table>
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th style={{ width: '30rem' }}></th>
-                      <th style={{ width: '15rem' }}></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* Inclua uma última linha para mostrar o total geral dos subgrupos de 'compras' */}
-                    <tr id="somatorio">
-                      <td>
-                        <h3>Total geral (Compras)</h3>
-                      </td>
-                      <td>
-                        <h3>
-                          <strong>{Object.entries(somas).reduce((total, [grupoId, subgrupos]) => {
-                                      const grupo = grupos[grupoId];
-                                      return grupo && grupo.categoria === 'compras' ? total + somaTotalGrupo[grupoId] : total;
-                                    }, 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                          </strong>
-                        </h3>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <br />
-              </div>
-              
-            </div>
+            <select id="seletorMes" value={mes} onChange={(e) => setMes(e.target.value)}>
+              <option value="">Selecione...</option>
+              <option value="01">Janeiro</option>
+              <option value="02">Fevereiro</option>
+              <option value="03">Março</option>
+              <option value="04">Abril</option>
+              <option value="05">Maio</option>
+              <option value="06">Junho</option>
+              <option value="07">Julho</option>
+              <option value="08">Agosto</option>
+              <option value="09">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+
+            <select id="seletorAno" value={ano} onChange={(e) => setAno(e.target.value)}>
+              {anos.map((ano) => (
+                <option key={ano} value={ano}>
+                  {ano}
+                </option>
+              ))}
+            </select>
+
+            <button className="defaultBtn inBtn" disabled={mes === "" || ano === ""} onClick={handleConsulta}>
+              Consultar
+            </button>
             
-            <div>
-
-            <h1>Fechamento estoque - <strong>Produção</strong> - {retornaMes(mes)} de {ano}</h1>
-            <div ref={reportProducaoRef} className="tabela">
-            
-              <table className="tab-dir">
-                {/* Renderiza uma tabela para cada grupo e subgrupo */}
-                {Object.entries(somas).map(([grupoId, subgrupos]) => {
-                  const grupo = grupos[grupoId];
-                  // Verifica se a categoria é 'compras' antes de renderizar
-                  if (grupo && grupo.categoria === 'produção') {
-                    return (
-                      <div key={grupoId}>
-                        <h2>{grupo.nome}</h2>
-                        <table id="tabela"  className="table table-striped">
-                          <thead>
-                            <tr>
-                              <th style={{ width: '30rem' }}><p>Sub-grupo</p></th>
-                              <th style={{ width: '15rem' }}><p>Valor estoque</p></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.entries(subgrupos).map(([subgrupoId, soma]) => (
-                              <tr key={subgrupoId}>
-                                {/* Busca o nome do subgrupo no array de subgrupos do grupo */}
-                                <td><p>{grupo.subgrupos.find(sg => sg.id === parseInt(subgrupoId, 10)).nome}</p></td>
-                                <td><p>{soma.valorestoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p></td>
-                              </tr>
-                            ))}
-                            {/* Inclua uma linha para mostrar a soma total do grupo */}
-                            <tr>
-                              <td><p><strong>Total do grupo</strong></p></td>
-                              <td><p><strong>{somaTotalGrupo[grupoId].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <hr />
-                      </div>
-                    );
-                  }
-                  return null; // Retorna null para grupos que não atendem ao critério
-                })}
-              </table>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th style={{ width: '30rem' }}></th>
-                    <th style={{ width: '15rem' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Inclua uma última linha para mostrar o total geral dos subgrupos de 'compras' */}
-                  <tr id="somatorio">
-                    <td>
-                      <h3>Total geral (Produção)</h3>
-                    </td>
-                    <td>
-                      <h3>
-                        <strong>{Object.entries(somas).reduce((total, [grupoId, subgrupos]) => {
-                                    const grupo = grupos[grupoId];
-                                    return grupo && grupo.categoria === 'produção' ? total + somaTotalGrupo[grupoId] : total;
-                                  }, 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        </strong>
-                      </h3>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-                <br />
-            </div>
-
-            </div>
-
-
+            <button
+              id="imprimirRede"
+              className="okBtn defaultBtn"
+              type="button"
+              disabled={dados.length === 0}
+              onClick={handleImprimir}         
+            >
+              Gerar relatório
+            </button>
           </div>
-        </div>
-      ) : (
-          <>  
-            <br /> <br /> <br />
-            <p className={" " + textErroClass } style={{color: "red"}}><strong>Mês ainda se encontra em aberto.</strong></p>
-          </>
-      )}
 
-          </section>
-        )
-      };
+        </div>
+
+        <div className="relatorio">
+          {/* caso HAJA valores para exibir */}
+          {dados.length > 0 ? 
+            (      
+              <div className="report">        
+                <div className="compras">
+                  <h1>Fechamento estoque - <strong>Compras</strong> - {retornaMes(mes)} de {ano}</h1>
+                  <div ref={reportComprasRef} className="tabela">
+                    <table className="tab-esq">
+                      {/* Renderiza uma tabela para cada grupo e subgrupo */}
+                      {Object.entries(somas).map(([grupoId, subgrupos]) => {
+                        const grupo = grupos[grupoId];
+                        // Verifica se a categoria é 'compras' antes de renderizar
+                        if (grupo && grupo.categoria === 'compras') {
+                          return (
+                            <div className="grupo" key={grupoId}>
+                              <h2>{grupo.nome}</h2>
+                              <table className="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th style={{ width: '30rem' }}><p>Sub-grupo</p></th>
+                                    <th style={{ width: '15rem' }}><p>Valor estoque</p></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {Object.entries(subgrupos).map(([subgrupoId, soma]) => (
+                                    <tr key={subgrupoId}>
+                                      {/* Busca o nome do subgrupo no array de subgrupos do grupo */}
+                                      <td><p>{grupo.subgrupos.find(sg => sg.id === parseInt(subgrupoId, 10)).nome}</p></td>
+                                      <td><p>{soma.valorestoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p></td>
+                                    </tr>
+                                  ))}
+                                  {/* Inclua uma linha para mostrar a soma total do grupo */}
+                                  <tr>
+                                    <td><p><strong>Total do grupo</strong></p></td>
+                                    <td><p><strong>{somaTotalGrupo[grupoId].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <hr />
+                            </div>
+                          );
+                        }
+                        return null; // Retorna null para grupos que não atendem ao critério
+                      })}         
+                    </table>{/* tab-esquerda */}
+                    
+                    <table className="table table-striped tot-geral">
+                      <thead>
+                        <tr hidden>
+                          <th style={{ width: '30rem' }}></th>
+                          <th style={{ width: '15rem' }}></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Inclua uma última linha para mostrar o total geral dos subgrupos de 'compras' */}
+                        <tr id="somatorio">
+                          <td>
+                            <h3>Total geral (Compras)</h3>
+                          </td>
+                          <td>
+                            <h3>
+                              <strong>{Object.entries(somas).reduce((total, [grupoId, subgrupos]) => {
+                                          const grupo = grupos[grupoId];
+                                          return grupo && grupo.categoria === 'compras' ? total + somaTotalGrupo[grupoId] : total;
+                                        }, 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                              </strong>
+                            </h3>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> {/*compras*/}
+                        
+                <div className="produção">
+                  <h1>Fechamento estoque - <strong>Produção</strong> - {retornaMes(mes)} de {ano}</h1>
+                  <div ref={reportProducaoRef} className="tabela">
+                  
+                    <table className="tab-dir">
+                      {/* Renderiza uma tabela para cada grupo e subgrupo */}
+                      {Object.entries(somas).map(([grupoId, subgrupos]) => {
+                        const grupo = grupos[grupoId];
+                        // Verifica se a categoria é 'compras' antes de renderizar
+                        if (grupo && grupo.categoria === 'produção') {
+                          return (
+                            <div className="grupo" key={grupoId}>
+                              <h2>{grupo.nome}</h2>
+                              <table id="tabela"  className="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th style={{ width: '30rem' }}><p>Sub-grupo</p></th>
+                                    <th style={{ width: '15rem' }}><p>Valor estoque</p></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {Object.entries(subgrupos).map(([subgrupoId, soma]) => (
+                                    <tr key={subgrupoId}>
+                                      {/* Busca o nome do subgrupo no array de subgrupos do grupo */}
+                                      <td><p>{grupo.subgrupos.find(sg => sg.id === parseInt(subgrupoId, 10)).nome}</p></td>
+                                      <td><p>{soma.valorestoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p></td>
+                                    </tr>
+                                  ))}
+                                  {/* Inclua uma linha para mostrar a soma total do grupo */}
+                                  <tr>
+                                    <td><p><strong>Total do grupo</strong></p></td>
+                                    <td><p><strong>{somaTotalGrupo[grupoId].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <hr />
+                            </div>
+                          );
+                        }
+                        return null; // Retorna null para grupos que não atendem ao critério
+                      })}
+                    </table>
+                    <table className="table table-striped tot-geral">
+                      <thead>
+                        <tr hidden>
+                          <th style={{ width: '30rem' }}></th>
+                          <th style={{ width: '15rem' }}></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Inclua uma última linha para mostrar o total geral dos subgrupos de 'compras' */}
+                        <tr id="somatorio">
+                          <td>
+                            <h3>Total geral (Produção)</h3>
+                          </td>
+                          <td>
+                            <h3>
+                              <strong>{Object.entries(somas).reduce((total, [grupoId, subgrupos]) => {
+                                          const grupo = grupos[grupoId];
+                                          return grupo && grupo.categoria === 'produção' ? total + somaTotalGrupo[grupoId] : total;
+                                        }, 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                              </strong>
+                            </h3>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>{/*produção*/}
+              </div> //report
+            ) 
+
+              :
+
+            /* caso NÃO HAJA valores para exibir */
+            (
+                <>  
+                <br /><br /><br />
+                  <p className={" " + textErroClass } style={{color: "red"}}><strong>{textErro}</strong></p>
+                </>
+            )
+          }
+        </div> {/*relatorio*/}
+      </section>
+    )
+};
 
 export default FechamentoEstoque;

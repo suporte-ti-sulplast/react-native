@@ -82,6 +82,7 @@ const NewsCreate = () => {
         //chama a função que faz o upload da imagem no servidor
         const response = uploadImagem(image);
         setNewFileName(response.name);
+        console.log(response.name)
       }
     };
       
@@ -142,7 +143,9 @@ const NewsCreate = () => {
     return (
     <section className="NoticiasCreate">
 
-      <h2>Inserir nova notícia</h2>
+      <div className="subTitulo">
+       <h2>Inserir nova notícia</h2>
+      </div>
 
       <div className="content">
       
@@ -242,14 +245,13 @@ const NewsCreate = () => {
           <div className="erro">
             <div className={"erros " + textErroClass}>{textErro}</div>
           </div>  
-
-          <hr />
-
-           <div className="botoes">
+         
+        
+            <div className="botoes">
               <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Cancelar</button>
               <button className="defaultBtn okBtn" type="submit" >Criar</button>
             </div>
-                      
+            
         </form>
 
       </div>

@@ -24,8 +24,10 @@ function UserList() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroUsuarios />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroUsuarios />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

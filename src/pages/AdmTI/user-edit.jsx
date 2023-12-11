@@ -29,8 +29,10 @@ function UserEdit() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroUsuariosEdit  userData={data}/>
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroUsuariosEdit  userData={data}/>
+            </div>
           </AnimatedContainer>
         </div>
       </div>

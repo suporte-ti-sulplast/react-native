@@ -28,9 +28,11 @@ const ControleMovimentoVeiculos = () => {
   } 
 
   return (
-    <section className="controleMovimentoVeiculos">
+    <section className="controleListaVeiculos">
 
-      <h1>Registro de entrada e saída de veículos</h1>
+      <div className="subTitulo">
+        <h2>Registro de entrada e saída de veículos</h2>
+      </div>
 
       <div className="veiculos">
         {veiculos.map((veiculos) => 

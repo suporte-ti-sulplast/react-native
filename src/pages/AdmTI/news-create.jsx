@@ -24,8 +24,10 @@ function NewsCreate() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroNoticiasCreate />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroNoticiasCreate />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

@@ -14,6 +14,7 @@ import Home from './pages/Home/Home';
 
 import { AuthProvider, AuthContext } from "./contexts/auth";
 import { RetractProvider } from './contexts/retract'; 
+import { AnimatePresence } from "framer-motion";
 
 import NotFound from "./pages/NotFound/NotFound";
 
@@ -41,12 +42,14 @@ import EtiquetasData from "./pages/Etiquetas/etiq-data";
 import EtiquetasTeste from "./pages/Etiquetas/etiq-teste";
 import EtiquetasRoto from "./pages/Etiquetas/etiq-roto";
 import EtiquetasBarCode39 from "./pages/Etiquetas/etiq-barcode39";
+import EtiquetasMoldagem from "./pages/Etiquetas/etiq-moldagem";
 
 import Portaria from "./pages/Portaria/Portaria";
 import PortControleMovimentoVeiculos from "./pages/Portaria/controle-movimento-veiculos";
 import PortControleListaVeiculos from "./pages/Portaria/controle-lista-veiculos";
 import PortControleMovimentoNovo from "./pages/Portaria/controle-movimento-novo";
-import { AnimatePresence } from "framer-motion";
+
+import LGPD from "./pages/LGPD/LGPD";
 
 
 const AppRoutes = () => {
@@ -128,7 +131,6 @@ const AppRoutes = () => {
                                 </Private>} />       
 
 
-
                             <Route exact path="/Financeiro" element=
                                 {<Private>
                                     <Financeiro/>
@@ -167,6 +169,10 @@ const AppRoutes = () => {
                                 {<Private>
                                     <EtiquetasBarCode39/>
                                 </Private>} />  
+                            <Route exact path="/Etiquetas/etiquetas-moldagem" element=
+                                {<Private>
+                                    <EtiquetasMoldagem/>
+                                </Private>} />  
 
 
                             <Route exact path="/Portaria" element=
@@ -184,7 +190,12 @@ const AppRoutes = () => {
                             <Route exact path="/Portaria/controle-movimento-novo" element=
                                 {<Private>
                                     <PortControleMovimentoNovo/>
-                                </Private>} />   
+                                </Private>} /> 
+
+                            <Route exact path="/LGPD" element=
+                                {<Private>
+                                    <LGPD/>
+                                </Private>} />    
 
                             <Route exact path="*" element={<NotFound />} />
                         </Routes>

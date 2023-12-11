@@ -3,9 +3,7 @@
 
 .barraSuperior{
     display: grid;
-    grid-template-columns: 0.7fr auto;
     justify-content: space-between;
-    padding: 0.8rem 1.6rem;
     gap: 1rem;
     align-items: center;
     
@@ -37,6 +35,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        margin-left: 8%;
 
         img{
             margin-right: 1rem;
@@ -65,8 +64,6 @@
             display: flex;
             flex-direction: column;
 
-
-            
             button{
                 display: flex;
                 flex-direction: column;
@@ -84,8 +81,6 @@
                 margin: 0;
             }
         }
-
-
 
         .user, .psswd, .sair, .setor{
             padding: 0 1rem;
@@ -106,9 +101,8 @@
     
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
     .barraSuperior{
-
         grid-template-columns: 0.75fr auto;
         justify-content: space-between;
         padding: 0.6rem 1.7rem;

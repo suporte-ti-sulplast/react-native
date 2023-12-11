@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement('#root'); 
 
-const CadastroUsuarios =  () => {
+const CadastroImpressoras =  () => {
 
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ const CadastroUsuarios =  () => {
       closeModal();
       setControl(true)
     }
-  };//FIM DA EXCLUSÃO DE USUÁRIO
+  };//FIM DA EXCLUSÃO DE IMPRESSORA
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -131,33 +131,40 @@ const CadastroUsuarios =  () => {
   /* RENDERIZAÇÃO DA PÁGINA ********************************************************* */
   return (
     <section className="cadastroImpressoras">
-      {/* Titulo e botão novo */}
-      <div className="titulo">
-        <h2>Impressoras</h2>
-        <button className="Btn defaultBtn" type="button" onClick ={handleNew}>Nova Impressora</button>
-      </div>
 
-      <hr />
+      <div className="subTitulo">
+        <h2>Impressoras</h2>
+        <button className="defaultBtn inBtn" type="button" onClick ={handleNew}>Nova Impressora</button>
+      </div>
       
       <div className="tabela"> 
         <table className="table table-striped">
           <thead>
             <tr>
               <th className="short" hidden>#</th>
+              <th style={{textAlign: "center"}}>Editar</th>
+              <th style={{textAlign: "center"}}>Excluir</th>
               <th>Nome</th>
               <th>Fabricante</th>  
               <th>Modelo</th>
               <th>Status</th>
               <th>REDE/USB</th>
               <th>IP</th>
-              <th style={{textAlign: "center"}}>Editar</th>
-              <th style={{textAlign: "center"}}>Excluir</th>
             </tr>
           </thead>
           <tbody className="">
               {printers.map((id) => (
                 <tr key={id.idPrinter}>
                   <td hidden>{id.idPrinter}</td>
+                  <td style={{textAlign: "center"}}>
+                    <img className="icon" src="../images/editar2.png" alt="editar2" 
+                    onClick={() => handleEdit(id.idPrinter)} />
+                  </td>
+
+                  <td style={{textAlign: "center"}}>
+                      <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
+                      onClick={() => handleDelete(id.idPrinter, id.printerName)} />
+                  </td>
                   <td>{id.printerName}</td>
                   <td>{id.manufacturer}</td>
                   <td>{id.model}</td>
@@ -171,15 +178,7 @@ const CadastroUsuarios =  () => {
                   </td>
                   <td>{id.netUsb == "0" ? "USB" : "REDE"}</td>
                   <td>{id.ip}</td>
-                  <td style={{textAlign: "center"}}>
-                    <img className="icon" src="../images/editar2.png" alt="editar2" 
-                    onClick={() => handleEdit(id.idPrinter)} />
-                  </td>
 
-                  <td style={{textAlign: "center"}}>
-                      <img className="icon" src="../images/lixeira-com-tampa.png" alt="lixeira-com-tampa"
-                      onClick={() => handleDelete(id.idPrinter, id.printerName)} />
-                  </td>
                 </tr>
               ))}
           </tbody>
@@ -202,17 +201,16 @@ const CadastroUsuarios =  () => {
 
         <p>Tem certeza que deseja excluir a impressora <br /><span>{selectedPrinterToDelete}</span> ?</p>
 
-        <div className="btn">
-          <button className="Btn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
-          <button className="Btn okBtn" onClick={() => handleDeletePrinterConfirmed(selectediDToDelete)}>Confirmar</button>
+        <div className="botoes">
+          <button className="defaultBtn escBtn" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</button>
+          <button className="defaultBtn okBtn" onClick={() => handleDeletePrinterConfirmed(selectediDToDelete)}>Confirmar</button>
         </div>
 
       </Modal>  
 
       <div className={'msg ' + msgType}>{msg}</div>
-
     </section>
   )
 };
 
-export default CadastroUsuarios;
+export default CadastroImpressoras;

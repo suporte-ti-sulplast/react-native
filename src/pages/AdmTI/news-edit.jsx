@@ -28,8 +28,10 @@ function NewsEdit() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroNoticiasEdit userData={userId} />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroNoticiasEdit userData={userId} />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

@@ -24,8 +24,10 @@ function Etiq() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuEtiquetas />
-            <EtiquetasQualidade />
+            <div>
+              <MenuEtiquetas />
+              <EtiquetasQualidade />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

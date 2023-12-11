@@ -47,6 +47,20 @@ function LinksUteis() {
                     <p>RocketChat</p>
                 </a>
             </div>
+
+{/*             <div className="link">
+                <a href="\\192.168.0.245\sgi" target="_blank" rel="noreferrer noopener">
+                    <img src="../images/logoSulplast.png" alt="logo-sgi" />
+                    <p>SGI</p>
+                </a>
+            </div>
+
+            <div className="link">
+                <a href="file:///C:/Users/ricardo.spicka/Pictures/Screenshots">
+                    <img src="../images/logoSulplast.png" alt="logo-sgi-métodos" />
+                    <p>SGI Métodos</p>
+                </a>
+            </div> */}
           
         </div>
     </section>

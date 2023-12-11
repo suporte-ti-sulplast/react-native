@@ -24,8 +24,10 @@ function Home() {
           </div>
           <div className="lateralDireita">
             <AnimatedContainer>
-              <LinksUteis />
-              <Noticias />
+              <div className='splitHome'>
+                <LinksUteis />
+                <Noticias />
+              </div>
             </AnimatedContainer>
           </div>
         </div>

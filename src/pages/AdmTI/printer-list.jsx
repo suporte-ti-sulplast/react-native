@@ -24,8 +24,10 @@ function PrinterList() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroImpressoras />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroImpressoras />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

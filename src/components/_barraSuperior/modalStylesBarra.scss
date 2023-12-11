@@ -94,11 +94,14 @@
   .password{
     width: 9rem !important;
     height: 2rem;
+    margin: 0 !important;
   }
 
   .gerador-senha{
     display: flex;
-    gap: 1rem;    
+    gap: 1rem;  
+
+
   }
 
   .inpCopy{
@@ -121,22 +124,6 @@
     border-radius: 8px;
     padding: 0.2rem 0.5rem;
     color: $white-color;
-  }
-  .radio-block{
-      width: 10rem;
-      height: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap:0.2rem;
-      color: $dark-text-color;
-      border-radius: 6px;
-      background-color: transparent;
-      border: 1px solid $dark-text-color
-  }
-
-  .radio{
-      width: 1rem;
   }
 }
 
@@ -235,6 +222,4 @@
         width: 1rem;
     }
   }
-
-
 }

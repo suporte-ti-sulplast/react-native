@@ -28,8 +28,10 @@ function PrinterEdit() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroImpressorasEdit userData={printerId} />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroImpressorasEdit userData={printerId} />
+            </div>
           </AnimatedContainer>
         </div>
       </div>

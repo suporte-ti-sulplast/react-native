@@ -50,7 +50,7 @@ export const labelPrintTeste = async (qtdade, texto, ip) => {
   }
 };
 
-//IMPRIME ETIQUETA TESTE
+//BUSCA DADOS ETIQUETA ROTO
 export const labelPrintRotoSearch = async (texto, ip) => {
   try{ 
     const response = await api.post("/etq-roto-print-search", {texto, ip})
@@ -61,7 +61,7 @@ export const labelPrintRotoSearch = async (texto, ip) => {
   }
 };
 
-//IMPRIME ETIQUETA TESTE
+//IMPRIME ETIQUETA ROTO
 export const labelPrintRoto = async (qtdade, codigo, material, ip) => {
   try{ 
     const response = await api.post("/etq-roto-print", {qtdade, codigo, material, ip})
@@ -77,6 +77,17 @@ export const labelPrintRoto = async (qtdade, codigo, material, ip) => {
 export const labelPrintBarCode39 = async (qtdade, codigo, setLegenda, ip) => {
   try{ 
     const response = await api.post("/etq-barcode39-print-search", {qtdade, codigo, setLegenda, ip})
+    return response.data;
+  }   catch (error) {
+    console.error("Ocorreu um erro ao fazer a requisição:", error);
+    throw error; // Lançar o erro novamente para ser tratado pelo chamador da função, se necessário
+  }
+};
+
+//BUSCA DADOS ETIQUETA MOLDAGEM
+export const labelPrintMoldagemSearch = async (texto, ip) => {
+  try{ 
+    const response = await api.post("/etq-moldagem-print-search", {texto, ip})
     return response.data;
   }   catch (error) {
     console.error("Ocorreu um erro ao fazer a requisição:", error);

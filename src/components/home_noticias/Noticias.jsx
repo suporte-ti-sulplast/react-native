@@ -33,6 +33,7 @@ function Noticias() {
         const response = await findNews(data);
         const newsData = response;
         setNews(newsData.news);  
+        console.log(newsData.news)
         setLoading(false);
         setControl(false)
       } catch (err) {
@@ -86,7 +87,7 @@ function Noticias() {
         )}
 
         {news.map((newsItem) => (
-          <Carousel.Item key={newsItem.id}> 
+          <Carousel.Item key={newsItem.idNews}> 
             <div className="inner">
               <div>
               <img src={`http://192.168.0.236:3000/images-news/${newsItem.image}`} alt={newsItem.title} />

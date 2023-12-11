@@ -1,8 +1,6 @@
 @import '../../../../../variables';
 
 .NoticiasCreate{
-    height: 710px;
-    transform: translateY(-125px);
 
     .content{
         width: 100%;
@@ -16,17 +14,12 @@
         color: $dark-text-color;
     }
 
-    h2{
-        font-size: 1.5rem;
-        margin: 0.8rem;
-        padding: 0.2rem;
-    }
-
     form{
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding: 1rem;
+        border-bottom: 1px dashed gray;
 
         .linha{
             width: 100%;
@@ -131,18 +124,14 @@
         }
 
         .erros{
-            margin-top: 1rem;
             padding: 0.3rem 1rem;
             font-weight: 700;
             text-align: right;
             border-radius: 8px;
-        }
-
-        .erros{
-            background-color: $background-erro !important;
             text-align: center;
             color: $erro;
         }
+
         .none{
             opacity: 0;
         }
@@ -153,27 +142,16 @@
     }   
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
 
     .NoticiasCreate{
-        height: 440px !important;
-
-        h2{
-            font-size: 1.2rem;
-            margin: 0.3rem;
-            padding: 0;
-        }
-
-        hr{
-            margin: 0;
-        }
-    
+   
         form{
     
-            .titulo, .link, .data, .texto, .arquivo, .default, .status, .dataInicial, .dataFinal{
+            .titulo,  .data, .texto, .arquivo, .default, .link, .status, .dataInicial, .dataFinal{
     
                 label{
-                    width: 11rem;
+                    width: 11.2rem;
                     height: 28px;
                 }
     
@@ -182,23 +160,31 @@
                     height: 30px;
                 }
             }
+
+            .link, .status{
+
+                label{
+                    width: 9rem !important;
+                }
+
+            }
     
             .titulo, .data{
                 input{
-                    width: 60rem;
+                    width: 55rem;
                 } 
             }
     
             .texto{
                 textarea{
-                    width: 60rem;
+                    width: 55rem;
                     height: 5rem;
                 }            
             }
     
             .arquivo{
                 input{
-                    width: 20rem;
+                    width: 19rem;
                 } 
             }
 
@@ -220,7 +206,7 @@
     
             .link{
                 input{
-                    width: 29rem;
+                    width: 25rem;
                 } 
             }
         }

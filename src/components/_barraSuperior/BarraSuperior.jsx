@@ -168,7 +168,9 @@ function BarraSuperior() {
   return (
     <section className='barraSuperior'>
         <div className='logoTitulo'>
-            <img className='logo' src='../../images/logoSulplastBranco.png' alt="logoSulplastBranco" />
+            <a href="https://www.sulplast.com.br/pt_BR" target="_blank" rel="noopener noreferrer">
+              <img className='logo' src='../../images/logoSulplastBranco.png' alt="logoSulplastBranco" />
+            </a>
             <h1>Sulplast Intranet</h1>
         </div>
 
@@ -252,7 +254,7 @@ function BarraSuperior() {
                   onClick={(e) => setErrorConfimSenhaClass("hidden")}
                   onChange={(e) => {setNewPasswordConfirm(e.target.value); setSelectedId(selectedId); }}
             />
-            <img className="eye" src={"../images/olho-aberto.png"} alt="erro" 
+            <img className="eye" src={"../../images/olho-aberto.png"} alt="erro" 
                 onClick={(e) => {
                 eyeReSenha === "aberto" ? setEyeReSenha("fechado") : setEyeReSenha("aberto")
                 typeofRePassword === "password" ? setTypeofRePassword("texto") : setTypeofRePassword("password")
@@ -265,7 +267,7 @@ function BarraSuperior() {
         </div>
 
         <div className="gerador-senha">
-        <button className="password Btn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
+        <button className="password inBtn defaultBtn" type="button" onClick ={handlePassword}>Gerar senha</button>
 
         <div className="inpCopy">
           <input id="gerasenha" className="textPassword" value={password} readOnly />

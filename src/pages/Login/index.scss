@@ -15,6 +15,11 @@
       width: 100%;
       margin-right: 3rem;
 
+      a{
+        text-decoration: none;
+        color: $white-color;
+      }
+
       img{
           width: 15rem;
           margin: 1rem;
@@ -28,11 +33,21 @@
     flex-direction: column;
     text-align: left;
 
+    .form{
+      padding: 0.2rem;
+    }
+
     .form-group {
       display: flex;
       flex-direction: column;
       margin: 10px 0;
       width: auto;
+
+      .forget{
+        margin-top: 1rem !important;
+        color: $white-color;
+        cursor: pointer;
+      }
     }
               
     .form-group label {
@@ -105,15 +120,15 @@
     }
     
     .botão-login{
-      width: 97%;
-      height: 33px;
-    }
-    
+      width: 100%;
+      height: 38px;
+      margin: 0 !important;
+    }    
   }
 
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
   .group{
     .leftSide{
 

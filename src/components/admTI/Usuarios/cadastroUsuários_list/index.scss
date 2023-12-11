@@ -1,35 +1,14 @@
 @import '../../../../../variables';
 
 .cadastroUsuarios{
-    transform: translateY(-125px);
 
     .tabela{
-        height: 625px !important;
         overflow-y: scroll !important;
         overflow-x: scroll !important;
         
         thead{
             position: sticky;
             top: 0;
-        }
-    }
-
-    .titulo{
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: space-between;
-        padding: 0 1rem;
-
-        h2{
-            font-size: 1.5rem;
-            margin: 0.5rem;
-            padding: 0.2rem;
-        }
-
-        .btn-filtros{
-            cursor: pointer;
-            font-size: 1.1rem !important;
         }
     }
 
@@ -55,7 +34,6 @@
         background-color: $blue-default;
     }
     
-
     .filtro{
         display: flex;
         flex-direction: column;
@@ -179,41 +157,12 @@
     padding: 0 0.1rem;
     text-align: center;
    }
-
-   .msg{
-    width: 40rem;
-    margin: 2rem auto;
-    padding:  0.5rem 1rem;
-    color: $dark-text-color;
-    font-weight: 700;
-    border-radius: 9px;
-    }
-
-    .hidden{
-        opacity: 0;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .success{
-        opacity: 1;
-        background-color: $msg-sucesso;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .error{
-        opacity: 1;
-        background-color: $msg-erro;
-        transition: all 0.2s ease-in-out;
-    }
 }
 
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
 
     .cadastroUsuarios{
-        .tabela{
-            height: 360px !important;
-        }
 
         .titulo{
             margin: 0;
@@ -250,9 +199,9 @@
             height: 5px !important;
         }
 
-        .icon{
+        .icon, .lixeira{
             width: 15px;
-        }   
+        }  
     }
 
 }

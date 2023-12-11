@@ -255,7 +255,10 @@ const NewMoviment = ( props ) => {
     return (
     <section className="NovoMovimento">
 
-      <h2>NOVO REGISTRO PARA O VEÍCULO <strong>{name}</strong>  {!moveOpen ? 'SAÍDA' : 'ENTRADA'}  </h2>
+    <div className="subTitulo">
+      <h2>NOVO REGISTRO PARA O VEÍCULO <strong>{name}</strong>  {!moveOpen ? ' - SAÍDA' : ' - RETORNO'}  </h2>
+    </div>
+
       {/* //INFORMAÇÕES DA SAÍDA DO VEICULO */}   
       <div className="content">
         <form className="form" onSubmit={handleSubmit}>
@@ -343,7 +346,7 @@ const NewMoviment = ( props ) => {
           </div>
           
           {/* //INFORMAÇÕES DO RETORNO DO VEICULO */}
-          <div className="retorno" style={{display: !moveOpen ? 'none' : 'block'}}>
+          <div className="retorno" style={{display: !moveOpen ? 'none' : 'flex'}}>
             <h3>Informações do retorno do veículo</h3>
            
             <div className="linha">
@@ -413,12 +416,12 @@ const NewMoviment = ( props ) => {
               <button className="defaultBtn escBtn" type="button" onClick={() => handleCancel(veiculoId, name)}>Cancelar</button>
               <button className="defaultBtn okBtn" type="submit" >Salvar</button>
             </div>
+        </form>
 
           <div className="form-group">
             <div className={'msg ' + msgType}>{msg}</div>
           </div>
                       
-        </form>
 
       </div>
       

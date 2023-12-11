@@ -1,9 +1,9 @@
 @import '../../../../variables';
 
 .menuFinanceir{
-    height: 200px;
+
     .geral{
-        height: 45px;
+        height: 48px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -43,33 +43,35 @@
     }
 }
 
-@media (max-width: 1370px) {
+@media (max-width: 1520px) {
     .menuFinanceir{
-        .geral{
-            gap: 1rem !important;
-            margin: 0.5rem;
-            padding: 0.3rem;
 
+        .geral{
+            height: 37px;
             .title{
                 width: 21rem;
                 gap: 0.5rem;
+
+                h1{
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    font-size: 1.1rem !important;
+                }
             }
         
             .cadastro{
                 width: 45rem;
             }
         
-            h1{
-                font-size: 1.4rem !important;
-            }
+
 
             a, p{
                 font-size: 0.75rem;
             }
         
             img{
-                width: 30px !important;
-                height: 30px !important;
+                width: 23px !important;
+                height: 23px !important;
             }
         }
     }

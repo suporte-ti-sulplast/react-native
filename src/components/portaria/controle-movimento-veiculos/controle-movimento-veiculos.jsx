@@ -149,9 +149,10 @@ const ControleMovimentoVeiculos = ( props ) => {
   return (
     <section className="controleMovimentoVeiculos">
       {/* Titulo e botão novo */}
-      <div className="titulo">
+      <div className="subTitulo">
         <h2>Registros de entradas e saídas do veículo: <strong>{veiculoNome}</strong></h2>  
         <div className="botoes">
+          <button className="defaultBtn escBtn" type="button" onClick ={handleCancel}>Voltar</button>
           <button className="defaultBtn inBtn" type="button" style={{ display: moveOpen ? 'none' : 'block' }} onClick ={handleNew}>Novo registro</button>
         </div>
       </div>

@@ -21,7 +21,7 @@ function MenuCadastroTI() {
 
         <nav className="menu-nav">
           <ul className="menu-principal">
-        {/*     <li><p>APLICAÇÕES</p>
+        {/*   <li><p>APLICAÇÕES</p>
               <ul className="sub-menu">
               </ul>
             </li> */}
@@ -34,7 +34,7 @@ function MenuCadastroTI() {
                 style={estiloCad}
               >
                 <li><Link to="/ADM-TI/cadastro-usuarios">Usuários</Link></li>
-          {/*       <li><Link to="/ADM-TI/cadastro-veiculos">Veículos</Link></li>
+          {/*   <li><Link to="/ADM-TI/cadastro-veiculos">Veículos</Link></li>
                 <li><Link to="/ADM-TI/cadastro-setores">Setores</Link></li>
                 <li><Link to="/ADM-TI/cadastro-niveis-acesso">Níveis de acesso</Link></li> */}
                 <li><Link to="/ADM-TI/cadastro-noticias">Notícias</Link></li>  

@@ -24,8 +24,10 @@ function PrinterCreate() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroImpressorasCreate />
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroImpressorasCreate /> 
+            </div>
           </AnimatedContainer>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import "./index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './modalStylesUsers.scss'; // Importo estilos dos modais
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { findUsers, editUser, alterPassword, validPassword, deleteUser, searchUsers} from "../../../../services/apiLoginUser";
@@ -10,6 +9,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../../contexts/auth';
 import { converteData } from "../../../../functions/manipuladorDataHora";
 import { validadorSenha, generatePassword, calcularDiferencaEmDias } from '../../../../functions/manipuladorSenhas';
+import './modalStylesUsers.scss'; // Importo estilos dos modais
 
 Modal.setAppElement('#root'); 
 
@@ -137,19 +137,24 @@ const CadastroUsuarios =  () => {
       const response = await deleteUser(selectediDToDelete);
       setIsDeleteModalOpen(false);
       setSelectedUserToDelete(null);
-      setMsg(response.msg)
-      if(response.msg_type === "success") {
-        setMsgType("success")
-      } else {
-        setMsgType("error")
+        
+      if(response.msg_type === "success")
+      {
+        setMsgType("success");
+        //LIMPA O FORMULÁRIO
+        setForceChange(false);
+        setNewPassword("");
+        setNewPasswordConfirm("");
+        // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
+        setTimeout(() => {
+          setMsgType("hidden");
+        }, 3000);
+          closeModal();
+      } else
+      {
+        setMsgType("error");
       }
-      // Redirecionar de volta para a mesma rota (página de cadastro de usuários)
-      navigate("/ADM-TI/cadastro-usuarios"); 
-      // Define um atraso de 3 segundos (3000 milissegundos) para reverter para "hidden"  
-      setTimeout(() => {
-        setMsgType("hidden");
-      }, 3000);
-      closeModal();
+
       setControl(true)
     }
   };//FIM DA EXCLUSÃO DE USUÁRIO
@@ -259,284 +264,16 @@ const CadastroUsuarios =  () => {
       getDepptoStattus();
   }
 
-  /* MOSTRA AS CAIXAS DE FILTROS */
-  const handleFilterShow = () => {
-    setFilterHidden(!filterHidden);
-  };
-
-  /* LIMPA OS FILTROS E RECARREGA A LIST */
-  const handleClear = () => {
-    setReset(!reset)
-    setHaveSearch("0")
-    setFilter
-    (prevState =>
-      ({
-        ...prevState,
-        login: "",
-        name: "",
-        email: "",
-        depto: "Todos",
-        level: "Todos",
-        stts: "Todos",
-        coq: "",
-        sendEmail: "Todos",
-        shared: "Todos",
-        dtInicio: "",
-        dtFim: ""
-      })
-    )
-  };
-
-  const handleSearch = async () => {
-    setHaveSearch("1")
-      try {
-        const response = await searchUsers(filter);
-        const usersDataSearche = response.data.users;
-        setUsers(usersDataSearche);  
-        setLoading(false);
-        setControl(false)
-      } catch (err) {
-        console.error('Ocorreu um erro durante a consulta:', err);
-        setLoading(false);
-      }
-  };
-
+  /* RENDERIZAÇÃO DA PÁGINA ********************************************************* */
     return (
     <section className="cadastroUsuarios">
       {/* Titulo e botão novo */}
-      <div className="titulo">
+      <div className="subTitulo">
         <h2>Usuários</h2>
-
-          {/* FITROS */}
- {/*          <div className="btn-filtros" onClick={() => handleFilterShow()}> 
-            <p><strong>FILTROS  </strong></p>
-          </div>  */}
           <div className="botoes">
             <button className="defaultBtn inBtn" type="button" onClick ={handleNew}>Novo usuário</button>          
           </div>
       </div>
-
-      <form action="" className="filtro">
-
-
-          <hr style={{marginBottom: "1rem"}} className={"linha" + (filterHidden ? "filterHidden" : "")}/>
-
-          <div className={"linha" + (filterHidden ? "filterHidden" : "")}>
-            
-              <div className="input-filtro">
-                <label htmlFor="nome">Nome</label>
-                <input
-                  type="text"
-                  name="nome"
-                  value={filter.name}
-                  id="nome"
-                  onChange={(e) => {
-                    setFilter((prevState) => ({
-                      ...prevState,
-                      name: e.target.value
-                    }));
-                    setHaveSearch("1");
-                  }} 
-                />
-              </div>
-              
-              <div className="input-filtro">
-                <label htmlFor="login">Login</label>
-                <input
-                  type="text"
-                  name="login"
-                  id="login"
-                  value={filter.login}
-                  onChange={(e) => {
-                    setFilter((prevState) => ({
-                      ...prevState,
-                      login: e.target.value
-                    }));
-                    setHaveSearch("1");
-                  }} 
-                />
-              </div>
-
-              <div className="input-filtro">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={filter.email}
-                  id="email" 
-                  onChange={(e) => {
-                    setFilter((prevState) => ({
-                      ...prevState,
-                      email: e.target.value
-                    }));
-                    setHaveSearch("1");
-                  }} 
-                />
-              </div>
-
-              <div className="input-filtro">
-                <label htmlFor="department">Departameto</label>
-                 <select name="department" id="department" value={filter.depto}
-                  onChange={(e) => {
-                    setFilter((prevState) => ({
-                      ...prevState,
-                      depto: e.target.value
-                    }));
-                    setHaveSearch("1");
-                  }}
-                 >
-                 <option value="Todos">Todos</option>
-                    {depptto.map((dept) => (
-                      <option key={dept.department} value={dept.department}>
-                       {dept.department}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
-              <div className="input-filtro">
-                <label htmlFor="nivel">Nível de acesso</label>
-                <select name="level" id="level" value={filter.level}
-                 onChange={(e) => {
-                  setFilter((prevState) => ({
-                    ...prevState,
-                    level: e.target.value
-                  }));
-                  setHaveSearch("1");
-                }}
-              >
-                <option value="Todos">Todos</option>
-                    {level.map((lvl) => (
-                      <option key={lvl.accessLevel} value={lvl.accessLevel}>
-                       {lvl.accessLevel}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
-              <div className="input-filtro input-filtro-menor">
-                <label htmlFor="coq">Cód CQ</label>
-                <input
-                  type="text"
-                  name="coq"
-                  value={filter.coq}
-                  id="coq" 
-                  onChange={(e) => {
-                    setFilter((prevState) => ({
-                      ...prevState,
-                      coq: e.target.value
-                    }));
-                    setHaveSearch("1");
-                  }} 
-                />
-              </div>
-
-              <div className="input-filtro input-filtro-menor">
-                  <label htmlFor="status">Status</label>
-                  <select name="status" id="status" value={filter.stts}
-                    onChange={(e) => {
-                      setFilter((prevState) => ({
-                        ...prevState,
-                        stts: e.target.value
-                      }));
-                      setHaveSearch("1");
-                    }}
-                  >
-                  <option value="Todos">Todos</option>
-                      {sttattus.map((stt) => (
-                        <option key={stt.stattus} value={stt.status}>
-                        {stt.status}
-                        </option>
-                      ))}
-                  </select>
-              </div>
-
-              <div className="input-filtro input-filtro-data">
-                  <label htmlFor="data">Data criação</label>
-                  <div className="data">
-                    <input className="dtInicio" type="date" name="dataInicial" id="data" value={filter.dtInicio}
-                      onChange={(e) => {
-                        setFilter((prevState) => ({
-                          ...prevState,
-                          dtInicio: e.target.value
-                        }));
-                        setHaveSearch("1");
-                      }} 
-                    />
-                    <input className="dtFim" type="date" name="dataFinal" id="data" value={filter.dtFim} min={filter.dtInicio}
-                    onChange={(e) => {
-                      setFilter((prevState) => ({
-                        ...prevState,
-                        dtFim: e.target.value
-                      }));
-                      setHaveSearch("1");
-                    }} 
-                    />
-                  </div>
-                  
-              </div>
-
-              <div className="input-filtro input-filtro-menor">
-                  <label htmlFor="sendEmail">Recebe e-mail</label>
-                  <select name="sendEmail" id="sendEmail" value={filter.sendEmail}
-                    onChange={(e) => {
-                      setFilter((prevState) => ({
-                        ...prevState,
-                        sendEmail: e.target.value
-                      }));
-                      setHaveSearch("1");
-                    }}
-                  >
-                    <option value="Todos">Todos</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                  </select>
-              </div>
-
-              <div className="input-filtro input-filtro-menor">
-                  <label htmlFor="shared">Compartilhado</label>
-                  <select name="shared" id="shared" value={filter.shared}
-                    onChange={(e) => {
-                      setFilter((prevState) => ({
-                        ...prevState,
-                        shared: e.target.value
-                      }));
-                      setHaveSearch("1");
-                    }}
-                  >
-                    <option value="Todos">Todos</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                  </select>
-              </div>
-
-              <div className="search">
-                <div data-bs-toggle="tooltip" data-bs-placement="top" title="Pesquisar">
-                  <button
-                    type="button"
-                    onClick ={handleSearch}
-                    disabled={haveSearch === "0"}
-                    style={{
-                      color: haveSearch === "1" ? 'black' : 'gray',
-                      cursor: haveSearch === "1" ? 'pointer' : 'default'
-                    }}>
-                    <img alt="lupa-pesquisar" src={`../../images/lupa${haveSearch === "1" ? 'Verde' : 'Cinza'}.png`}/>
-                  </button>
-                </div>
-                <div data-bs-toggle="tooltip" data-bs-placement="top" title="Limpar">
-                  <button
-                    type="button"
-                    onClick ={handleClear}>
-                      <img src="../../images/borracha.png" alt="borracha-limpar" />
-                  </button>
-                </div>
-              </div>
-
-          </div>
-
-      </form>
-      
-      <hr />
       
       <div className="tabela"> 
         <table className="table table-striped">

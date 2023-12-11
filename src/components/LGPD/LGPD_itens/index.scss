@@ -1,0 +1,44 @@
+@import '../../../../variables';
+
+.lgdpItens{
+    height: 100% !important;
+    border: 2px dashed black;
+
+    .corpo{
+        display: grid;
+        grid-template-columns: auto 1fr;
+        height: 100vh; /* Usar a altura total da viewport */
+    
+        .lado_esq {
+            height: 100%; /* Ocupar 100% da altura do grid container (corpo) */
+            border: 1px dashed rgb(243, 5, 5);
+            background-color: beige !important;
+
+            nav{
+                .menu{
+                    background-color: rgb(230, 230, 214) !important;
+                    padding: 0.1rem 0.5rem !important;
+
+                    li{
+                        border: 1px dashed darkcyan;
+                        padding: 0.1rem 0.5rem !important;
+                        text-align: left;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    
+        .lado_dir {
+            height: 100%; /* Ocupar 100% da altura do grid container (corpo) */
+            border: 1px dashed rgb(243, 5, 5);
+
+        }
+    }
+
+
+}
+
+@media (max-width: 1520px) {
+
+}

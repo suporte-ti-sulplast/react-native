@@ -1,52 +1,69 @@
 @import '../../../../variables';
 
 .fechamentoEstoque{
-    transform: translateY(-135px);
+    display: grid;
+    grid-template-rows: auto 1fr;
 
-    .titulo{
+    .subTitulo{
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 1rem;
-        
-        h1{
-            font-size: 1.5rem;
-            margin: 0.8rem;
-            padding: 0.2rem;
-        }
-    }
 
-    .topo{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-
-        select{
-            background-color:  rgb(245, 238, 238) !important;
-            height: 30px;
-            padding: 0 5px;
-            border: 1px solid gray;
-        }
-
-        button{
-            margin: 0.2rem !important;
-        }
-    }
-
-    .report{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap:1rem;
-        margin: 0 1rem;
-    }
+        .busca{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
     
-    .tabela{
-        height: 595px;
-        overflow-y: visible;     
-        text-align: left;
-        width: 100%;
+            select{
+                height: 30px;
+                padding: 0 5px;
+                border: 1px dashed $border-color-gray;
+                border-radius: 6px;
+            }
+        }
     }
+
+    .relatorio{
+        height: 100%;
+
+        .report{
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap:1rem;
+            margin: 0 1rem;
+            
+            .compras, .produção{
+                height: 100%;
+
+                .tabela{
+                    height: 90%;
+                    overflow-y: visible;     
+                    text-align: left;
+                    
+                    .tab-esq, .tab-dir, .tot-geral{
+                        border: 1px dotted rgb(146, 146, 177);
+
+                        .grupo{
+                            
+                            h2{
+                                background-color: $background;
+                                text-align: center;
+                                padding: 0.3rem;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        
+    }
+
+
 
     h1{
         font-size: 1.5rem;
@@ -81,81 +98,18 @@
    .shared{
        cursor: default !important;
    }
-
-   .okBtn:disabled,
-   .Btn:disabled {
-     background-color: grey;
-     color: white;
-     cursor: not-allowed;
-   }
-
-   .short{
-    width: 8rem;
-    padding: 0 0.1rem;
-    text-align: center;
-   }
-
-   .msg{
-    width: 40rem;
-    margin: 2rem auto;
-    padding:  0.5rem 1rem;
-    color: $dark-text-color;
-    font-weight: 700;
-    border-radius: 9px;
-    }
-
-    .hidden{
-        opacity: 0;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .success{
-        opacity: 1;
-        background-color: aquamarine;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .error{
-        opacity: 1;
-        background-color: rgb(255, 127, 127);
-        transition: all 0.2s ease-in-out;
-    }
 }
 
 @media (max-width: 1370px) {
 
     .fechamentoEstoque{
 
-        .titulo{         
-            h1{
-                font-size: 1.5rem;
-                margin: 0.2rem 0.2rem 1rem 0.2rem;
-                padding: 0.2rem;
-            }
-        }
 
-        h1{
-            font-size: 1.2rem;
-            margin: 0.2rem 0.2rem 1rem 0.2rem;
-            padding: 0;
-        }
-
-
-        .topo{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-    
-            select{
-                height: 25px;
-                font-size: 0.8rem;
-            }
-    
-            button{
-                margin: 0.2rem !important;
-                font-size: 0.8rem;
-                padding: 0.15rem !important;
+        .subTitulo{
+            .busca{
+                select{
+                    height: 25px;
+                }
             }
         }
 

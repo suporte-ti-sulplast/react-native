@@ -28,8 +28,10 @@ function UserCreate() {
         </div>
         <div className="lateralDireita">
           <AnimatedContainer>
-            <MenuCadastroTI />
-            <CadastroUsuariosCreate  userData={depptoStattus}/>
+            <div className='split'>
+              <MenuCadastroTI />
+              <CadastroUsuariosCreate  userData={depptoStattus}/>
+            </div>
           </AnimatedContainer>
         </div>
       </div>
